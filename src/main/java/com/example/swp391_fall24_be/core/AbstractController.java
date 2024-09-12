@@ -9,16 +9,26 @@ public abstract class AbstractController<EntityType extends IObject<EntityType>,
     @Override
     public ResponseDto<List<EntityType>> doGetMany(PaginationDto paginationDto) throws ProjectException {
         List<EntityType> responseData = new ArrayList<>();
-        List<EntityType> entityList = service.findAll(paginationDto);
-        for (EntityType entity : entityList){
-            responseData.add(entity.toResponseData());
+        try {
+            List<EntityType> entityList = service.findAll(paginationDto);
+            for (EntityType entity : entityList){
+                responseData.add(entity.toResponseData());
+            }
+            return new ResponseDto<>(
+                    200,
+                    "Get many successfully!",
+                    responseData,
+                    null
+            );
         }
-        return new ResponseDto<>(
-                200,
-                "Get many successfully!",
-                responseData,
-                null
-        );
+        catch (Exception e){
+            return new ResponseDto<>(
+                    400,
+                    "Cannot get entities!",
+                    null,
+                    e.getMessage()
+            );
+        }
     }
 
     @Override
