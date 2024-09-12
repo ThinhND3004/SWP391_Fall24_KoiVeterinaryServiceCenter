@@ -2,6 +2,7 @@ package com.example.swp391_fall24_be.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity(name = "koi_fish")
 @NotBlank
 public class KoiFish {
+    @Id
     @Column(name = "id")
     private UUID id;
 
