@@ -48,8 +48,4 @@ public class KoiFishEntity {
 
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
-
-//    @JoinColumn(name = "customer_id")
-//    @ManyToOne
-//    private UserEntity user;
 }

@@ -1,8 +1,6 @@
 package com.example.swp391_fall24_be.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +20,9 @@ public class PondEntity {
     @Id
     private UUID id;
 
-    @Column(name = "customer_id")
-    private UUID customerID;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private UserEntity customerID;
 
     @Column(name = "name")
     private String name;

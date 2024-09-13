@@ -17,7 +17,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
 public class MedicineEntity {
     @Id
     private UUID id;

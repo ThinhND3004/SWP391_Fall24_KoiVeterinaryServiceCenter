@@ -20,11 +20,11 @@ public class TreatmentEntity {
     @Id
     private UUID id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "fish_id")
     private KoiFishEntity fishID;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "pond_id")
     private PondEntity pondID;
 

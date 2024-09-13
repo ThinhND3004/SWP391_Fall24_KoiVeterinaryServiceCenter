@@ -24,7 +24,7 @@ public class PrescriptionEntity {
     @JoinColumn(name = "medicine_id")
     private MedicineEntity medicineID;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "shipping_id")
     private ShippingEntity shippingID;
 

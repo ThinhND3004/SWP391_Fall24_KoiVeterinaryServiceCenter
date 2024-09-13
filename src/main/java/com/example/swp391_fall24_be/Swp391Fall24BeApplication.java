@@ -9,5 +9,4 @@ public class Swp391Fall24BeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(Swp391Fall24BeApplication.class, args);
 	}
-
 }

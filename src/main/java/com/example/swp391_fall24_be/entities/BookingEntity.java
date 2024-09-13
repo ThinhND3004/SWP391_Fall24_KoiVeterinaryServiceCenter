@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
 public class BookingEntity {
     @Id
     private UUID id;

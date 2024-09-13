@@ -15,12 +15,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
 public class KoiSpeciesEntity {
     @Id
     private UUID id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private UserEntity customerID;
 
