@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @Entity (name = "role")
 public class RoleEntity {
-
     @Id
     private UUID id;
 
