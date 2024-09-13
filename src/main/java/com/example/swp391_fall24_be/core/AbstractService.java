@@ -6,8 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractService<EntityType, IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>, PaginationDto extends AbstractPagination<EntityType>>
-    implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
+public abstract class AbstractService<
+        EntityType,
+        IdType,
+        CreateDto extends IDto<EntityType>,
+        UpdateDto extends IDto<EntityType>,
+        PaginationDto extends AbstractPagination<EntityType>
+> implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
     protected JpaRepository<EntityType, IdType> repository;
 
     protected abstract void beforeCreate(EntityType entity) throws ProjectException;

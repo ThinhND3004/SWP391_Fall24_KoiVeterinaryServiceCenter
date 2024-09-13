@@ -1,10 +1,12 @@
 package com.example.swp391_fall24_be.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.UUID;
 
 @Entity(name = "bookings")
+@Data
 public class BookingEntity {
     @Id
     private UUID id;
