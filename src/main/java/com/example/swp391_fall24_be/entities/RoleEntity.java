@@ -7,12 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-<<<<<<< HEAD
-@Entity (name = "role")
-=======
+
 @Entity (name = "roles")
 @Data
->>>>>>> 558470dbd353eac197b045e5f57e6ed11775cf52
 public class RoleEntity {
     @Id
     private UUID id;
