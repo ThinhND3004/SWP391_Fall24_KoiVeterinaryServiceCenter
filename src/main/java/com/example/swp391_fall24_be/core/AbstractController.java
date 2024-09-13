@@ -3,16 +3,16 @@ package com.example.swp391_fall24_be.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractController<EntityType extends IObject<EntityType>, IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>,PaginationDto extends AbstractPagination<EntityType>>
-    implements IController<EntityType ,IdType, CreateDto, UpdateDto, PaginationDto>{
+public abstract class AbstractController<EntityType extends IObject<ResponseType>, IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>,PaginationDto extends AbstractPagination<EntityType>, ResponseType>
+    implements IController<EntityType ,IdType, CreateDto, UpdateDto, PaginationDto, ResponseType>{
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
-    public ResponseDto<List<EntityType>> doGetMany(PaginationDto paginationDto) throws ProjectException {
-        List<EntityType> responseData = new ArrayList<>();
+    public ResponseDto<List<ResponseType>> doGetMany(PaginationDto paginationDto) throws ProjectException {
+        List<ResponseType> responseData = new ArrayList<>();
         try {
             List<EntityType> entityList = service.findAll(paginationDto);
             for (EntityType entity : entityList){
-                responseData.add(entity.toResponseData());
+                responseData.add(entity.toResponseDto());
             }
             return new ResponseDto<>(
                     200,
@@ -32,12 +32,12 @@ public abstract class AbstractController<EntityType extends IObject<EntityType>,
     }
 
     @Override
-    public ResponseDto<EntityType> doGet(IdType id) throws ProjectException {
+    public ResponseDto<ResponseType> doGet(IdType id) throws ProjectException {
         try {
             return new ResponseDto<>(
                     200,
                     "Get one successfully!",
-                    service.findById(id).toResponseData(),
+                    service.findById(id).toResponseDto(),
                     null
             );
         }
@@ -52,12 +52,12 @@ public abstract class AbstractController<EntityType extends IObject<EntityType>,
     }
 
     @Override
-    public ResponseDto<EntityType> doPost(CreateDto dto) throws ProjectException {
+    public ResponseDto<ResponseType> doPost(CreateDto dto) throws ProjectException {
         try {
             return new ResponseDto<>(
                     200,
                     "Create successfully!",
-                    service.create(dto).toResponseData(),
+                    service.create(dto).toResponseDto(),
                     null
             );
         }
@@ -72,12 +72,12 @@ public abstract class AbstractController<EntityType extends IObject<EntityType>,
     }
 
     @Override
-    public ResponseDto<EntityType> doPut(IdType id, UpdateDto dto) throws ProjectException {
+    public ResponseDto<ResponseType> doPut(IdType id, UpdateDto dto) throws ProjectException {
         try {
             return new ResponseDto<>(
                     200,
                     "Update successfully!",
-                    service.update(id,dto).toResponseData(),
+                    service.update(id,dto).toResponseDto(),
                     null
             );
         }
@@ -92,12 +92,12 @@ public abstract class AbstractController<EntityType extends IObject<EntityType>,
     }
 
     @Override
-    public ResponseDto<EntityType> doDelete(IdType id) throws ProjectException {
+    public ResponseDto<ResponseType> doDelete(IdType id) throws ProjectException {
         try {
             return new ResponseDto<>(
-                    200,
-                    "Delete successfully!",
-                    service.delete(id).toResponseData(),
+                        200,
+                        "Delete successfully!",
+                    service.delete(id).toResponseDto(),
                     null
             );
         }

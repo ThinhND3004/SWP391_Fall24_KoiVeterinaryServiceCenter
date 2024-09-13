@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public interface IController <EntityType extends IObject<EntityType>,IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>, PaginationDto extends AbstractPagination<EntityType>>{
+public interface IController <EntityType extends IObject<ResponseType>,IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>, PaginationDto extends AbstractPagination<EntityType>, ResponseType>{
     @GetMapping("/")
-    ResponseDto<List<EntityType>> doGetMany(PaginationDto paginationDto) throws ProjectException;
+    ResponseDto<List<ResponseType>> doGetMany(PaginationDto paginationDto) throws ProjectException;
     @GetMapping("/{id}")
-    ResponseDto<EntityType> doGet(@PathVariable("id") IdType id) throws ProjectException;
+    ResponseDto<ResponseType> doGet(@PathVariable("id") IdType id) throws ProjectException;
     @PostMapping("/")
-    ResponseDto<EntityType> doPost(@Valid @RequestBody CreateDto dto) throws ProjectException;
+    ResponseDto<ResponseType> doPost(@Valid @RequestBody CreateDto dto) throws ProjectException;
     @PutMapping("/{id}")
-    ResponseDto<EntityType> doPut(@PathVariable("id") IdType id, @Valid @RequestBody UpdateDto dto) throws ProjectException;
+    ResponseDto<ResponseType> doPut(@PathVariable("id") IdType id, @Valid @RequestBody UpdateDto dto) throws ProjectException;
     @DeleteMapping("/{id}")
-    ResponseDto<EntityType> doDelete(@PathVariable("id") IdType id) throws ProjectException;
+    ResponseDto<ResponseType> doDelete(@PathVariable("id") IdType id) throws ProjectException;
 }
