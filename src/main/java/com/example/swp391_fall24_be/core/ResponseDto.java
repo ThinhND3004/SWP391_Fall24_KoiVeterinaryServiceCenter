@@ -1,7 +1,12 @@
 package com.example.swp391_fall24_be.core;
 
+
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+
+@Data
 public class ResponseDto<EntityType>{
-    public int status;
+    public HttpStatus status;
     public String message;
     public EntityType data;
     public String err;
@@ -9,13 +14,7 @@ public class ResponseDto<EntityType>{
     public ResponseDto() {
     }
 
-    public ResponseDto(int status, String message, String err) {
-        this.status = status;
-        this.message = message;
-        this.err = err;
-    }
-
-    public ResponseDto(int status, String message, EntityType data, String err) {
+    public ResponseDto(HttpStatus status, String message, EntityType data, String err) {
         this.status = status;
         this.message = message;
         this.data = data;

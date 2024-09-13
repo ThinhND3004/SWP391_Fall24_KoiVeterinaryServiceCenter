@@ -1,5 +1,14 @@
 package com.example.swp391_fall24_be.core;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +21,12 @@ public abstract class AbstractController<
         PaginationDto extends AbstractPagination<EntityType>,
         ResponseType
 > implements IController<EntityType, IdType, CreateDto, UpdateDto, PaginationDto, ResponseType> {
+    @Autowired
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
-    public ResponseDto<List<ResponseType>> doGetMany(PaginationDto paginationDto) throws ProjectException {
+    @Operation(summary = "Get many with filter")
+    @ApiResponse
+    public ResponseDto<List<ResponseType>> doGetMany(@Valid @RequestBody PaginationDto paginationDto) {
         List<ResponseType> responseData = new ArrayList<>();
         try {
             List<EntityType> entityList = service.findAll(paginationDto);
@@ -22,27 +34,29 @@ public abstract class AbstractController<
                 responseData.add(entity.toResponseDto());
             }
             return new ResponseDto<>(
-                    200,
+                    HttpStatus.OK,
                     "Get many successfully!",
                     responseData,
                     null
             );
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             return new ResponseDto<>(
-                    400,
+                    HttpStatus.BAD_REQUEST,
                     "Cannot get entities!",
                     null,
                     e.getMessage()
             );
+
         }
     }
 
     @Override
-    public ResponseDto<ResponseType> doGet(IdType id) throws ProjectException {
+    public ResponseDto<ResponseType> doGet(@Parameter IdType id) {
         try {
             return new ResponseDto<>(
-                    200,
+                    HttpStatus.OK,
                     "Get one successfully!",
                     service.findById(id).toResponseDto(),
                     null
@@ -50,7 +64,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    400,
+                    HttpStatus.BAD_REQUEST,
                     "Cannot get one entity!",
                     null,
                     e.getMessage()
@@ -59,10 +73,11 @@ public abstract class AbstractController<
     }
 
     @Override
-    public ResponseDto<ResponseType> doPost(CreateDto dto) throws ProjectException {
+    @ResponseBody
+    public ResponseDto<ResponseType> doPost(@Valid @RequestBody CreateDto dto){
         try {
             return new ResponseDto<>(
-                    200,
+                    HttpStatus.OK,
                     "Create successfully!",
                     service.create(dto).toResponseDto(),
                     null
@@ -70,7 +85,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    400,
+                    HttpStatus.BAD_REQUEST,
                     "Cannot create entity!",
                     null,
                     e.getMessage()
@@ -79,10 +94,10 @@ public abstract class AbstractController<
     }
 
     @Override
-    public ResponseDto<ResponseType> doPut(IdType id, UpdateDto dto) throws ProjectException {
+    public ResponseDto<ResponseType> doPut(@Parameter IdType id, @RequestBody UpdateDto dto) {
         try {
             return new ResponseDto<>(
-                    200,
+                    HttpStatus.OK,
                     "Update successfully!",
                     service.update(id,dto).toResponseDto(),
                     null
@@ -90,7 +105,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    400,
+                    HttpStatus.BAD_REQUEST,
                     "Cannot update entity!",
                     null,
                     e.getMessage()
@@ -99,18 +114,18 @@ public abstract class AbstractController<
     }
 
     @Override
-    public ResponseDto<ResponseType> doDelete(IdType id) throws ProjectException {
+    public ResponseDto<ResponseType> doDelete(@Parameter IdType id) {
         try {
             return new ResponseDto<>(
-                        200,
-                        "Delete successfully!",
+                    HttpStatus.OK,
+                    "Delete successfully!",
                     service.delete(id).toResponseDto(),
                     null
             );
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    400,
+                    HttpStatus.BAD_REQUEST,
                     "Cannot delete entity!",
                     null,
                     e.getMessage()
