@@ -3,8 +3,15 @@ package com.example.swp391_fall24_be.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractController<EntityType extends IObject<ResponseType>, IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>,PaginationDto extends AbstractPagination<EntityType>, ResponseType>
-    implements IController<EntityType ,IdType, CreateDto, UpdateDto, PaginationDto, ResponseType>{
+
+public abstract class AbstractController<
+        EntityType extends IObject<ResponseType>,
+        IdType,
+        CreateDto extends IDto<EntityType>,
+        UpdateDto extends IDto<EntityType>,
+        PaginationDto extends AbstractPagination<EntityType>,
+        ResponseType
+> implements IController<EntityType, IdType, CreateDto, UpdateDto, PaginationDto, ResponseType> {
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
     public ResponseDto<List<ResponseType>> doGetMany(PaginationDto paginationDto) throws ProjectException {
