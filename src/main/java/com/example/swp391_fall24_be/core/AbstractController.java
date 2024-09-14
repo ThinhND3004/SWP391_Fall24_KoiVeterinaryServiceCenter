@@ -41,7 +41,6 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST,
                     "Cannot get entities!",
