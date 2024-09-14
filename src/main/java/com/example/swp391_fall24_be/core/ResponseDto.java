@@ -1,6 +1,5 @@
 package com.example.swp391_fall24_be.core;
 
-
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
