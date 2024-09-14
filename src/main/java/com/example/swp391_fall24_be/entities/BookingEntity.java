@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.entities;
 
+import com.example.swp391_fall24_be.apis.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,11 +14,11 @@ public class BookingEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private UserEntity customerId;
+    private Account customerId;
 
     @ManyToOne
     @JoinColumn(name = "veterian_id")
-    private UserEntity veterianId;
+    private Account veterianId;
 
     @Column(name = "description")
     private String description;

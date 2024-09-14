@@ -1,8 +1,10 @@
 package com.example.swp391_fall24_be.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ public abstract class AbstractService<
         UpdateDto extends IDto<EntityType>,
         PaginationDto extends AbstractPagination<EntityType>
 > implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
+    @Autowired
     protected JpaRepository<EntityType, IdType> repository;
 
     protected abstract void beforeCreate(EntityType entity) throws ProjectException;
@@ -29,17 +32,20 @@ public abstract class AbstractService<
 
     @Override
     public EntityType findById(IdType id) throws ProjectException {
+        List<ErrorReport> errorList = new ArrayList<>();
         Optional<EntityType> findResult = repository.findById(id);
         if(findResult.isPresent()){
             return findResult.get();
         }
-        throw new ProjectException(new ErrorReport("findById", ErrorType.EntityNotFound,"Entity not found!"));
+        errorList.add(new ErrorReport("findById", ErrorEnum.EntityNotFound,"Entity not found!"));
+        throw new ProjectException(errorList);
     }
 
     @Override
     public EntityType create(CreateDto dto) throws ProjectException {
         EntityType entity = dto.toEntity();
         beforeCreate(entity);
+        System.out.println(entity);
         entity = repository.save(entity);
         return entity;
     }

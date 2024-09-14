@@ -1,10 +1,12 @@
 package com.example.swp391_fall24_be.core;
 
-public class ProjectException extends Exception {
-    private final ErrorReport errorReport;
+import java.util.List;
 
-    public ProjectException(ErrorReport errorReport) {
+public class ProjectException extends Exception {
+    private final List<ErrorReport> errorReportList;
+
+    public ProjectException(List<ErrorReport> errorReportList) {
         super();
-        this.errorReport = errorReport;
+        this.errorReportList = errorReportList;
     }
 }
