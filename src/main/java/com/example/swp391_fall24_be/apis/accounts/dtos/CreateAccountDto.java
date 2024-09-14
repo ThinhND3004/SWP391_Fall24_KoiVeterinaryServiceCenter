@@ -14,6 +14,11 @@ public class CreateAccountDto implements IDto<Account> {
     @JsonProperty("email")
     private String email;
 
+    @NotBlank(message = "Password is required!")
+    @Size(max = 128, message = "Length of password must not exceed 128 letters!")
+    @JsonProperty("password")
+    private String password;
+
     @NotBlank(message = "First name is required!")
     @Size(max = 20, message = "Length of first name must not exceed 20 letters!")
     @JsonProperty("firstName")
@@ -46,6 +51,7 @@ public class CreateAccountDto implements IDto<Account> {
     public Account toEntity() {
         Account account = new Account();
         account.setEmail(email);
+        account.setPassword(password);
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setDob(dob);

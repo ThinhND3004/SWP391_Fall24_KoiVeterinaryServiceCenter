@@ -23,7 +23,7 @@ public class Account implements IObject<AccountDto>{
     @Column(nullable = false, unique = true, columnDefinition = "NVARCHAR(100)")
     private String email;
 
-    @Column (nullable = false, columnDefinition = "NVARCHAR(128)")
+    @Column (columnDefinition = "NVARCHAR(128)")
     private String password;
 
     @Column (nullable = false, name = "first_name", columnDefinition = "NVARCHAR(20)")
@@ -66,7 +66,7 @@ public class Account implements IObject<AccountDto>{
         dto.setPhone(phone);
         dto.setFirstName(firstName);
         dto.setLastName(lastName);
-        dto.setRole(role);
+        dto.setRoleName(role.getName());
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
         dto.setDisable(isDisable);
