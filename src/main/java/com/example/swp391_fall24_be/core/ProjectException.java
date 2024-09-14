@@ -9,4 +9,9 @@ public class ProjectException extends Exception {
         super();
         this.errorReportList = errorReportList;
     }
+
+    public ProjectException(ErrorReport report) {
+        super();
+        this.errorReportList = List.of(report);
+    }
 }

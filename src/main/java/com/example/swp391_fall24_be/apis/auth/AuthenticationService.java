@@ -1,11 +1,13 @@
 package com.example.swp391_fall24_be.apis.auth;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginDto;
+import com.example.swp391_fall24_be.core.ErrorEnum;
+import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginResponseDto;
-import com.example.swp391_fall24_be.repository.UserRepository;
 import com.example.swp391_fall24_be.security.JwtProvider;
 import com.example.swp391_fall24_be.utils.CryptoUtils;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -18,15 +20,14 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
-
 @Service
 public class AuthenticationService {
 
-    private final UserRepository repository;
+    private final AccountsRepository repository;
     private final JwtProvider jwtProvider;
     private final CryptoUtils cryptoService;
 
-    public AuthenticationService(UserRepository repository, JwtProvider jwtProvider, CryptoUtils cryptoService) {
+    public AuthenticationService(AccountsRepository repository, JwtProvider jwtProvider, CryptoUtils cryptoService) {
         this.repository = repository;
         this.jwtProvider = jwtProvider;
         this.cryptoService = cryptoService;
@@ -36,14 +37,13 @@ public class AuthenticationService {
         try {
             var account = this.jwtProvider.verifyToken(accessToken.replace("Bearer ", ""));
             if (account == null) {
-//                throw new ProjectException(new ErrorReport("verifyAccessToken", ErrorType.ValidationError, "Invalid access token"));
+                throw new ProjectException(new ErrorReport("verifyAccessToken", ErrorEnum.ValidationError, "Invalid access token"));
             } else {
                 return getAccountDto(account);
             }
         } catch (Exception e) {
-//            throw new ProjectException(new ErrorReport("verifyAccessToken", ErrorType.ValidationError, "Invalid access token"));
+            throw new ProjectException(new ErrorReport("verifyAccessToken", ErrorEnum.ValidationError, "Invalid access token"));
         }
-        return null;
     }
 
     private static AccountDto getAccountDto(Account account) {
@@ -64,7 +64,7 @@ public class AuthenticationService {
     @Value("${google.clientId}")
     private String googleClientId;
 
-    public AccountLoginResponseDto loginWithGoogle(String credential) {
+    public AccountLoginResponseDto loginWithGoogle(String credential) throws ProjectException {
         var verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 .setAudience(Collections.singletonList(googleClientId))
                 .build();
@@ -83,7 +83,7 @@ public class AuthenticationService {
                 return new AccountLoginResponseDto(jwtProvider.signToken(account.get()));
                 }
         } catch (GeneralSecurityException | IOException e) {
-//            throw new ProjectException(new ErrorReport("loginWithGoogle", ErrorType.ValidationError, "Invalid google credential"));
+            throw new ProjectException(new ErrorReport("loginWithGoogle", ErrorEnum.ValidationError, "Invalid google credential"));
         }
         return null;
     }
@@ -91,11 +91,11 @@ public class AuthenticationService {
     public AccountLoginResponseDto loginWithUsernameAndPassword(AccountLoginDto dto) throws ProjectException {
         var optionalUser = repository.findByEmail(dto.getEmail());
         if (optionalUser.isEmpty()) {
-//            throw new ProjectException(new ErrorReport("loginWithUsernameAndPassword", ErrorType.EntityNotFound, "Account not found"));
+            throw new ProjectException(new ErrorReport("loginWithUsernameAndPassword", ErrorEnum.EntityNotFound, "Account not found"));
         }
         var account = optionalUser.get();
         if (!cryptoService.verify(dto.getPassword(), account.getPassword())) {
-//            throw new ProjectException(new ErrorReport("loginWithUsernameAndPassword", ErrorType.ValidationError, "Password is incorrect"));
+            throw new ProjectException(new ErrorReport("loginWithUsernameAndPassword", ErrorEnum.ValidationError, "Password is incorrect"));
         }
         return new AccountLoginResponseDto(jwtProvider.signToken(account));
     }
