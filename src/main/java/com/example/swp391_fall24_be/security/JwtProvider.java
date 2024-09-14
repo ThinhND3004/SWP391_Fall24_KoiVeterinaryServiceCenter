@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import com.example.swp391_fall24_be.repository.UserRepository;
+import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class JwtProvider {
@@ -26,9 +25,9 @@ public class JwtProvider {
     @Value("${secrets.JWT_TIMEZONE}")
     private String jwtTimezone;
 
-    private final UserRepository userRepository;
+    private final AccountsRepository userRepository;
 
-    public JwtProvider(UserRepository userRepository) {
+    public JwtProvider(AccountsRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -54,7 +53,7 @@ public class JwtProvider {
                     .build()
                     .verify(token);
             String accountId = payload.getSubject();
-            Optional<Account> findAccountResult = userRepository.findById(UUID.fromString(accountId));
+            Optional<Account> findAccountResult = userRepository.findById(accountId);
             return findAccountResult.orElse(null);
         } catch (Exception e) {
 //            throw new ProjectException(new ErrorReport("verifyToken", ErrorType.ValidationError, "Invalid token"));
