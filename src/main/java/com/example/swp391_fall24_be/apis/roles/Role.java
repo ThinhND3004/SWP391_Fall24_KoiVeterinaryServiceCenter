@@ -1,18 +1,18 @@
 package com.example.swp391_fall24_be.apis.roles;
 
+import com.example.swp391_fall24_be.apis.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
-@Entity (name = "role")
+@Entity (name = "roles")
 @Data
 public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
 
     @Column()
     private String name;
@@ -25,4 +25,7 @@ public class Role{
 
     @Column ()
     private LocalDateTime updateAt;
+
+    @OneToMany
+    private List<Account> accounts;
 }

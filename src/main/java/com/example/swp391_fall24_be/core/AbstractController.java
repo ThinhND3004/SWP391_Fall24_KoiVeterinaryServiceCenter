@@ -26,7 +26,7 @@ public abstract class AbstractController<
     @Override
     @Operation(summary = "Get many with filter")
     @ApiResponse
-    public ResponseDto<List<ResponseType>> doGetMany(@Valid @RequestBody PaginationDto paginationDto) {
+    public ResponseDto<List<ResponseType>> doGetMany(@Valid PaginationDto paginationDto) {
         List<ResponseType> responseData = new ArrayList<>();
         try {
             List<EntityType> entityList = service.findAll(paginationDto);

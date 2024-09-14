@@ -1,10 +1,12 @@
 package com.example.swp391_fall24_be.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public abstract class AbstractPagination<EntityType> implements IDto<EntityType> {
+public abstract class AbstractPagination<EntityType> implements IDto<EntityType>  {
     protected int page;
     protected int unitPerPage;
 
