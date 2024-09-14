@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.roles;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,27 +7,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-
-@Entity (name = "roles")
+@Entity (name = "role")
 @Data
-public class RoleEntity {
+public class Role{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "name")
+    @Column()
     private String name;
 
-    @Column (name = "description")
+    @Column (columnDefinition = "TEXT")
     private String description;
 
-    @Column (name = "create_at")
+    @Column ()
     private LocalDateTime createAt;
 
-    @Column (name = "update_at")
+    @Column ()
     private LocalDateTime updateAt;
-
-    @OneToMany
-    private List<UserEntity> users;
-
-
 }
