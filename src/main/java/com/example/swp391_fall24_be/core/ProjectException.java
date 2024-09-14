@@ -6,12 +6,12 @@ public class ProjectException extends Exception {
     private final List<ErrorReport> errorReportList;
 
     public ProjectException(List<ErrorReport> errorReportList) {
-        super();
+        super(errorReportList.get(0).getMessage());
         this.errorReportList = errorReportList;
     }
 
     public ProjectException(ErrorReport report) {
-        super();
+        super(report.getMessage());
         this.errorReportList = List.of(report);
     }
 }
