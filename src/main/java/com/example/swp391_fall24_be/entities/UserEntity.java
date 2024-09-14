@@ -15,7 +15,7 @@ public class UserEntity {
     @Id
     private UUID id;
 
-    @Column (name = "email")
+    @Column (name = "email", unique = true)
     private String email;
     @Column (name = "password")
     private String password;
