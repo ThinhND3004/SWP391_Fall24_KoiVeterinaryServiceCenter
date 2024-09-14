@@ -5,45 +5,52 @@ import com.example.swp391_fall24_be.apis.roles.Role;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity(name = "accounts")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 public class Account implements IObject<AccountDto>{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column()
+    @Column(nullable = false, unique = true, columnDefinition = "NVARCHAR(100)")
     private String email;
 
-    @Column ()
+    @Column (nullable = false, columnDefinition = "NVARCHAR(128)")
     private String password;
 
-    @Column ()
+    @Column (nullable = false, name = "first_name", columnDefinition = "NVARCHAR(20)")
     private String firstName;
 
-    @Column ()
+    @Column (nullable = false, name = "last_name", columnDefinition = "NVARCHAR(20)")
     private String lastName;
 
-    @Column ()
+    @Column (nullable = false)
+    @CreatedDate
     private LocalDate dob;
 
-    @Column ()
+    @Column (nullable = false, unique = true, columnDefinition = "CHAR(10)")
     private String phone;
 
-    @Column ()
+    @Column (nullable = false, columnDefinition = "NVARCHAR(200)")
+    private String address;
+
+    @Column (nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime createAt;
 
-    @Column ()
+    @Column (nullable = false)
+    @LastModifiedDate
     private LocalDateTime updateAt;
 
-    @Column ()
-    private String address;
-    @Column ()
+    @Column (nullable = false, name = "is_disable")
     private boolean isDisable;
 
     @JoinColumn()

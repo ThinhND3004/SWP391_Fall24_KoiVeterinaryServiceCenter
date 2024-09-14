@@ -2,18 +2,13 @@ package com.example.swp391_fall24_be.core;
 
 import lombok.Data;
 
-enum ErrorType {
-    EntityNotFound,
-    ValidationError,
-
-}
 @Data
 public class ErrorReport{
     private String functionName;
-    private ErrorType errorType;
+    private ErrorEnum errorType;
     private String message;
 
-    public ErrorReport( String functionName, ErrorType errorType, String message) {
+    public ErrorReport(String functionName, ErrorEnum errorType, String message) {
         this.functionName = functionName;
         this.errorType = errorType;
         this.message = message;

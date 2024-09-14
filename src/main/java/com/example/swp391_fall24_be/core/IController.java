@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IController <EntityType extends IObject<ResponseType>,IdType, CreateDto extends IDto<EntityType>, UpdateDto extends IDto<EntityType>, PaginationDto extends AbstractPagination<EntityType>, ResponseType>{
     @GetMapping("")
-    ResponseDto<List<ResponseType>> doGetMany(@Valid @RequestBody PaginationDto paginationDto);
+    ResponseDto<List<ResponseType>> doGetMany(@Valid PaginationDto paginationDto);
     @GetMapping("/{id}")
     ResponseDto<ResponseType> doGet(@PathVariable("id") IdType id);
     @PostMapping(value = "", consumes = {"application/json"})
