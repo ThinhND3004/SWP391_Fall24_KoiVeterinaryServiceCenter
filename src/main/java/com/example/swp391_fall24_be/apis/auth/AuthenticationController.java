@@ -3,7 +3,6 @@ package com.example.swp391_fall24_be.apis.auth;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginDto;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginResponseDto;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
