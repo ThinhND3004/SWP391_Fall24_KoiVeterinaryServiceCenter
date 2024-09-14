@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,24 +20,30 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
+@Data
 public class UserEntity {
 
     @Id
     private UUID id;
 
-    @Column (name = "email")
+    @Column (name = "email", unique = true)
     private String email;
+
     @Column (name = "password")
     private String password;
 
     @Column (name = "first_name")
     private String firstName;
+
     @Column (name = "last_name")
     private String lastName;
+
     @Column (name = "dob")
     private LocalDate dob;
-    @Column (name = "phone")
+
+    @Column (name = "phone", unique = true)
     private String phone;
+
     @Column (name = "create_at")
     private LocalDateTime createAt;
 
@@ -45,6 +52,7 @@ public class UserEntity {
 
     @Column (name = "address")
     private String address;
+
     @Column (name = "is_disable")
     private String isDisable;
 
@@ -53,5 +61,5 @@ public class UserEntity {
     private RoleEntity role; // Đảm bảo tên thuộc tính khớp với mappedBy
 
     @OneToMany
-    private List<BookingEntity> booking;
+    private List<BookingEntity> booking; //Test
 }
