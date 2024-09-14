@@ -1,9 +1,7 @@
 package com.example.swp391_fall24_be.apis.auth;
 
-import com.example.swp391_fall24_be.core.ResponseDto;
-import com.example.swp391_fall24_be.dto.AccountCreateDto;
-import com.example.swp391_fall24_be.dto.AccountLoginResponseDto;
-import com.example.swp391_fall24_be.service.AuthService;
+import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginDto;
+import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
@@ -19,22 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthenticationController {
-    private final AuthService authService;
+    private final AuthenticationService authenticationService;
 
     @SneakyThrows
     @PostMapping("login-password")
-    public ResponseEntity<ResponseDto<String>> login(@RequestBody AccountCreateDto loginDto) {
-        var response = authService.loginWithUsernameAndPassword(loginDto);
-        var headers = new HttpHeaders();
+    public ResponseEntity<AccountLoginResponseDto> login(@RequestBody AccountLoginDto loginDto) {
+        AccountLoginResponseDto response = authenticationService.loginWithUsernameAndPassword(loginDto);
+        HttpHeaders headers = new HttpHeaders();
         headers.add("content-type", "application/json");
         return ResponseEntity.ok().headers(headers).body(response);
     }
 
     @GetMapping("/login-google")
     public ResponseEntity<AccountLoginResponseDto> loginWithGoogle(@RequestParam String credential) {
-        AccountLoginResponseDto response = null;
-        response = authService.loginWithGoogle(credential);
-        var headers = new HttpHeaders();
+        AccountLoginResponseDto response = authenticationService.loginWithGoogle(credential);
+        HttpHeaders headers = new HttpHeaders();
         headers.add("content-type", "application/json");
         return ResponseEntity.ok().headers(headers).body(response);
     }

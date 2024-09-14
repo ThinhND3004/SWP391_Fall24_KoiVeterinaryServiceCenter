@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.dto;
+package com.example.swp391_fall24_be.apis.auth.dto;
 
 import com.example.swp391_fall24_be.core.ResponseDto;
 import lombok.AllArgsConstructor;

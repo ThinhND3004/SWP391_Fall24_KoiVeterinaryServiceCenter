@@ -3,7 +3,7 @@ package com.example.swp391_fall24_be.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.swp391_fall24_be.entities.UserEntity;
+import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -32,12 +32,12 @@ public class JwtProvider {
         this.userRepository = userRepository;
     }
 
-    public String signToken(UserEntity account) {
+    public String signToken(Account account) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             ZonedDateTime now = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(jwtTimezone));
             return JWT.create()
-                    .withSubject(account.getId().toString())
+                    .withSubject(account.getId())
                     .withIssuedAt(now.toInstant())
                     .withExpiresAt(now.toInstant().plus(jwtExpireTime, ChronoUnit.SECONDS))
                     .sign(algorithm);
@@ -47,17 +47,17 @@ public class JwtProvider {
         return null;
     }
 
-    public UserEntity verifyToken(String token) {
+    public Account verifyToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             DecodedJWT payload = JWT.require(algorithm)
                     .build()
                     .verify(token);
             String accountId = payload.getSubject();
-            Optional<UserEntity> findAccountResult = userRepository.findById(UUID.fromString(accountId));
+            Optional<Account> findAccountResult = userRepository.findById(UUID.fromString(accountId));
             return findAccountResult.orElse(null);
         } catch (Exception e) {
-
+//            throw new ProjectException(new ErrorReport("verifyToken", ErrorType.ValidationError, "Invalid token"));
         }
         return null;
     }
