@@ -7,34 +7,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-
-@Entity(name = "bookings")
+@Entity(name = "koi_species")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
-public class BookingEntity {
+public class KoiSpeciesEntity {
     @Id
     private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Account customerId;
+    private Account customerID;
 
-    @ManyToOne
-    @JoinColumn(name = "veterian_id")
-    private Account veterianId;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "total_price")
-    private float totalPrice;
-
-    @Column(name = "status")
-    private String status;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

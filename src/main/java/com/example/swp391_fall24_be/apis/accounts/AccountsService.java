@@ -31,7 +31,7 @@ public class AccountsService extends AbstractService<Account, String, CreateAcco
             errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This email has been registered!"));
         }
 
-        Optional<Account> findPhoneResult = accountsRepository.findByEmail(account.getEmail());
+        Optional<Account> findPhoneResult = accountsRepository.findByPhone(account.getPhone());
         if(findPhoneResult.isPresent()){
             errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This phone has been registered!"));
         }
