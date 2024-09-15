@@ -3,8 +3,6 @@ package com.example.swp391_fall24_be.apis.accounts;
 import com.example.swp391_fall24_be.apis.accounts.dtos.CreateAccountDto;
 import com.example.swp391_fall24_be.apis.accounts.dtos.PaginateAccountDto;
 import com.example.swp391_fall24_be.apis.accounts.dtos.UpdateAccountDto;
-import com.example.swp391_fall24_be.apis.roles.Role;
-import com.example.swp391_fall24_be.apis.roles.RoleRepository;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ErrorEnum;
@@ -20,20 +18,25 @@ import java.util.Optional;
 @Service
 public class AccountsService extends AbstractService<Account, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto> {
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
     private CryptoUtils cryptoUtils;
+    @Autowired
+    private AccountsRepository accountsRepository;
+
     @Override
     protected void beforeCreate(Account account) throws ProjectException {
         List<ErrorReport> errorList = new ArrayList<>();
 
-        Optional<Role> findRoleResult = roleRepository.findByName(account.getRole().getName());
-        if(findRoleResult.isEmpty()){
-            errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.EntityNotFound,"Role not found!"));
+        Optional<Account> findEmailResult = accountsRepository.findByEmail(account.getEmail());
+        if(findEmailResult.isPresent()){
+            errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This email has been registered!"));
         }
-        else account.setRole(findRoleResult.get());
 
-        if(account.getPassword() != null) {
+        Optional<Account> findPhoneResult = accountsRepository.findByEmail(account.getEmail());
+        if(findPhoneResult.isPresent()){
+            errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This phone has been registered!"));
+        }
+
+        if(account.getPassword() != null && errorList.isEmpty()) {
             account.setPassword(cryptoUtils.crypto(account.getPassword()));
         }
 

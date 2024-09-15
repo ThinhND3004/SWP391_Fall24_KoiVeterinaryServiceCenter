@@ -1,7 +1,7 @@
 package com.example.swp391_fall24_be.apis.accounts.dtos;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import com.example.swp391_fall24_be.apis.roles.Role;
+import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
@@ -43,9 +43,9 @@ public class CreateAccountDto implements IDto<Account> {
     @JsonProperty("address")
     private String address;
 
-    @NotBlank(message = "Role is required!")
-    @JsonProperty("roleName")
-    private String roleName;
+    @NotNull(message = "Role is required!")
+    @JsonProperty("role")
+    private AccountRoleEnum role;
 
     @Override
     public Account toEntity() {
@@ -57,8 +57,6 @@ public class CreateAccountDto implements IDto<Account> {
         account.setDob(dob);
         account.setPhone(phone);
         account.setAddress(address);
-        Role role = new Role();
-        role.setName(roleName);
         account.setRole(role);
         return account;
     }

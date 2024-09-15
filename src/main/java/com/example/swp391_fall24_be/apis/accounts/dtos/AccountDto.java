@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.accounts.dtos;
 
-import com.example.swp391_fall24_be.apis.roles.Role;
+import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,6 +18,5 @@ public class AccountDto {
     private LocalDateTime updateAt;
     private String address;
     private boolean isDisable;
-    private Role role;
-    private String roleName;
+    private AccountRoleEnum role;
 }
