@@ -1,10 +1,10 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
-import com.example.swp391_fall24_be.apis.roles.Role;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 
 @Entity(name = "accounts")
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@Getter
+@Setter
 public class Account implements IObject<AccountDto>{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -53,9 +54,24 @@ public class Account implements IObject<AccountDto>{
     @Column (nullable = false, name = "is_disable")
     private boolean isDisable;
 
-    @JoinColumn()
-    @ManyToOne
-    private Role role;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private AccountRoleEnum role;
+
+    public Account() {
+    }
+
+    public Account(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.phone = phone;
+        this.address = address;
+        this.isDisable = false;
+        this.role = role;
+    }
 
     @Override
     public AccountDto toResponseDto() {
@@ -66,7 +82,7 @@ public class Account implements IObject<AccountDto>{
         dto.setPhone(phone);
         dto.setFirstName(firstName);
         dto.setLastName(lastName);
-        dto.setRoleName(role.getName());
+        dto.setRole(role);
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
         dto.setDisable(isDisable);
