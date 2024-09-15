@@ -16,10 +16,6 @@ public class CryptoUtils {
     @Value("${secrets.HMAC_SECRET}")
     private String hMac;
 
-    public static String hashPassword(String password) {
-        return password;
-    }
-
     public String crypto(String input) {
         try {
             var secretKeySpec = new SecretKeySpec(hMac.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
