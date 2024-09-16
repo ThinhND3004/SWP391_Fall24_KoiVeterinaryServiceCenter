@@ -1,7 +1,13 @@
 package com.example.swp391_fall24_be.entities;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import jakarta.persistence.*;
+import com.example.swp391_fall24_be.apis.koifishes.dto.KoiFishDto;
+import com.example.swp391_fall24_be.core.IObject;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class KoiFishEntity {
+public class KoiFishEntity implements IObject<KoiFishDto> {
     @Id
     private UUID id;
 
@@ -41,12 +47,17 @@ public class KoiFishEntity {
     @Column(name = "width")
     private float width;
 
-    @Column(name = "ageYears")
+    @Column(name = "age_years")
     private int ageYears;
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updatedAt")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Override
+    public KoiFishDto toResponseDto() {
+        return null;
+    }
 }

@@ -1,8 +1,13 @@
 package com.example.swp391_fall24_be.entities;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import com.example.swp391_fall24_be.apis.koispecies.dto.KoiSpeciesDto;
+import com.example.swp391_fall24_be.core.IObject;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class KoiSpeciesEntity {
+public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
     @Id
     private UUID id;
 
@@ -29,4 +34,13 @@ public class KoiSpeciesEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Override
+    public KoiSpeciesDto toResponseDto() {
+        KoiSpeciesDto dto = new KoiSpeciesDto();
+        dto.setCustomerID(customerID);
+        dto.setName(name);
+        dto.setCreatedAt(createdAt);
+        return dto;
+    }
 }

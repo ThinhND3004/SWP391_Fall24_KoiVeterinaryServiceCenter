@@ -1,6 +1,12 @@
 package com.example.swp391_fall24_be.entities;
 
-import jakarta.persistence.*;
+import com.example.swp391_fall24_be.apis.treatments.dto.TreatmentDto;
+import com.example.swp391_fall24_be.core.IObject;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +22,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class TreatmentEntity {
+public class TreatmentEntity implements IObject<TreatmentDto> {
     @Id
     private UUID id;
 
@@ -39,4 +45,16 @@ public class TreatmentEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Override
+    public TreatmentDto toResponseDto() {
+        TreatmentDto treatmentDto = new TreatmentDto();
+        treatmentDto.setFishID(fishID);
+        treatmentDto.setPondID(pondID);
+        treatmentDto.setPrescriptionID(prescriptionID);
+        treatmentDto.setDiagnosis(diagnosis);
+        treatmentDto.setNotes(notes);
+        treatmentDto.setCreatedAt(createdAt);
+        return treatmentDto;
+    }
 }

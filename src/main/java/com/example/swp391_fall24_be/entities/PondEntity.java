@@ -1,7 +1,13 @@
 package com.example.swp391_fall24_be.entities;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import jakarta.persistence.*;
+import com.example.swp391_fall24_be.apis.ponds.dto.PondDto;
+import com.example.swp391_fall24_be.core.IObject;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class PondEntity {
+public class PondEntity implements IObject<PondDto> {
     @Id
     private UUID id;
 
@@ -51,4 +57,9 @@ public class PondEntity {
 
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
+
+    @Override
+    public PondDto toResponseDto() {
+        return null;
+    }
 }
