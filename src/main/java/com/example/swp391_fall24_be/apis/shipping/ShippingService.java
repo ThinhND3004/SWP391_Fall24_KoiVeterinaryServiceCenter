@@ -5,7 +5,6 @@ import com.example.swp391_fall24_be.apis.shipping.dtos.PaginateShippingDto;
 import com.example.swp391_fall24_be.apis.shipping.dtos.UpdateShippingDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
-import com.example.swp391_fall24_be.entities.ShippingEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
