@@ -1,23 +1,25 @@
 package com.example.swp391_fall24_be.apis.shipping.dtos;
 
+import com.example.swp391_fall24_be.apis.vehicle.VehicleEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
 public class CreateShippingDto implements IDto<ShippingEntity> {
 
-    @NotBlank(message = "Vehicle is required!")
-    private String vehicle;
+    @NotNull(message = "Vehicle is required!")
+    private VehicleEntity vehicle;
 
-    @NotBlank(message = "Price per meter is required!")
-    private float pricePerMeters;
+    @NotNull(message = "Price per meter is required!")
+    @Positive(message = "Price per meter must be a positive number!")
+    private Float pricePerMeters;
 
-
-    @NotBlank(message = "Create time is required!")
+    @NotNull(message = "Create time is required!")
     private LocalDateTime createAt;
-
 
     @Override
     public ShippingEntity toEntity() {

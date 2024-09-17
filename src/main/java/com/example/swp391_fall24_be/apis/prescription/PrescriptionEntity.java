@@ -2,7 +2,7 @@ package com.example.swp391_fall24_be.apis.prescription;
 
 import com.example.swp391_fall24_be.apis.prescription.dtos.PrescriptionDto;
 import com.example.swp391_fall24_be.core.IObject;
-import com.example.swp391_fall24_be.entities.MedicineEntity;
+import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
 import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "prescriptions")
@@ -37,6 +38,9 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ManyToMany(mappedBy = "prescriptionEntities")
+    private Set<MedicineEntity> medicineEntities;
 
     @Override
     public PrescriptionDto toResponseDto() {

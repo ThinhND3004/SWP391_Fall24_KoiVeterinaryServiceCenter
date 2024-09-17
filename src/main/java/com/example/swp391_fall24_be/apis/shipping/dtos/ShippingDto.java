@@ -1,11 +1,12 @@
 package com.example.swp391_fall24_be.apis.shipping.dtos;
 
+import com.example.swp391_fall24_be.apis.vehicle.VehicleEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
 public class ShippingDto{
-    private String vehicle;
+    private VehicleEntity vehicle;
 
     private float pricePerMeters;
 

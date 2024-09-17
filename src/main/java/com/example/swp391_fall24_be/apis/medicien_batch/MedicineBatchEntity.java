@@ -1,7 +1,9 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.medicien_batch;
 
+import com.example.swp391_fall24_be.apis.medicien_batch.dtos.MedicienBatchDto;
+import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
+import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicineBatchEntity {
+public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
     @Id
     private UUID id;
 
@@ -32,4 +34,14 @@ public class MedicineBatchEntity {
 
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
+
+    @Override
+    public MedicienBatchDto toResponseDto() {
+        MedicienBatchDto dto = new MedicienBatchDto();
+        dto.setMedicineEntity(medicineID);
+        dto.setQuantity(quantity);
+        dto.setExpirationDate(expirationDate);
+        dto.setReceivedAt(receivedAt);
+        return dto;
+    }
 }
