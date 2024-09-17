@@ -4,6 +4,7 @@ import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import com.example.swp391_fall24_be.apis.vehicle.VehicleEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public class CreateVehicleDto implements IDto<VehicleEntity> {
     @NotBlank(message = "Vehicle's name is required!")
     private String name;
 
-    @NotBlank(message = "Create time is required!")
+    @NotNull(message = "Create time is required!")
     private LocalDateTime createAt;
 
     private List<ShippingEntity> shippingEntities;

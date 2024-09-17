@@ -1,6 +1,8 @@
 package com.example.swp391_fall24_be.apis.medicine;
 
+import com.example.swp391_fall24_be.apis.medicine.dtos.MedicineDto;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
+import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicineEntity {
+public class MedicineEntity implements IObject<MedicineDto> {
     @Id
     private UUID id;
 
@@ -43,4 +45,16 @@ public class MedicineEntity {
             inverseJoinColumns = @JoinColumn(name = "prescription_id")
     )
     private Set<PrescriptionEntity> prescriptionEntities;
+
+    @Override
+    public MedicineDto toResponseDto() {
+        MedicineDto dto = new MedicineDto();
+        dto.setName(name);
+        dto.setDescription(description);
+        dto.setPrice(price);
+        dto.setManufacturer(manufacturer);
+        dto.setPrescriptionEntities(prescriptionEntities);
+        dto.setCreatedAt(createdAt);
+        return dto;
+    }
 }

@@ -29,7 +29,7 @@ public class VehicleEntity implements IObject<VehicleDto> {
     private LocalDateTime updateAt;
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle")
     private List<ShippingEntity> shippingEntities;
 
     @Override

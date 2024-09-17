@@ -5,24 +5,36 @@ import com.example.swp391_fall24_be.core.IDto;
 import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
 import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
 public class UpdatePrescriptionDto implements IDto<PrescriptionEntity> {
-    @NotBlank(message = "Shipping is required!")
+
+    @NotNull(message = "Shipping is required!")
     private ShippingEntity shippingEntity;
-    @NotBlank(message = "Medicine is required!")
+
+    @NotNull(message = "Medicine is required!")
     private MedicineEntity medicineEntity;
-    @NotBlank(message = "Total price is required!")
+
+    @NotNull(message = "Total price is required!")
+    @Positive(message = "Total price must be a positive number!")
     private float totalPrice;
-    @NotBlank(message = "Create time is required!")
+
+    @NotNull(message = "Create time is required!")
     private LocalDateTime createAt;
 
     @Override
     public PrescriptionEntity toEntity() {
         PrescriptionEntity prescription = new PrescriptionEntity();
-        prescription.setShippingID(shippingEntity);
-        prescription.setMedicineID(medicineEntity);
+        if (shippingEntity != null) {
+            prescription.setShippingID(shippingEntity);
+        }
+        if (medicineEntity != null) {
+            prescription.setMedicineID(medicineEntity);
+        }
+
         prescription.setTotalPrice(totalPrice);
         prescription.setCreatedAt(createAt);
         return prescription;
