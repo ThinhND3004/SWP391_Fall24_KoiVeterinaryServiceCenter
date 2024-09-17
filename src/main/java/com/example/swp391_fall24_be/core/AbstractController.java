@@ -21,7 +21,7 @@ public abstract class AbstractController<
         PaginationDto extends AbstractPagination<EntityType>,
         ResponseType
 > implements IController<EntityType, IdType, CreateDto, UpdateDto, PaginationDto, ResponseType> {
-    @Autowired
+//    @Autowired
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
     @Operation(summary = "Get many with filter")
