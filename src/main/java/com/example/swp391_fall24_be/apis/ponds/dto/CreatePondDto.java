@@ -2,7 +2,7 @@ package com.example.swp391_fall24_be.apis.ponds.dto;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.entities.PondEntity;
+import com.example.swp391_fall24_be.apis.ponds.Pond;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
-public class CreatePondDto implements IDto<PondEntity> {
+public class CreatePondDto implements IDto<Pond> {
     @NotBlank(message = "Customer is required!")
     @JsonProperty("customer_id")
     private Account customerID;
@@ -52,17 +52,17 @@ public class CreatePondDto implements IDto<PondEntity> {
     private LocalDateTime lastMaintenanceDate;
 
     @Override
-    public PondEntity toEntity() {
-        PondEntity pondEntity = new PondEntity();
-        pondEntity.setCustomerID(customerID);
-        pondEntity.setName(name);
-        pondEntity.setLocation(location);
-        pondEntity.setSizeSquareMeters(sizeSquareMeters);
-        pondEntity.setDepthMeters(depthMeters);
-        pondEntity.setWaterType(waterType);
-        pondEntity.setTemperatureCelsius(temperatureCelsius);
-        pondEntity.setPHLevel(pHLevel);
-        pondEntity.setLastMaintenanceDate(lastMaintenanceDate);
-        return pondEntity;
+    public Pond toEntity() {
+        Pond entity = new Pond();
+        entity.setCustomerID(customerID);
+        entity.setName(name);
+        entity.setLocation(location);
+        entity.setSizeSquareMeters(sizeSquareMeters);
+        entity.setDepthMeters(depthMeters);
+        entity.setWaterType(waterType);
+        entity.setTemperatureCelsius(temperatureCelsius);
+        entity.setPHLevel(pHLevel);
+        entity.setLastMaintenanceDate(lastMaintenanceDate);
+        return entity;
     }
 }

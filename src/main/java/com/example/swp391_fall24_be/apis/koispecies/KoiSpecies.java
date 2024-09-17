@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.koispecies;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.apis.koispecies.dto.KoiSpeciesDto;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
+public class KoiSpecies implements IObject<KoiSpeciesDto> {
     @Id
     private UUID id;
 

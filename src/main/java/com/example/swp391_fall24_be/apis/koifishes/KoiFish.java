@@ -1,8 +1,9 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.koifishes;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.apis.koifishes.dto.KoiFishDto;
 import com.example.swp391_fall24_be.core.IObject;
+import com.example.swp391_fall24_be.apis.koispecies.KoiSpecies;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class KoiFishEntity implements IObject<KoiFishDto> {
+public class KoiFish implements IObject<KoiFishDto> {
     @Id
     private UUID id;
 
@@ -33,7 +34,7 @@ public class KoiFishEntity implements IObject<KoiFishDto> {
 
     @ManyToOne
     @JoinColumn(name = "species_id")
-    private KoiSpeciesEntity speciesID;
+    private KoiSpecies speciesID;
 
     @Column(name = "name")
     private String name;

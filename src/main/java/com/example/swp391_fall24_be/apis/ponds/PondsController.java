@@ -6,7 +6,6 @@ import com.example.swp391_fall24_be.apis.ponds.dto.PondDto;
 import com.example.swp391_fall24_be.apis.ponds.dto.UpdatePondDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
-import com.example.swp391_fall24_be.entities.PondEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/ponds")
 @Tag(name = "Ponds", description = "Pond APIs")
-public class PondsController extends AbstractController<PondEntity, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto, PondDto> {
+public class PondsController extends AbstractController<Pond, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto, PondDto> {
     private final PondsService pondsService;
 
     public PondsController(PondsService pondsService) {

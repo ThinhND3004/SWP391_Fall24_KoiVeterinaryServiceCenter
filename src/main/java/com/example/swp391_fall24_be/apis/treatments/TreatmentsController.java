@@ -6,7 +6,6 @@ import com.example.swp391_fall24_be.apis.treatments.dto.TreatmentDto;
 import com.example.swp391_fall24_be.apis.treatments.dto.UpdateTreatmentDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
-import com.example.swp391_fall24_be.entities.TreatmentEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/treatments")
 @Tag(name = "Treatments", description = "Treatment APIs")
-public class TreatmentsController extends AbstractController<TreatmentEntity, UUID, CreateTreatmentDto, UpdateTreatmentDto, PaginateTreatmentDto, TreatmentDto> {
+public class TreatmentsController extends AbstractController<Treatment, UUID, CreateTreatmentDto, UpdateTreatmentDto, PaginateTreatmentDto, TreatmentDto> {
     private final TreatmentsService treatmentsService;
 
     public TreatmentsController(TreatmentsService treatmentsService) {

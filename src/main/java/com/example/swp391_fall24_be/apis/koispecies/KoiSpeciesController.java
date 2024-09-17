@@ -6,7 +6,6 @@ import com.example.swp391_fall24_be.apis.koispecies.dto.PaginateKoiSpeciesDto;
 import com.example.swp391_fall24_be.apis.koispecies.dto.UpdateKoiSpeciesDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
-import com.example.swp391_fall24_be.entities.KoiSpeciesEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/koi_species")
 @Tag(name = "KoiSpecies", description = "Koi Species APIs")
-public class KoiSpeciesController extends AbstractController<KoiSpeciesEntity, UUID, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto, KoiSpeciesDto> {
+public class KoiSpeciesController extends AbstractController<KoiSpecies, UUID, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto, KoiSpeciesDto> {
     private final KoiSpeciesService koiSpeciesService;
 
     public KoiSpeciesController(KoiSpeciesService koiSpeciesService) {

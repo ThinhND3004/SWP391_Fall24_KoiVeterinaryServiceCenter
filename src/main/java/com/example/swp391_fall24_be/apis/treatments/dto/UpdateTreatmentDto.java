@@ -1,22 +1,22 @@
 package com.example.swp391_fall24_be.apis.treatments.dto;
 
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.entities.KoiFishEntity;
-import com.example.swp391_fall24_be.entities.PondEntity;
-import com.example.swp391_fall24_be.entities.TreatmentEntity;
+import com.example.swp391_fall24_be.apis.koifishes.KoiFish;
+import com.example.swp391_fall24_be.apis.ponds.Pond;
+import com.example.swp391_fall24_be.apis.treatments.Treatment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
-public class UpdateTreatmentDto implements IDto<TreatmentEntity> {
+public class UpdateTreatmentDto implements IDto<Treatment> {
     @NotBlank(message = "Fish is required!")
     @JsonProperty("fishID")
-    private KoiFishEntity fishID;
+    private KoiFish fishID;
 
     @NotBlank(message = "Pond is required!")
     @JsonProperty("pondID")
-    private PondEntity pondID;
+    private Pond pondID;
 
     @NotBlank(message = "Prescription is required!")
     @JsonProperty("prescriptionID")
@@ -31,8 +31,8 @@ public class UpdateTreatmentDto implements IDto<TreatmentEntity> {
     private String notes;
 
     @Override
-    public TreatmentEntity toEntity() {
-        TreatmentEntity treatment = new TreatmentEntity();
+    public Treatment toEntity() {
+        Treatment treatment = new Treatment();
         treatment.setFishID(fishID);
         treatment.setPondID(pondID);
         treatment.setPrescriptionID(prescriptionID);

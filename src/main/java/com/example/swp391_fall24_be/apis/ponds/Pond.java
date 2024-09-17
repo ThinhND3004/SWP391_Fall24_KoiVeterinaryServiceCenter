@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.ponds;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.apis.ponds.dto.PondDto;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class PondEntity implements IObject<PondDto> {
+public class Pond implements IObject<PondDto> {
     @Id
     private UUID id;
 

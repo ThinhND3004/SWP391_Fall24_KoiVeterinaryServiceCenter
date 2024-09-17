@@ -2,8 +2,8 @@ package com.example.swp391_fall24_be.apis.koifishes.dto;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.entities.KoiFishEntity;
-import com.example.swp391_fall24_be.entities.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.koifishes.KoiFish;
+import com.example.swp391_fall24_be.apis.koispecies.KoiSpecies;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,14 +11,14 @@ import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
-public class CreateKoiFishDto implements IDto<KoiFishEntity> {
+public class CreateKoiFishDto implements IDto<KoiFish> {
     @JsonProperty("customer_id")
     @NotBlank(message = "customerID is required")
     private Account customerID;
 
     @JsonProperty("species_id")
     @NotBlank(message = "speciesID is required")
-    private KoiSpeciesEntity speciesID;
+    private KoiSpecies speciesID;
 
     @JsonProperty("name")
     @NotBlank(message = "name is required")
@@ -43,8 +43,8 @@ public class CreateKoiFishDto implements IDto<KoiFishEntity> {
     private int ageYears;
 
     @Override
-    public KoiFishEntity toEntity() {
-        KoiFishEntity entity = new KoiFishEntity();
+    public KoiFish toEntity() {
+        KoiFish entity = new KoiFish();
         entity.setCustomerID(customerID);
         entity.setSpeciesID(speciesID);
         entity.setName(name);

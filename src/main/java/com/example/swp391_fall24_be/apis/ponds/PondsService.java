@@ -5,13 +5,12 @@ import com.example.swp391_fall24_be.apis.ponds.dto.PaginatePondDto;
 import com.example.swp391_fall24_be.apis.ponds.dto.UpdatePondDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
-import com.example.swp391_fall24_be.entities.PondEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class PondsService extends AbstractService<PondEntity, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto> {
+public class PondsService extends AbstractService<Pond, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto> {
     private final PondsRepository pondsRepository;
 
     public PondsService(PondsRepository pondsRepository) {
@@ -20,17 +19,17 @@ public class PondsService extends AbstractService<PondEntity, UUID, CreatePondDt
 
 
     @Override
-    protected void beforeCreate(PondEntity entity) throws ProjectException {
+    protected void beforeCreate(Pond entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(PondEntity oldEntity, PondEntity newEntity) throws ProjectException {
+    protected void beforeUpdate(Pond oldEntity, Pond newEntity) throws ProjectException {
 
     }
 
     @Override
-    public PondEntity delete(UUID id) throws ProjectException {
+    public Pond delete(UUID id) throws ProjectException {
         return null;
     }
 }

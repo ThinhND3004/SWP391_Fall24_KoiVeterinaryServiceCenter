@@ -1,7 +1,7 @@
 package com.example.swp391_fall24_be.apis.koifishes.dto;
 
 import com.example.swp391_fall24_be.apis.accounts.Account;
-import com.example.swp391_fall24_be.entities.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.koispecies.KoiSpecies;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class KoiFishDto {
     private Account customerID;
-    private KoiSpeciesEntity speciesID;
+    private KoiSpecies speciesID;
     private String name;
     private String color;
     private float length;
