@@ -1,10 +1,9 @@
 package com.example.swp391_fall24_be.apis.prescription;
 
 import com.example.swp391_fall24_be.apis.prescription.dtos.PrescriptionDto;
-import com.example.swp391_fall24_be.core.IDto;
 import com.example.swp391_fall24_be.core.IObject;
 import com.example.swp391_fall24_be.entities.MedicineEntity;
-import com.example.swp391_fall24_be.entities.ShippingEntity;
+import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

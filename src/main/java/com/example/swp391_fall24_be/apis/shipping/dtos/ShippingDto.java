@@ -1,10 +1,9 @@
 package com.example.swp391_fall24_be.apis.shipping.dtos;
 
-import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.entities.ShippingEntity;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-
+@Data
 public class ShippingDto{
     private String vehicle;
 

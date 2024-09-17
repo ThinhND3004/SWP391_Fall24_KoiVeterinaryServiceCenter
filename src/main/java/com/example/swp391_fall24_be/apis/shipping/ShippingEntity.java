@@ -1,5 +1,7 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.shipping;
 
+import com.example.swp391_fall24_be.apis.shipping.dtos.ShippingDto;
+import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,7 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NotBlank
-public class ShippingEntity {
+public class ShippingEntity implements IObject<ShippingDto> {
     @Id
     private UUID id;
 
@@ -33,4 +35,15 @@ public class ShippingEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Override
+    public ShippingDto toResponseDto() {
+        ShippingDto dto = new ShippingDto();
+        dto.setVehicle(vehicle);
+        dto.setUpdateAt(updatedAt);
+        dto.setCreateAt(createdAt);
+        dto.setPricePerMeters(pricePerMeters);
+        return dto;
+    }
+
 }

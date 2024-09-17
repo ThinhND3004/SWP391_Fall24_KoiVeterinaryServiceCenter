@@ -3,7 +3,7 @@ package com.example.swp391_fall24_be.apis.prescription.dtos;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.example.swp391_fall24_be.entities.MedicineEntity;
-import com.example.swp391_fall24_be.entities.ShippingEntity;
+import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
