@@ -1,8 +1,7 @@
-package com.example.swp391_fall24_be.entities;
+package com.example.swp391_fall24_be.apis.medicine;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "medicines")
@@ -35,4 +35,12 @@ public class MedicineEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "medicine_prescription",
+            joinColumns = @JoinColumn(name = "medicine_id"),
+            inverseJoinColumns = @JoinColumn(name = "prescription_id")
+    )
+    private Set<PrescriptionEntity> prescriptionEntities;
 }

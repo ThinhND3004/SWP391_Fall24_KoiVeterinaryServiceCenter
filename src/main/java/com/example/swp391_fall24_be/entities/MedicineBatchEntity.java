@@ -1,7 +1,7 @@
 package com.example.swp391_fall24_be.entities;
 
+import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

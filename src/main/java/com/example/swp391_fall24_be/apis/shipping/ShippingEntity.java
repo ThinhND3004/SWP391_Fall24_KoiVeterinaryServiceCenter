@@ -1,10 +1,9 @@
 package com.example.swp391_fall24_be.apis.shipping;
 
 import com.example.swp391_fall24_be.apis.shipping.dtos.ShippingDto;
+import com.example.swp391_fall24_be.apis.vehicle.VehicleEntity;
 import com.example.swp391_fall24_be.core.IObject;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +23,6 @@ public class ShippingEntity implements IObject<ShippingDto> {
     @Id
     private UUID id;
 
-    @Column(name = "vehicle")
-    private String vehicle;
-
     @Column(name = "price_per_meters")
     private float pricePerMeters;
 
@@ -35,6 +31,10 @@ public class ShippingEntity implements IObject<ShippingDto> {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private VehicleEntity vehicle;
 
     @Override
     public ShippingDto toResponseDto() {
