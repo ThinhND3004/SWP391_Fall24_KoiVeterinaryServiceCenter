@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface AccountsRepository extends JpaRepository<Account, String> {
     Optional<Account> findByEmail(String email);
     Optional<Account> findByPhone(String phone);
