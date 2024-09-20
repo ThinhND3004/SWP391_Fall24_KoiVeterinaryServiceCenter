@@ -33,13 +33,13 @@ public class ReportEntity implements IObject<ReportDto> {
     @OneToOne
     private PrescriptionEntity prescription;
 
-    @Column(name = "diagnosis")
+    @Column(name = "diagnosis", columnDefinition = "VARCHAR(100)")
     private String diagnosis;
 
-    @Column(name = "notes")
+    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "DATETIME")
     @CreatedDate
     private LocalDateTime createdAt;
 

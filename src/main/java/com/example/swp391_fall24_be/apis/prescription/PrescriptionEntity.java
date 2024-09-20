@@ -35,10 +35,10 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @JoinColumn(name = "shipping_id", nullable = false)
     private ShippingEntity shippingID;
 
-    @Column(name = "total_price",nullable = false)
+    @Column(name = "total_price",nullable = false, columnDefinition = "FLOAT")
     private float totalPrice;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME")
     @CreatedDate
     private LocalDateTime createdAt;
 

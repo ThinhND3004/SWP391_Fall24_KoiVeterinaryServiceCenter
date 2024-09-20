@@ -25,14 +25,14 @@ public class ShippingEntity implements IObject<ShippingDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "price_per_meters", nullable = false)
+    @Column(name = "price_per_meters", nullable = false, columnDefinition = "FLOAT")
     private float pricePerMeters;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME")
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", columnDefinition = "DATETIME")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 

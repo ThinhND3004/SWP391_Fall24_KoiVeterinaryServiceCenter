@@ -28,14 +28,14 @@ public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
     @JoinColumn(name = "medicine_id")
     private MedicineEntity medicine;
 
-    @Column(name = "quantity")
+    @Column(nullable = false, name = "quantity", columnDefinition = "INT")
     private int quantity;
 
-    @Column(name = "received_at")
+    @Column(nullable = false, name = "received_at", columnDefinition = "DATETIME")
     @CreatedDate
     private LocalDateTime receivedAt;
 
-    @Column(name = "expiration_date")
+    @Column(nullable = false, name = "expiration_date", columnDefinition = "DATE")
     private LocalDate expirationDate;
 
     @Override
