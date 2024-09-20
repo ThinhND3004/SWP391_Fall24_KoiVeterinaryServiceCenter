@@ -28,6 +28,7 @@ public class SercurityConfig {
 //
 //         return httpSecurity.build();
 
+//        Không phải bị lỗi nha ae, chỉ là cú pháp này sắp hết date thôi :)))
         return httpSecurity.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
