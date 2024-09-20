@@ -15,7 +15,7 @@ import java.util.UUID;
 @Tag(name = "Medicines", description = "Medicine APIs")
 public class MedicineController extends AbstractController<
         MedicineEntity,
-        UUID,
+        String,
         CreateMedicineDto,
         UpdateMedicineDto,
         PaginateMedicineDto,

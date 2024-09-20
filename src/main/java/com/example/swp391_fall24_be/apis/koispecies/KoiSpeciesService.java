@@ -7,10 +7,8 @@ import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
-public class KoiSpeciesService extends AbstractService<KoiSpecies, UUID, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto> {
+public class KoiSpeciesService extends AbstractService<KoiSpeciesEntity, String, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto> {
     private final KoiSpeciesRepository koiSpeciesRepository;
 
     public KoiSpeciesService(KoiSpeciesRepository koiSpeciesRepository) {
@@ -19,17 +17,17 @@ public class KoiSpeciesService extends AbstractService<KoiSpecies, UUID, CreateK
 
 
     @Override
-    protected void beforeCreate(KoiSpecies entity) throws ProjectException {
+    protected void beforeCreate(KoiSpeciesEntity entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(KoiSpecies oldEntity, KoiSpecies newEntity) throws ProjectException {
+    protected void beforeUpdate(KoiSpeciesEntity oldEntity, KoiSpeciesEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public KoiSpecies delete(UUID id) throws ProjectException {
+    public KoiSpeciesEntity delete(String id) throws ProjectException {
         return null;
     }
 }

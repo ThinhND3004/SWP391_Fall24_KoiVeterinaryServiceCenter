@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -21,7 +22,8 @@ import java.util.UUID;
 @Setter
 public class MedicineEntity implements IObject<MedicineDto> {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -36,6 +38,7 @@ public class MedicineEntity implements IObject<MedicineDto> {
     private float price;
 
     @Column(name = "created_at")
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @ManyToMany

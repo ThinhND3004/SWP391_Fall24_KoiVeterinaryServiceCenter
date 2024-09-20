@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class PrescriptionService extends AbstractService<
         PrescriptionEntity,
-        UUID,
+        String,
         CreatePrescriptionDto,
         UpdatePrescriptionDto,
         PaginatePrescriptionDto
@@ -27,7 +27,7 @@ public class PrescriptionService extends AbstractService<
     }
 
     @Override
-    public PrescriptionEntity delete(UUID id) throws ProjectException {
+    public PrescriptionEntity delete(String id) throws ProjectException {
         return null;
     }
 }

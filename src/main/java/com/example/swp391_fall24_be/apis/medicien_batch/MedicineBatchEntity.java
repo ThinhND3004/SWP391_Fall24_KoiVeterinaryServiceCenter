@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,16 +21,18 @@ import java.util.UUID;
 @Setter
 public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "medicine_id")
-    private MedicineEntity medicineID;
+    private MedicineEntity medicine;
 
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "received_at")
+    @CreatedDate
     private LocalDateTime receivedAt;
 
     @Column(name = "expiration_date")
@@ -38,7 +41,7 @@ public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
     @Override
     public MedicienBatchDto toResponseDto() {
         MedicienBatchDto dto = new MedicienBatchDto();
-        dto.setMedicineEntity(medicineID);
+        dto.setMedicineEntity(medicine);
         dto.setQuantity(quantity);
         dto.setExpirationDate(expirationDate);
         dto.setReceivedAt(receivedAt);

@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/accounts")
 @Tag(name = "Accounts", description = "Account APIs")
-public class AccountsController extends AbstractController<Account, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto, AccountDto> {
+public class AccountsController extends AbstractController<AccountEntity, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto, AccountDto> {
 
 }

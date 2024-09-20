@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/ponds")
 @Tag(name = "Ponds", description = "Pond APIs")
-public class PondsController extends AbstractController<Pond, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto, PondDto> {
+public class PondsController extends AbstractController<PondEntity, String, CreatePondDto, UpdatePondDto, PaginatePondDto, PondDto> {
     private final PondsService pondsService;
 
     public PondsController(PondsService pondsService) {
@@ -29,7 +29,7 @@ public class PondsController extends AbstractController<Pond, UUID, CreatePondDt
     }
 
     @Override
-    public ResponseDto<PondDto> doGet(UUID id) {
+    public ResponseDto<PondDto> doGet(String id) {
         return super.doGet(id);
     }
 
@@ -39,12 +39,12 @@ public class PondsController extends AbstractController<Pond, UUID, CreatePondDt
     }
 
     @Override
-    public ResponseDto<PondDto> doPut(UUID id, UpdatePondDto dto) {
+    public ResponseDto<PondDto> doPut(String id, UpdatePondDto dto) {
         return super.doPut(id, dto);
     }
 
     @Override
-    public ResponseDto<PondDto> doDelete(UUID id) {
+    public ResponseDto<PondDto> doDelete(String id) {
         return super.doDelete(id);
     }
 }

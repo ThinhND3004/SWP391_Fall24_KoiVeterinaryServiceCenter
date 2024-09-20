@@ -9,24 +9,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationsService extends AbstractService<
-        Notification,
+        NotificationEntity,
         Long,
         CreateNotificationDto,
         UpdateNotificationDto,
         PaginateNotificationDto
         > {
     @Override
-    protected void beforeCreate(Notification entity) throws ProjectException {
+    protected void beforeCreate(NotificationEntity entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(Notification oldEntity, Notification newEntity) throws ProjectException {
+    protected void beforeUpdate(NotificationEntity oldEntity, NotificationEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public Notification delete(Long id) throws ProjectException {
+    public NotificationEntity delete(Long id) throws ProjectException {
         return null;
     }
 }

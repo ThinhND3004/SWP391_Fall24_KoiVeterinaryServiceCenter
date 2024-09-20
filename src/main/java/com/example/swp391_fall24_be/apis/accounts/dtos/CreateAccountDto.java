@@ -1,13 +1,13 @@
 package com.example.swp391_fall24_be.apis.accounts.dtos;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
-public class CreateAccountDto implements IDto<Account> {
+public class CreateAccountDto implements IDto<AccountEntity> {
     @NotBlank(message = "Email is required!")
     @Email(message = "Wrong email format!")
     @Size(max = 100, message = "Length of email must not exceed 100 letters!")
@@ -48,8 +48,8 @@ public class CreateAccountDto implements IDto<Account> {
     private AccountRoleEnum role;
 
     @Override
-    public Account toEntity() {
-        Account account = new Account();
+    public AccountEntity toEntity() {
+        AccountEntity account = new AccountEntity();
         account.setEmail(email);
         account.setPassword(password);
         account.setFirstName(firstName);

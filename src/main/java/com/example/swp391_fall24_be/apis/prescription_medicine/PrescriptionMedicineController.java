@@ -16,7 +16,7 @@ import java.util.UUID;
 @Tag(name = "Prescription Medicine", description = "Save the amount of each medicine in prescription.")
 public class PrescriptionMedicineController extends AbstractController<
         PrescriptionMedicine,
-        UUID,
+        Long,
         CreatePrescriptionMedicineDto,
         UpdatePrescriptionMedicineDto,
         PaginatePrescriptionMedicineDto,

@@ -1,8 +1,8 @@
 package com.example.swp391_fall24_be.apis.ponds.dto;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.apis.ponds.Pond;
+import com.example.swp391_fall24_be.apis.ponds.PondEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,10 +10,10 @@ import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
-public class CreatePondDto implements IDto<Pond> {
+public class CreatePondDto implements IDto<PondEntity> {
     @NotBlank(message = "Customer is required!")
     @JsonProperty("customer_id")
-    private Account customerID;
+    private AccountEntity customerID;
 
     @NotBlank(message = "Name is required!")
     @Size(max = 50, message = "Length of name must not exceed 50 letters!")
@@ -52,8 +52,8 @@ public class CreatePondDto implements IDto<Pond> {
     private LocalDateTime lastMaintenanceDate;
 
     @Override
-    public Pond toEntity() {
-        Pond entity = new Pond();
+    public PondEntity toEntity() {
+        PondEntity entity = new PondEntity();
         entity.setCustomerID(customerID);
         entity.setName(name);
         entity.setLocation(location);

@@ -11,24 +11,24 @@ import java.util.UUID;
 
 @Service
 public class ImagesService extends AbstractService<
-        Image,
-        UUID,
+        ImageEntity,
+        String,
         CreateImageDto,
         UpdateImageDto,
         PaginateImageDto
         > {
     @Override
-    protected void beforeCreate(Image entity) throws ProjectException {
+    protected void beforeCreate(ImageEntity entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(Image oldEntity, Image newEntity) throws ProjectException {
+    protected void beforeUpdate(ImageEntity oldEntity, ImageEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public Image delete(UUID id) throws ProjectException {
+    public ImageEntity delete(String id) throws ProjectException {
         return null;
     }
 }

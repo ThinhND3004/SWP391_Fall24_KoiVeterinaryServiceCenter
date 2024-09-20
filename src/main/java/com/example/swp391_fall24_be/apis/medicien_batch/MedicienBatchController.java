@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.medicien_batch;
 
-import com.example.swp391_fall24_be.apis.medicien_batch.dtos.CreateMedicienBatchDto;
+import com.example.swp391_fall24_be.apis.medicien_batch.dtos.CreateMedicineBatchDto;
 import com.example.swp391_fall24_be.apis.medicien_batch.dtos.MedicienBatchDto;
 import com.example.swp391_fall24_be.apis.medicien_batch.dtos.PaginateMedicineBatchDto;
 import com.example.swp391_fall24_be.apis.medicien_batch.dtos.UpdateMedicineBatchDto;
@@ -15,8 +15,8 @@ import java.util.UUID;
 @Tag(name = "Medicien_batches", description = "Medicien_batch APIs")
 public class MedicienBatchController extends AbstractController<
         MedicineBatchEntity,
-        UUID,
-        CreateMedicienBatchDto,
+        String,
+        CreateMedicineBatchDto,
         UpdateMedicineBatchDto,
         PaginateMedicineBatchDto,
         MedicienBatchDto

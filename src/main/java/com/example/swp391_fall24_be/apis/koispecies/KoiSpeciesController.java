@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/koi_species")
 @Tag(name = "KoiSpecies", description = "Koi Species APIs")
-public class KoiSpeciesController extends AbstractController<KoiSpecies, UUID, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto, KoiSpeciesDto> {
+public class KoiSpeciesController extends AbstractController<KoiSpeciesEntity, String, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto, KoiSpeciesDto> {
     private final KoiSpeciesService koiSpeciesService;
 
     public KoiSpeciesController(KoiSpeciesService koiSpeciesService) {
@@ -29,7 +28,7 @@ public class KoiSpeciesController extends AbstractController<KoiSpecies, UUID, C
     }
 
     @Override
-    public ResponseDto<KoiSpeciesDto> doGet(UUID id) {
+    public ResponseDto<KoiSpeciesDto> doGet(String id) {
         return super.doGet(id);
     }
 
@@ -39,12 +38,12 @@ public class KoiSpeciesController extends AbstractController<KoiSpecies, UUID, C
     }
 
     @Override
-    public ResponseDto<KoiSpeciesDto> doPut(UUID id, UpdateKoiSpeciesDto dto) {
+    public ResponseDto<KoiSpeciesDto> doPut(String id, UpdateKoiSpeciesDto dto) {
         return super.doPut(id, dto);
     }
 
     @Override
-    public ResponseDto<KoiSpeciesDto> doDelete(UUID id) {
+    public ResponseDto<KoiSpeciesDto> doDelete(String id) {
         return super.doDelete(id);
     }
 }

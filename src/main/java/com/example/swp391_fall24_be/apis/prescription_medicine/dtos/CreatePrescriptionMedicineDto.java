@@ -13,11 +13,11 @@ import java.util.UUID;
 public class CreatePrescriptionMedicineDto implements IDto<PrescriptionMedicine> {
     @NotBlank(message = "Prescription Id must not be blank")
     @JsonProperty("prescriptionId")
-    private UUID prescriptionId;
+    private String prescriptionId;
 
     @NotBlank(message = "Prescription Id must not be blank")
     @JsonProperty("medicineId")
-    private UUID medicineId;
+    private String medicineId;
 
     @Range(min = 1, message = "Amount must bigger than 0!")
     @JsonProperty("amount")

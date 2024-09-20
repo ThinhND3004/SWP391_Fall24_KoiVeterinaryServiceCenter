@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountsService extends AbstractService<Account, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto> {
+public class AccountsService extends AbstractService<AccountEntity, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto> {
     @Autowired
     private CryptoUtils cryptoUtils;
     @Autowired
     private AccountsRepository accountsRepository;
 
     @Override
-    protected void beforeCreate(Account account) throws ProjectException {
+    protected void beforeCreate(AccountEntity account) throws ProjectException {
         List<ErrorReport> errorList = new ArrayList<>();
 
-        Optional<Account> findEmailResult = accountsRepository.findByEmail(account.getEmail());
+        Optional<AccountEntity> findEmailResult = accountsRepository.findByEmail(account.getEmail());
         if(findEmailResult.isPresent()){
             errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This email has been registered!"));
         }
 
-        Optional<Account> findPhoneResult = accountsRepository.findByPhone(account.getPhone());
+        Optional<AccountEntity> findPhoneResult = accountsRepository.findByPhone(account.getPhone());
         if(findPhoneResult.isPresent()){
             errorList.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This phone has been registered!"));
         }
@@ -46,12 +46,12 @@ public class AccountsService extends AbstractService<Account, String, CreateAcco
     }
 
     @Override
-    protected void beforeUpdate(Account oldEntity, Account newEntity) throws ProjectException {
+    protected void beforeUpdate(AccountEntity oldEntity, AccountEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public Account delete(String id) throws ProjectException {
+    public AccountEntity delete(String id) throws ProjectException {
         return null;
     }
 }

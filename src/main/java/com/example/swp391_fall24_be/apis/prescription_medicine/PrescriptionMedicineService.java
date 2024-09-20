@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 public class PrescriptionMedicineService extends AbstractService<
         PrescriptionMedicine,
-        UUID,
+        Long,
         CreatePrescriptionMedicineDto,
         UpdatePrescriptionMedicineDto,
         PaginatePrescriptionMedicineDto> {
@@ -28,7 +28,7 @@ public class PrescriptionMedicineService extends AbstractService<
     }
 
     @Override
-    public PrescriptionMedicine delete(UUID id) throws ProjectException {
+    public PrescriptionMedicine delete(Long id) throws ProjectException {
         return null;
     }
 }

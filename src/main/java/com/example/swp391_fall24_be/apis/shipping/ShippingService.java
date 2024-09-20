@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 public class ShippingService extends AbstractService<
         ShippingEntity,
-        UUID,
+        String,
         CreateShippingDto,
         UpdateShippingDto,
         PaginateShippingDto
@@ -28,7 +28,7 @@ public class ShippingService extends AbstractService<
     }
 
     @Override
-    public ShippingEntity delete(UUID id) throws ProjectException {
+    public ShippingEntity delete(String id) throws ProjectException {
         return null;
     }
 }
