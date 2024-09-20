@@ -25,19 +25,19 @@ public class MedicineEntity implements IObject<MedicineDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name")
+    @Column(nullable = false, name = "name", columnDefinition = "VARCHAR(20)")
     private String name;
 
-    @Column(name = "description")
+    @Column(nullable = false, name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "manufacturer")
+    @Column(nullable = false, name = "manufacturer", columnDefinition = "VARCHAR(50)")
     private String manufacturer;
 
-    @Column(name = "price")
+    @Column(nullable = false, name = "price", columnDefinition = "FLOAT")
     private float price;
 
-    @Column(name = "created_at")
+    @Column(nullable = false, name = "created_at", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
