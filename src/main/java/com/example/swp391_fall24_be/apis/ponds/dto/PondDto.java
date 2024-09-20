@@ -1,13 +1,13 @@
 package com.example.swp391_fall24_be.apis.ponds.dto;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
 public class PondDto {
-    private Account customerID;
+    private AccountEntity customerID;
     private String name;
     private String location;
     private float sizeSquareMeters;

@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.accounts.dtos;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
-public class UpdateAccountDto implements IDto<Account> {
+public class UpdateAccountDto implements IDto<AccountEntity> {
     @NotBlank(message = "First name is required!")
     @Max(value = 20, message = "Length of first name must not exceed 20 letters!")
     @JsonProperty("firstName")
@@ -32,8 +32,8 @@ public class UpdateAccountDto implements IDto<Account> {
     private String address;
 
     @Override
-    public Account toEntity() {
-        Account account = new Account();
+    public AccountEntity toEntity() {
+        AccountEntity account = new AccountEntity();
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setDob(dob);

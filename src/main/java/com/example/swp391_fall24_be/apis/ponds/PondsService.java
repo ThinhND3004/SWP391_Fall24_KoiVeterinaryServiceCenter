@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class PondsService extends AbstractService<Pond, UUID, CreatePondDto, UpdatePondDto, PaginatePondDto> {
+public class PondsService extends AbstractService<PondEntity, String, CreatePondDto, UpdatePondDto, PaginatePondDto> {
     private final PondsRepository pondsRepository;
 
     public PondsService(PondsRepository pondsRepository) {
@@ -19,17 +19,17 @@ public class PondsService extends AbstractService<Pond, UUID, CreatePondDto, Upd
 
 
     @Override
-    protected void beforeCreate(Pond entity) throws ProjectException {
+    protected void beforeCreate(PondEntity entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(Pond oldEntity, Pond newEntity) throws ProjectException {
+    protected void beforeUpdate(PondEntity oldEntity, PondEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public Pond delete(UUID id) throws ProjectException {
+    public PondEntity delete(String id) throws ProjectException {
         return null;
     }
 }

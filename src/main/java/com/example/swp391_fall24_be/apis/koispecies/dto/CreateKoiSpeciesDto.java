@@ -1,17 +1,12 @@
 package com.example.swp391_fall24_be.apis.koispecies.dto;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.apis.koispecies.KoiSpecies;
+import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class CreateKoiSpeciesDto implements IDto<KoiSpecies> {
-
-    @NotBlank(message = "customerID is required")
-    @JsonProperty("customer_id")
-    private Account customerID;
+public class CreateKoiSpeciesDto implements IDto<KoiSpeciesEntity> {
 
     @NotBlank(message = "name is required")
     @Size(max = 50, message = "name must not exceed 50 characters")
@@ -19,9 +14,8 @@ public class CreateKoiSpeciesDto implements IDto<KoiSpecies> {
     private String name;
 
     @Override
-    public KoiSpecies toEntity() {
-        KoiSpecies entity = new KoiSpecies();
-        entity.setCustomerID(customerID);
+    public KoiSpeciesEntity toEntity() {
+        KoiSpeciesEntity entity = new KoiSpeciesEntity();
         entity.setName(name);
         return entity;
     }

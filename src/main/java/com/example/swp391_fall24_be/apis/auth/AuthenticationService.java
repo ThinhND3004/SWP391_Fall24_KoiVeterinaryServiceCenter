@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.auth;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginDto;
@@ -20,7 +20,6 @@ import java.util.Collections;
 
 @Service
 public class AuthenticationService {
-
     private final AccountsRepository repository;
     private final JwtProvider jwtProvider;
     private final CryptoUtils cryptoService;
@@ -44,7 +43,7 @@ public class AuthenticationService {
         }
     }
 
-    private static AccountDto getAccountDto(Account account) {
+    private static AccountDto getAccountDto(AccountEntity account) {
         var dto = new AccountDto();
         dto.setEmail(account.getEmail());
         dto.setLastName(account.getLastName());
@@ -73,7 +72,7 @@ public class AuthenticationService {
                 var email = payload.getEmail();
                 var account = repository.findByEmail(email);
                 if (account.isEmpty()) {
-                    var user = new Account();
+                    var user = new AccountEntity();
                     user.setEmail(email);
                     var newAccount = repository.save(user);
                     return new AccountLoginResponseDto(jwtProvider.signToken(newAccount));
