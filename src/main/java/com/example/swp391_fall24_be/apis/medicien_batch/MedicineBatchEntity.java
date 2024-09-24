@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.medicien_batch;
 
-import com.example.swp391_fall24_be.apis.medicien_batch.dtos.MedicienBatchDto;
+import com.example.swp391_fall24_be.apis.medicien_batch.dtos.MedicineBatchDto;
 import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
@@ -12,14 +12,13 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity(name = "medicine_batches")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
+public class MedicineBatchEntity implements IObject<MedicineBatchDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -39,8 +38,8 @@ public class MedicineBatchEntity implements IObject<MedicienBatchDto> {
     private LocalDate expirationDate;
 
     @Override
-    public MedicienBatchDto toResponseDto() {
-        MedicienBatchDto dto = new MedicienBatchDto();
+    public MedicineBatchDto toResponseDto() {
+        MedicineBatchDto dto = new MedicineBatchDto();
         dto.setMedicineEntity(medicine);
         dto.setQuantity(quantity);
         dto.setExpirationDate(expirationDate);

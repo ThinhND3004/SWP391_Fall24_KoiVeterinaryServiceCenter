@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Getter
 @Setter
-public class MedicienBatchDto {
+public class MedicineBatchDto {
     private MedicineEntity medicineEntity;
 
     private int quantity;
