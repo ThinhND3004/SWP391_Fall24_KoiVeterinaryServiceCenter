@@ -37,12 +37,13 @@ public class CustomeJwtFilter extends OncePerRequestFilter {
 
             if(data != null)
             {
-                AccountRoleEnum role = gson.fromJson(String.valueOf(data), AccountRoleEnum.class);
+//                AccountRoleEnum role = gson.fromJson(String.valueOf(data), AccountRoleEnum.class);
+                AccountRoleEnum roleEnum = data.getRole();
 
-                System.out.println("Kiem tra : " + data + " - " + role.getRole());
+                System.out.println("Kiem tra : " + data + " - " + roleEnum.getRole());
 
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.getRole());
+                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleEnum.name());
                 authorityList.add(simpleGrantedAuthority);
 
 
