@@ -3,7 +3,9 @@ package com.example.swp391_fall24_be.apis.accounts;
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 
 @Entity(name = "accounts")
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Account implements IObject<AccountDto>{
@@ -58,19 +62,8 @@ public class Account implements IObject<AccountDto>{
     @Enumerated(EnumType.STRING)
     private AccountRoleEnum role;
 
-    public Account() {
-    }
-
-    public Account(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dob = dob;
-        this.phone = phone;
-        this.address = address;
-        this.isDisable = false;
-        this.role = role;
+    public Account(String id) {
+        this.id = id;
     }
 
     @Override

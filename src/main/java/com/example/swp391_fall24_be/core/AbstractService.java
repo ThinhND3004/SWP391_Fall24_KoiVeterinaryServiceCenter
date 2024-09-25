@@ -1,6 +1,5 @@
 package com.example.swp391_fall24_be.core;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,7 +14,7 @@ public abstract class AbstractService<
         UpdateDto extends IDto<EntityType>,
         PaginationDto extends AbstractPagination<EntityType>
 > implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
-    @Autowired
+//    @Autowired
     protected JpaRepository<EntityType, IdType> repository;
 
     protected abstract void beforeCreate(EntityType entity) throws ProjectException;
