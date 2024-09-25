@@ -5,6 +5,7 @@ import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.notifications.NotificationEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Entity(name = "accounts")
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
 @Getter
 @Setter
 public class AccountEntity implements IObject<AccountDto>{
@@ -83,6 +85,10 @@ public class AccountEntity implements IObject<AccountDto>{
         this.role = role;
     }
 
+    public AccountEntity(String id) {
+        this.id = id;
+    }
+
     @Override
     public AccountDto toResponseDto() {
         AccountDto dto = new AccountDto();
@@ -98,5 +104,4 @@ public class AccountEntity implements IObject<AccountDto>{
         dto.setDisable(isDisable);
         return dto;
     }
-
 }
