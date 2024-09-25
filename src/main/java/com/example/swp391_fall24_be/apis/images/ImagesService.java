@@ -42,7 +42,7 @@ public class ImagesService extends AbstractService<
         return null;
     }
 
-    @Value("${images.path}")
+    @Value("${local.path}")
     private String imagesPath;
 
     public ImageDto upload(MultipartFile multipartFile) throws ProjectException {
