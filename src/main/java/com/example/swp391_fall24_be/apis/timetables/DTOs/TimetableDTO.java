@@ -17,11 +17,6 @@ import java.time.LocalTime;
 public class TimetableDTO {
     private String id;
     private String veterinarianId;
-    private DayOfWeek dayOfWeek;
-    private TimetableStatusEnum timetableStatus;
-    private String description;         // Ghi chú về lịch trình
-    private int maxAppointments;        // Giới hạn số lượng buổi hẹn
-    private String location;            // Địa điểm làm việc
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDateTime createdAt;

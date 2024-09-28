@@ -1,6 +1,5 @@
 package com.example.swp391_fall24_be.apis.feedbacks.DTOs;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.apis.bookings.Booking;
 import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import com.example.swp391_fall24_be.core.IDto;

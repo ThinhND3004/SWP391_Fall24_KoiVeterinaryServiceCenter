@@ -1,13 +1,13 @@
 package com.example.swp391_fall24_be.apis.transactions;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity(name = "transaction_details")
@@ -17,8 +17,16 @@ import java.util.UUID;
 @Getter
 @Setter
 public class TransactionDetail {
-    private UUID id;
-    private Transaction transactionID;
+    @Id
+    private UUID id = UUID.randomUUID(); // Using UUID for unique identifier
+
+    @JoinColumn(name = "transaction_id")
+    @OneToOne // Change to ManyToOne if a transaction can have multiple details
+    private Transaction transaction;
+
+    @Enumerated(EnumType.STRING)
     private TransactionStageEnum transactionStage;
-    private float price;
+
+    @Column(nullable = false)
+    private BigDecimal price; // Changed to BigDecimal for precision
 }

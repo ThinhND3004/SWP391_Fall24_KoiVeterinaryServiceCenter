@@ -4,8 +4,8 @@ import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
 import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import com.example.swp391_fall24_be.apis.reports.Report;
-import com.example.swp391_fall24_be.apis.services.MeetingMethodEnum;
-import com.example.swp391_fall24_be.apis.services.Service;
+import com.example.swp391_fall24_be.apis.reports.ReportEntity;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -17,7 +17,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity(name = "bookings")
 @EntityListeners(AuditingEntityListener.class)
@@ -29,24 +28,24 @@ public class Booking implements IObject<BookingDTO> {
     @Id
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false, columnDefinition = "UNIQUEIDENTIFIER")
-    private UUID id;
+    @Column(name = "id", nullable = false)
+    private String id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
-    private AccountEntity customerId;
+    private AccountEntity customer;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "service_id", nullable = false)
-    private Service serviceId;
+    private ServiceEntity service;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "veterinarian_id", nullable = false)
-    private AccountEntity veterinarianId;
+    private AccountEntity veterian;
 
     @OneToOne(optional = true)
     @JoinColumn(name = "report_id")
-    private Report reportId;
+    private ReportEntity report;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "feedback_id")
@@ -94,10 +93,10 @@ public class Booking implements IObject<BookingDTO> {
     public BookingDTO toResponseDto() {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
-        bookingDTO.setCustomerId(customerId);
-        bookingDTO.setVeterinarianId(veterinarianId);
-        bookingDTO.setServiceId(serviceId);
-        bookingDTO.setReportId(reportId);
+        bookingDTO.setCustomer(customer);
+        bookingDTO.setVeterian(veterian);
+        bookingDTO.setService(service);
+        bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);
         bookingDTO.setDescription(description);
         bookingDTO.setTotalPrice(totalPrice);

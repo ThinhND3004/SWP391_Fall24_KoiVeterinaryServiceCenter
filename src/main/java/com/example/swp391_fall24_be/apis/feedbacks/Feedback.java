@@ -1,10 +1,9 @@
 package com.example.swp391_fall24_be.apis.feedbacks;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.bookings.Booking;
 import com.example.swp391_fall24_be.apis.feedbacks.DTOs.FeedbackDTO;
 import com.example.swp391_fall24_be.core.IObject;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,22 +26,16 @@ import java.util.UUID;
 @Setter
 public class Feedback implements IObject<FeedbackDTO> {
     @Id
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "id", nullable = false, columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @PrePersist
-    public void prePersist() {
-        this.id = UUID.randomUUID().toString();
-    }
 
     @OneToMany
     @JoinColumn(name = "booking_id", nullable = false)
-    private List<Booking> bookingIdList;
+    private List<Booking> bookingList;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Account customerId;
+    private AccountEntity customer;
 
     @Column(name = "rate", nullable = false, columnDefinition = "FLOAT")
     private Double starRating;
@@ -65,8 +58,8 @@ public class Feedback implements IObject<FeedbackDTO> {
     public FeedbackDTO toResponseDto() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setId(id);
-        feedbackDTO.setBookingIdList(bookingIdList);
-        feedbackDTO.setCustomerId(customerId);
+        feedbackDTO.setBookingList(bookingList);
+        feedbackDTO.setCustomer(customer);
         feedbackDTO.setStarRating(starRating);
         feedbackDTO.setComment(comment);
         feedbackDTO.setCreatedAt(createdAt);
