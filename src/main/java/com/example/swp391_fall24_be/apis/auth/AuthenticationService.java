@@ -4,6 +4,7 @@ import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
 import com.example.swp391_fall24_be.apis.auth.dto.AccountLoginDto;
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
@@ -71,9 +72,13 @@ public class AuthenticationService {
                 var payload = idToken.getPayload();
                 var email = payload.getEmail();
                 var account = repository.findByEmail(email);
+                var avatar = payload.getOrDefault("picture", "").toString();
                 if (account.isEmpty()) {
                     var user = new AccountEntity();
                     user.setEmail(email);
+                    var image = new ImageEntity();
+                    image.setLocalPath(avatar);
+                    user.setAvatar(image);
                     var newAccount = repository.save(user);
                     return new AccountLoginResponseDto(jwtProvider.signToken(newAccount));
                 }

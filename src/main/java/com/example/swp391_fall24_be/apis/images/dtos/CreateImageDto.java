@@ -4,7 +4,15 @@ import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateImageDto implements IDto<ImageEntity> {
     @NotBlank(message = "Name is required!")
     @Size(max = 50, message = "Length of email must not exceed 50 letters!")
