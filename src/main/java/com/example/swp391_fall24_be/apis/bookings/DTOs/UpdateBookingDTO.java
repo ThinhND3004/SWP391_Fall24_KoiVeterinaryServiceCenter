@@ -1,10 +1,7 @@
 package com.example.swp391_fall24_be.apis.bookings.DTOs;
 
-import com.example.swp391_fall24_be.apis.accounts.Account;
 import com.example.swp391_fall24_be.apis.bookings.Booking;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
-import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
-import com.example.swp391_fall24_be.apis.reports.Report;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
