@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class FeedbackService extends AbstractService<Feedback, UUID, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO> {
+public class FeedbackService extends AbstractService<Feedback, String, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO> {
     @Override
     protected void beforeCreate(Feedback entity) throws ProjectException {
 
@@ -22,7 +22,7 @@ public class FeedbackService extends AbstractService<Feedback, UUID, CreateFeedb
     }
 
     @Override
-    public Feedback delete(UUID id) throws ProjectException {
+    public Feedback delete(String id) throws ProjectException {
         return null;
     }
 }

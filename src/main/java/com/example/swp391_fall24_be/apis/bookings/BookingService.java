@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class BookingService extends AbstractService<Booking, UUID, CreateBookingDTO, UpdateBookingDTO, PaginateBookingDTO> {
+public class BookingService extends AbstractService<Booking, String, CreateBookingDTO, UpdateBookingDTO, PaginateBookingDTO> {
     @Override
     protected void beforeCreate(Booking entity) throws ProjectException {
         List<ErrorReport> errorReportList = new ArrayList<>();
@@ -57,7 +57,7 @@ public class BookingService extends AbstractService<Booking, UUID, CreateBooking
     }
 
     @Override
-    public Booking delete(UUID id) throws ProjectException {
+    public Booking delete(String id) throws ProjectException {
         return null;
     }
 }

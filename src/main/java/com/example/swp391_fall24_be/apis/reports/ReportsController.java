@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/treatments")
-@Tag(name = "Treatments", description = "Treatment APIs")
-public class ReportsController extends AbstractController<ReportEntity, UUID, CreateReportDto, UpdateReportDto, PaginateReportDto, ReportDto> {
+@RequestMapping("/reports")
+@Tag(name = "Reports", description = "Report APIs")
+public class ReportsController extends AbstractController<ReportEntity, String, CreateReportDto, UpdateReportDto, PaginateReportDto, ReportDto> {
     private final ReportsService treatmentsService;
 
     public ReportsController(ReportsService treatmentsService) {
@@ -29,7 +29,7 @@ public class ReportsController extends AbstractController<ReportEntity, UUID, Cr
     }
 
     @Override
-    public ResponseDto<ReportDto> doGet(UUID id) {
+    public ResponseDto<ReportDto> doGet(String id) {
         return super.doGet(id);
     }
 
@@ -39,12 +39,12 @@ public class ReportsController extends AbstractController<ReportEntity, UUID, Cr
     }
 
     @Override
-    public ResponseDto<ReportDto> doPut(UUID id, UpdateReportDto dto) {
+    public ResponseDto<ReportDto> doPut(String id, UpdateReportDto dto) {
         return super.doPut(id, dto);
     }
 
     @Override
-    public ResponseDto<ReportDto> doDelete(UUID id) {
+    public ResponseDto<ReportDto> doDelete(String id) {
         return super.doDelete(id);
     }
 }

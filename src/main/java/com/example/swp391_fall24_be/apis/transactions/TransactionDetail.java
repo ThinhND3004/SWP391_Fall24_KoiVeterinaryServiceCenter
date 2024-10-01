@@ -18,7 +18,8 @@ import java.util.UUID;
 @Setter
 public class TransactionDetail {
     @Id
-    private UUID id = UUID.randomUUID(); // Using UUID for unique identifier
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id; // Using UUID for unique identifier
 
     @JoinColumn(name = "transaction_id")
     @OneToOne // Change to ManyToOne if a transaction can have multiple details
