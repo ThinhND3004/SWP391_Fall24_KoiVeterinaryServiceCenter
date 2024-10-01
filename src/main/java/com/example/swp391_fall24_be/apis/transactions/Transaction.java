@@ -23,8 +23,8 @@ import java.time.LocalDateTime;
 @Setter
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Changed to Long
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id; // Changed to Long
 
     @JoinColumn(name = "customer_id") // Specify the foreign key column
     @OneToOne(optional = false)

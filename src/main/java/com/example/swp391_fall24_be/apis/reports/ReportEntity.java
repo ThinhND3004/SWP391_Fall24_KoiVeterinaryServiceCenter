@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @NotBlank
 public class ReportEntity implements IObject<ReportDto> {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne

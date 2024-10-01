@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface ReportsRepository extends JpaRepository<ReportEntity, UUID> {
+public interface ReportsRepository extends JpaRepository<ReportEntity, String> {
 
 }
