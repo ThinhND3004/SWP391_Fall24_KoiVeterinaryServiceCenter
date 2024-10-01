@@ -42,8 +42,8 @@ public class CreateServiceDto implements IDto<ServiceEntity> {
     @JsonProperty("travelPricePerMeter")
     private Float travelPricePerMeter;
 
-    @NotNull(message = "Travel price per meter is required!")
-    @JsonProperty("travelPricePerMeter")
+    @NotNull(message = "Estimated Time is required!")
+    @JsonProperty("estimatedTime")
     private LocalTime estimatedTime;
 
     @Override
