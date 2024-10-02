@@ -1,21 +1,20 @@
 package com.example.swp391_fall24_be.security;
 
-import com.example.swp391_fall24_be.security.filter.CustomeJwtFilter;
+import com.example.swp391_fall24_be.security.filter.CustomerFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SercurityConfig {
+public class SecurityConfig {
     @Autowired
-    private CustomeJwtFilter customeJwtFilter;
+    private CustomerFilter customerFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -34,16 +33,12 @@ public class SercurityConfig {
 //
 //         return httpSecurity.build();
 
-//        Không phải bị lỗi nha ae, chỉ là cú pháp này sắp hết date thôi :)))
-        return httpSecurity.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/**").permitAll()
-
-                .anyRequest().authenticated()
-                .and()
-                .build();
-
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sets session management policy to stateless
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**").permitAll() // Permits all requests to any path
+                        .anyRequest().authenticated()) // Requires authentication for any other requests
+                .build(); // Builds the security filter chain
     }
 }
