@@ -21,7 +21,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("customer@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "customer@example.com",
-                    "c1aedf950c73312b57283c0530ee50854116fa41205ad038cddac4bc396c6710", // password: customer
+                    "wa7flQxzMStXKDwFMO5QhUEW+kEgWtA4zdrEvDlsZxA=", // password: customer
                     "Customer",
                     "Customer",
                     LocalDate.of(1990, 5, 15),
@@ -35,7 +35,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("staff@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "staff@example.com",
-                    "46487a08e22469a06a34e01385af29466ebf909f762626960f696da7cf2f2d9b", // password: staff
+                    "Rkh6COIkaaBqNOATha8pRm6/kJ92JiaWD2ltp88vLZs=", // password: staff
                     "Staff",
                     "Staff",
                     LocalDate.of(1985, 11, 30),
@@ -49,7 +49,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("deliveryStaff@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "deliveryStaff@example.com",
-                    "4e80a251cd95ba71148d63f07f50f0f728d3435c4e424345a02e64908816921d", // password: delivery_staff
+                    "ToCiUc2VunEUjWPwf1Dw9yjTQ1xOQkNFoC5kkIgWkh0=", // password: delivery_staff
                     "Delivery Staff",
                     "Deliver Staff",
                     LocalDate.of(1985, 11, 30),
@@ -63,7 +63,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("admin@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "admin@example.com",
-                    "854100fd1c2039e98e76183b149d9b0918dc9c6091eab093b9aba2e5498ec7fa", // password: admin
+                    "hUEA/RwgOemOdhg7FJ2bCRjcnGCR6rCTuaui5UmOx/o=", // password: admin
                     "Admin",
                     "Admin",
                     LocalDate.of(1985, 11, 30),
@@ -77,7 +77,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("manager@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "manager@example.com",
-                    "17dccd4cb797f991f9b33384687745f1b262f0c09a2f022062f69c8b9926b9c3", // password: manager
+                    "F9zNTLeX+ZH5szOEaHdF8bJi8MCaLwIgYvaci5kmucM=", // password: manager
                     "Manager",
                     "Manager",
                     LocalDate.of(1985, 11, 30),
