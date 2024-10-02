@@ -6,11 +6,13 @@ import com.example.swp391_fall24_be.apis.images.dtos.PaginateImageDto;
 import com.example.swp391_fall24_be.apis.images.dtos.UpdateImageDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ProjectException;
+import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.annotation.MultipartConfig;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/images")
-@MultipartConfig(fileSizeThreshold = 20971520)
+@CrossOrigin
 @Tag(name = "Images", description = "Upload image")
 public class ImagesController extends AbstractController
         <ImageEntity,
@@ -33,25 +35,40 @@ public class ImagesController extends AbstractController
         ImageDto
         >{
 
-    private final ImagesService service;
+    protected ImagesService service;
 
     public ImagesController(ImagesService service) {
         this.service = service;
     }
 
-    @PostMapping("/upload")
     @ApiResponse(description = "Upload image", headers = {
-            @Header(name = "content-type", description = "application/multipart")
+            @Header(name = "content-type", description = "multipart/form-data")
     })
-    public ImageDto uploadImage(@RequestBody MultipartFile multipartFile) throws ProjectException {
-        return service.upload(multipartFile);
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseDto<ImageDto> uploadImage(@RequestBody MultipartFile multipartFile) throws ProjectException {
+        try {
+            return new ResponseDto<>(
+                    HttpStatus.OK,
+                    "Get one successfully!",
+                    service.upload(multipartFile),
+                    null
+            );
+        }
+        catch (Exception e){
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST,
+                    "Cannot upload image!",
+                    null,
+                    e.getMessage()
+            );
+        }
     }
 
     @ResponseBody
     @ApiResponse(description = "Get image", headers = {
             @Header(name = "content-type", description = "image/jpeg")
     })
-    @GetMapping(value = "/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
+    @GetMapping(value = "/get/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
     public byte[] getImage(@PathVariable String id) throws ProjectException {
         return service.getImage(id);
     }

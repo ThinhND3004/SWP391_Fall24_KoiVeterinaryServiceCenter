@@ -50,6 +50,6 @@ public class ImageEntity implements IObject<ImageDto> {
         dto.setLocalPath(localPath);
         dto.setUpdatedAt(updateAt);
         dto.setCreatedAt(createdAt);
-        return null;
+        return dto;
     }
 }

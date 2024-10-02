@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Service
 public class ImagesService extends AbstractService<
@@ -39,28 +37,61 @@ public class ImagesService extends AbstractService<
 
     @Override
     public ImageEntity delete(String id) throws ProjectException {
-        return null;
+        var image = findById(id);
+        String filePath = image.getLocalPath();
+        if (filePath != null) {
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+
+        repository.delete(image);
+        return image;
     }
 
     @Value("${local.path}")
     private String imagesPath;
 
     public ImageDto upload(MultipartFile multipartFile) throws ProjectException {
-        ImageEntity image = create(new CreateImageDto());
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new ProjectException(
+                    new ErrorReport(
+                            "ImagesService_upload",
+                            ErrorEnum.ValidationError,
+                            "File is null"
+                    )
+            );
+        }
 
+        File folder = new File(imagesPath);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        ImageEntity image = create(new CreateImageDto());
         String fileName = image.getId();
         String fileExtension = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        String filePath = imagesPath + fileName + fileExtension;
-
         try {
-            multipartFile.transferTo(new File(filePath));
-            image.setName(multipartFile.getOriginalFilename());
-            image.setLocalPath(filePath);
+            File file = new File(folder, fileName + fileExtension);
+            Logger.getAnonymousLogger().info(file.getAbsolutePath()); //keep it for debugging
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            multipartFile.transferTo(file.getAbsoluteFile());
+            image.setLocalPath(file.getPath());
+            repository.save(image);
         } catch (Exception e) {
-            e.printStackTrace();
-            return image.toResponseDto();
+            delete(image.getId());
+            throw new ProjectException(
+                    new ErrorReport(
+                            "ImagesService_upload",
+                            ErrorEnum.ValidationError,
+                            e.getMessage()
+                    )
+            );
         }
-        return null;
+        return image.toResponseDto();
     }
 
     public byte[] getImage(String id) throws ProjectException {
@@ -80,9 +111,10 @@ public class ImagesService extends AbstractService<
     }
 
     private byte[] convertFileToByteArray(File file) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(file);
-        WritableRaster raster = bufferedImage.getRaster();
-        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-        return data.getData();
+        byte[] fileContent = new byte[(int) file.length()];
+        FileInputStream fileInputStream = new FileInputStream(file);
+        fileInputStream.read(fileContent);
+        fileInputStream.close();
+        return fileContent;
     }
 }
