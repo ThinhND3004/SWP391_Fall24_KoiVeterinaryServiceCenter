@@ -43,7 +43,7 @@ public class UpdateServiceDto implements IDto<ServiceEntity> {
     private Float travelPricePerMeter;
 
     @NotNull(message = "Travel price per meter is required!")
-    @JsonProperty("travelPricePerMeter")
+    @JsonProperty("estimatedTime")
     private LocalTime estimatedTime;
 
     @Override

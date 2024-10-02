@@ -5,7 +5,9 @@ import com.example.swp391_fall24_be.apis.services.dtos.PaginateServiceDto;
 import com.example.swp391_fall24_be.apis.services.dtos.UpdateServiceDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServicesService extends AbstractService<
         ServiceEntity,
         String,

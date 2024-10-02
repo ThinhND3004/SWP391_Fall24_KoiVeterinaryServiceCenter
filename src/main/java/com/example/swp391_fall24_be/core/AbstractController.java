@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.core;
 
+import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +22,7 @@ public abstract class AbstractController<
         PaginationDto extends AbstractPagination<EntityType>,
         ResponseType
 > implements IController<EntityType, IdType, CreateDto, UpdateDto, PaginationDto, ResponseType> {
-//    @Autowired
+    @Autowired
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
     @Operation(summary = "Get many with filter")

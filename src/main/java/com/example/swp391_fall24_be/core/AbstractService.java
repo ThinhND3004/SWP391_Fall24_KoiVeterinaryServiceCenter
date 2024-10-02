@@ -15,7 +15,7 @@ public abstract class AbstractService<
         UpdateDto extends IDto<EntityType>,
         PaginationDto extends AbstractPagination<EntityType>
 > implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
-//    @Autowired
+    @Autowired
     protected JpaRepository<EntityType, IdType> repository;
 
     protected abstract void beforeCreate(EntityType entity) throws ProjectException;

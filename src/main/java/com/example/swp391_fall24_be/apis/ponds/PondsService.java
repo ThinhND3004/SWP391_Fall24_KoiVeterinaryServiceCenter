@@ -5,12 +5,14 @@ import com.example.swp391_fall24_be.apis.ponds.dto.PaginatePondDto;
 import com.example.swp391_fall24_be.apis.ponds.dto.UpdatePondDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class PondsService extends AbstractService<PondEntity, String, CreatePondDto, UpdatePondDto, PaginatePondDto> {
+    @Autowired
     private final PondsRepository pondsRepository;
 
     public PondsService(PondsRepository pondsRepository) {

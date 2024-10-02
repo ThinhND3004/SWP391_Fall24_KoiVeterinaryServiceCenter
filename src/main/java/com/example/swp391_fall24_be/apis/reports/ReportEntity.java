@@ -1,10 +1,10 @@
 package com.example.swp391_fall24_be.apis.reports;
 
+import com.example.swp391_fall24_be.apis.bookings.Booking;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
 import com.example.swp391_fall24_be.core.IObject;
-import com.example.swp391_fall24_be.entities.BookingEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @NotBlank
 public class ReportEntity implements IObject<ReportDto> {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
@@ -44,7 +45,7 @@ public class ReportEntity implements IObject<ReportDto> {
     private LocalDateTime createdAt;
 
     @OneToOne
-    private BookingEntity booking;
+    private Booking booking;
 
     @Override
     public ReportDto toResponseDto() {
