@@ -3,11 +3,15 @@ package com.example.swp391_fall24_be.apis.timetables.DTOs;
 import lombok.Data;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
 
+@Data
+class TimetableTime {
+    public int hours;
+    public int minutes;
+}
 @Data
 public class RequestTimetableDto {
     private DayOfWeek dayOfWeek;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private TimetableTime startTime;
+    private TimetableTime endTime;
 }

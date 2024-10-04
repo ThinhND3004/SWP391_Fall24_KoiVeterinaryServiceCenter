@@ -4,6 +4,7 @@ import lombok.Data;
 
 public enum AccountRoleEnum {
     CUSTOMER("customer"),
+    VETERIAN("Veterian"),
     STAFF("staff"),
     DELIVERY_STAFF("delivery_staff"),
     ADMIN("admin"),
