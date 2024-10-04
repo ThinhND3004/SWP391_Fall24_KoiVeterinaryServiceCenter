@@ -28,9 +28,9 @@ public class AuthenticationController {
     public ResponseDto<AccountLoginResponseDto> login(@RequestBody AccountLoginDto loginDto) {
         try {
             AccountLoginResponseDto response = authenticationService.loginWithUsernameAndPassword(loginDto);
-            return new ResponseDto<>(HttpStatus.OK, "Login successfully!", response, null);
+            return new ResponseDto<>(HttpStatus.OK.value(), "Login successfully!", response, null);
         } catch (ProjectException e) {
-            return new ResponseDto<>(HttpStatus.BAD_REQUEST, "Cannot login!", null, e.getMessage());
+            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login!", null, e.getMessage());
         }
     }
 
@@ -41,10 +41,10 @@ public class AuthenticationController {
     public ResponseDto<AccountLoginResponseDto> loginWithGoogle(@RequestParam String credential) {
         try {
             AccountLoginResponseDto response = authenticationService.loginWithGoogle(credential);
-            return new ResponseDto<>(HttpStatus.OK, "Login with google successfully!", response, null);
+            return new ResponseDto<>(HttpStatus.OK.value(), "Login with google successfully!", response, null);
         } catch (ProjectException e) {
             System.out.println(e.getMessage());
-            return new ResponseDto<>(HttpStatus.BAD_REQUEST, "Cannot login with google!", null, e.getMessage());
+            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login with google!", null, e.getMessage());
         }
     }
 }

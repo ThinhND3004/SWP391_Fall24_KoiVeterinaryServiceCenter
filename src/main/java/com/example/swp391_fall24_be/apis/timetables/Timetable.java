@@ -37,6 +37,7 @@ public class Timetable implements IObject<TimetableDTO> {
     private AccountEntity veterian;
 
     @Column(name = "day_of_week", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
     @Column(name = "start_time", nullable = false)

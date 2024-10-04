@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Data
 public class ResponseDto<EntityType>{
-    public HttpStatus status;
+    public int status;
     public String message;
     public EntityType data;
     public String err;
@@ -13,7 +13,7 @@ public class ResponseDto<EntityType>{
     public ResponseDto() {
     }
 
-    public ResponseDto(HttpStatus status, String message, EntityType data, String err) {
+    public ResponseDto(int status, String message, EntityType data, String err) {
         this.status = status;
         this.message = message;
         this.data = data;

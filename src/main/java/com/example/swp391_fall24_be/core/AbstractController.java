@@ -35,7 +35,7 @@ public abstract class AbstractController<
                 responseData.add(entity.toResponseDto());
             }
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Get many successfully!",
                     responseData,
                     null
@@ -43,7 +43,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot get entities!",
                     null,
                     e.getMessage()
@@ -56,7 +56,7 @@ public abstract class AbstractController<
     public ResponseDto<ResponseType> doGet(@Parameter IdType id) {
         try {
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Get one successfully!",
                     service.findById(id).toResponseDto(),
                     null
@@ -64,7 +64,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot get one entity!",
                     null,
                     e.getMessage()
@@ -77,7 +77,7 @@ public abstract class AbstractController<
     public ResponseDto<ResponseType> doPost(@Valid @RequestBody CreateDto dto){
         try {
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Create successfully!",
                     service.create(dto).toResponseDto(),
                     null
@@ -85,7 +85,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot create entity!",
                     null,
                     e.getMessage()
@@ -97,7 +97,7 @@ public abstract class AbstractController<
     public ResponseDto<ResponseType> doPut(@Parameter IdType id, @RequestBody UpdateDto dto) {
         try {
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Update successfully!",
                     service.update(id,dto).toResponseDto(),
                     null
@@ -105,7 +105,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot update entity!",
                     null,
                     e.getMessage()
@@ -117,7 +117,7 @@ public abstract class AbstractController<
     public ResponseDto<ResponseType> doDelete(@Parameter IdType id) {
         try {
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Delete successfully!",
                     service.delete(id).toResponseDto(),
                     null
@@ -125,7 +125,7 @@ public abstract class AbstractController<
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot delete entity!",
                     null,
                     e.getMessage()
