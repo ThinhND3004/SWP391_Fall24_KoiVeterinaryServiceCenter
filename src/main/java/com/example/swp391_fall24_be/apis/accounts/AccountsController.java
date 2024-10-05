@@ -6,12 +6,14 @@ import com.example.swp391_fall24_be.apis.accounts.dtos.PaginateAccountDto;
 import com.example.swp391_fall24_be.apis.accounts.dtos.UpdateAccountDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/accounts")
 @Tag(name = "Accounts", description = "Account APIs")
+@CrossOrigin
 public class AccountsController extends AbstractController<AccountEntity, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto, AccountDto> {
 
 }
