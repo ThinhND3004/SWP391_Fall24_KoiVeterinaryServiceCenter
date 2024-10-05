@@ -30,6 +30,19 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
                     AccountRoleEnum.CUSTOMER
             ));
         }
+        // VETERIAN
+        if(accountsRepository.findByEmail("veterian@example.com").isEmpty()){
+            accountsRepository.save(new AccountEntity(
+                    "veterian@example.com",
+                    "4714292bf9b9f367105af36f408496a46987d9f3caf818a368e7b260fea0ad16", // password: veterian
+                    "Veterian",
+                    "Veterian",
+                    LocalDate.of(1990, 5, 15),
+                    "0121111111",
+                    "123 Elm St, Springfield",
+                    AccountRoleEnum.VETERIAN
+            ));
+        }
 
         // STAFF
         if(accountsRepository.findByEmail("staff@example.com").isEmpty()){

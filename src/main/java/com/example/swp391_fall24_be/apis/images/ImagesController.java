@@ -48,7 +48,7 @@ public class ImagesController extends AbstractController
     public ResponseDto<ImageDto> uploadImage(@RequestBody MultipartFile multipartFile) throws ProjectException {
         try {
             return new ResponseDto<>(
-                    HttpStatus.OK,
+                    HttpStatus.OK.value(),
                     "Get one successfully!",
                     service.upload(multipartFile),
                     null
@@ -56,7 +56,7 @@ public class ImagesController extends AbstractController
         }
         catch (Exception e){
             return new ResponseDto<>(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.value(),
                     "Cannot upload image!",
                     null,
                     e.getMessage()
