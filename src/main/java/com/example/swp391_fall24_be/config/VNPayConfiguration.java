@@ -1,6 +1,7 @@
 package com.example.swp391_fall24_be.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -11,14 +12,24 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class VNPayConfiguration {
-    public final static String vnp_Version = "2.1.0";
-    public final static String vnp_Command = "pay";
+    @Value("${payment.vnp_Version}")
+    public static String vnp_Version;
 
-    public final static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public final static String vnp_ReturnUrl = "http://localhost:8080/vnpay/return-url";
-    public final static String vnp_TmnCode = "MG093VEW";
-    public final static String secretKey = "FDF7LGN11KVF5LAROJUMYWW3VJY4D3Q6";
-    public final static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+    @Value("${payment.vnp_Command}")
+    public static String vnp_Command;
+
+    @Value("${payment.vnp_PayUrl}")
+    public static String vnp_PayUrl;
+
+    @Value("${payment.vnp_ReturnUrl}")
+    public static String vnp_ReturnUrl;
+
+    @Value("${payment.vnp_TmnCode}")
+    public static String vnp_TmnCode;
+
+    @Value("${payment.secretKey}")
+    public static String secretKey;
+    public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
         String digest = null;
