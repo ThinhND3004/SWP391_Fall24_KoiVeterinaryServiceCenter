@@ -25,7 +25,6 @@ public class CustomerFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProvider jwtProvider;
 
-    private Gson gson;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String headerAuthor = request.getHeader("Authorization");
