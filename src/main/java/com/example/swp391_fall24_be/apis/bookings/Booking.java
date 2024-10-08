@@ -12,7 +12,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ import java.time.LocalDateTime;
 @Setter
 public class Booking implements IObject<BookingDTO> {
     @Id
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private String id;
@@ -39,14 +37,14 @@ public class Booking implements IObject<BookingDTO> {
     private ServiceEntity service;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "veterinarian_id", nullable = false)
+    @JoinColumn(name = "veterian_id", nullable = false)
     private AccountEntity veterian;
 
-    @OneToOne(optional = true)
+    @OneToOne
     @JoinColumn(name = "report_id")
     private ReportEntity report;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "feedback_id")
     private Feedback feedbackId;
 
@@ -54,38 +52,37 @@ public class Booking implements IObject<BookingDTO> {
     @Size(max = 500)
     private String description;
 
-    @Column(name = "total_price", nullable = false, columnDefinition = "NVARCHAR(20)")
+    @Column(name = "service_price", nullable = false)
     @Min(0)
-    private float totalPrice;
+    private float servicePrice;
 
-    @Column(name = "destination", nullable = false, columnDefinition = "CHAR(10)")
+    @Column(name = "travel_price", nullable = false)
+    @Min(0)
+    private float travelPrice;
+
+    @Column(name = "destination", nullable = false, columnDefinition = "TEXT")
     @Size(max = 100)
     private String destination;
 
-    @Column(name = "meeting_method", nullable = false, columnDefinition = "CHAR(10)")
+    @Column(name = "meeting_method", nullable = false)
     @Enumerated(EnumType.STRING)
     private MeetingMethodEnum meetingMethodEnum;
 
-    @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(20)")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusEnum statusEnum;
 
-    @Column(name = "decline", nullable = false, columnDefinition = "BIT")
-    private boolean decline;
+    @Column(name = "is_decline", nullable = false, columnDefinition = "BIT")
+    private boolean isDecline;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
     @Column(name = "started_at",nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime startedAt;
 
-    @Column(name = "ended_at", nullable = false, columnDefinition = "DATETIME")
-    @LastModifiedDate
+    @Column(name = "ended_at", columnDefinition = "DATETIME")
     private LocalDateTime endedAt;
 
     @Override
@@ -98,7 +95,6 @@ public class Booking implements IObject<BookingDTO> {
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);
         bookingDTO.setDescription(description);
-        bookingDTO.setTotalPrice(totalPrice);
         bookingDTO.setDestination(destination);
         bookingDTO.setStatusEnum(statusEnum);
         bookingDTO.setCreatedAt(createdAt);

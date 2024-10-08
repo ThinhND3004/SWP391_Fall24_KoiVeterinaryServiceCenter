@@ -25,7 +25,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class Timetable implements IObject<TimetableDTO> {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

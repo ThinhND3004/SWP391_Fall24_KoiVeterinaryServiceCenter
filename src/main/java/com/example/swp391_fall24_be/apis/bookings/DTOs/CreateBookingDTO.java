@@ -1,11 +1,15 @@
 package com.example.swp391_fall24_be.apis.bookings.DTOs;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,37 +23,60 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class CreateBookingDTO implements IDto<Booking> {
+    @NotBlank(message = "Customer Id is required!")
+    private String customerId;
 
-    @NotBlank(message = "Description is required!")
-    @Size(max = 255, message = "Description length must be between 1 and 255 characters")
+    @NotBlank(message = "Veterian Id is required!")
+    private String veterianId;
+
+    @NotBlank(message = "Service Id is required!")
+    private String serviceId;
+
+    @NotNull(message = "Description must not be null!")
     private String description;
 
-    @NotBlank(message = "Price is required!")
-    @Min(value = 0, message = "Price must be a positive number")
-    private Float totalPrice;
+    @NotNull(message = "Service Price is required!")
+    @Min(0)
+    private Float servicePrice;
+
+    @NotNull(message = "Travel Price is required!")
+    @Min(0)
+    private Float travelPrice;
 
     @NotBlank(message = "Destination is required!")
-    @Size(max = 255, message = "Destination length must be between 1 and 255 characters")
     private String destination;
 
-    @Enumerated(EnumType.STRING)
-    private StatusEnum statusEnum;
+    @NotNull(message = "Meeting method is required!")
+    private MeetingMethodEnum meetingMethod;
 
-    @NotBlank(message = "Start Date is required!")
-    private LocalDateTime startedAt;
-
-    @NotBlank(message = "End Date is required!")
-    private LocalDateTime endedAt;
+    @NotNull(message = "Start At is required!")
+    private LocalDateTime startAt;
 
     @Override
     public Booking toEntity() {
         Booking booking = new Booking();
+
+        AccountEntity customer = new AccountEntity();
+        customer.setId(customerId);
+        booking.setCustomer(customer);
+
+        AccountEntity veterian = new AccountEntity();
+        veterian.setId(customerId);
+        booking.setVeterian(veterian);
+
+        ServiceEntity service = new ServiceEntity();
+        service.setId(serviceId);
+        booking.setService(service);
+
         booking.setDescription(description);
-        booking.setTotalPrice(totalPrice);
+        booking.setServicePrice(servicePrice);
+        booking.setTravelPrice(travelPrice);
         booking.setDestination(destination);
-        booking.setStatusEnum(statusEnum);
-        booking.setStartedAt(startedAt);
-        booking.setEndedAt(endedAt);
+        booking.setMeetingMethodEnum(meetingMethod);
+        booking.setStatusEnum(StatusEnum.UNPAID);
+        booking.setDecline(false);
+        booking.setStartedAt(startAt);
+
         return booking;
     }
 }

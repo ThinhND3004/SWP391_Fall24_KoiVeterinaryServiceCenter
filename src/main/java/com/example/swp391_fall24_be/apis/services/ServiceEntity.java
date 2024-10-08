@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Entity
+@Entity(name = "services")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "name", nullable = false, unique = true, columnDefinition = "VARCHAR(20)")
+    @Column(name = "name", nullable = false, unique = true, columnDefinition = "VARCHAR(100)")
     private String name;
 
     @Column(name = "type", nullable = false)
