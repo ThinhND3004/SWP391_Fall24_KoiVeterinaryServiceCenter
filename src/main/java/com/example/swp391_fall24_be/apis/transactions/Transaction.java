@@ -31,11 +31,11 @@ public class Transaction {
     private AccountEntity customer;
 
     @JoinColumn(name = "booking_id") // Specify the foreign key column
-    @OneToOne
+    @OneToOne(optional = false)
     private Booking booking;
 
     @JoinColumn(name = "prescription_id") // Specify the foreign key column
-    @OneToOne
+    @OneToOne(optional = false)
     private PrescriptionEntity prescriptions;
 
     @Enumerated(EnumType.STRING) // Enum handling

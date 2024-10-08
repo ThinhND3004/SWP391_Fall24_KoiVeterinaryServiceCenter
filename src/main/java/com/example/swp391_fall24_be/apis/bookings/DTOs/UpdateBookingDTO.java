@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -38,10 +40,13 @@ public class UpdateBookingDTO implements IDto<Booking> {
     @Size(max = 255, message = "Description length must be between 1 and 255 characters")
     private String description;
 
-    @NotBlank(message = "Price is required!")
-    @Column(name = "total_price", nullable = false, columnDefinition = "FLOAT")
-    @JsonProperty("total_price")
-    private float totalPrice;
+    @NotNull(message = "Service Price is required!")
+    @Min(0)
+    private Float servicePrice;
+
+    @NotNull(message = "Travel Price is required!")
+    @Min(0)
+    private Float travelPrice;
 
     @NotBlank(message = "Destination is required!")
     @Size(max = 255, message = "Destination length must be between 1 and 255 characters")
@@ -69,7 +74,8 @@ public class UpdateBookingDTO implements IDto<Booking> {
 //        booking.setReportId(medicalReportId);
 //        booking.setFeedbackId(feedbackId);
         booking.setDescription(description);
-        booking.setTotalPrice(totalPrice);
+        booking.setServicePrice(servicePrice);
+        booking.setTravelPrice(travelPrice);
         booking.setDestination(destination);
         booking.setStatusEnum(statusEnum);
         booking.setStartedAt(startedAt);
