@@ -31,23 +31,18 @@ public class BookingEntity implements IObject<BookingDTO> {
     @Column(name = "id", nullable = false)
     private String id;
 
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "customer_id", nullable = false)
-//    private AccountEntity customer;
-
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "addition_information", nullable = true, columnDefinition = "TEXT")
     @Size(max = 500)
     private String additionalInformation;
 
-    @Column(name = "service_price", nullable = false)
+    @Column(name = "total_price", nullable = false)
     @Min(0)
-    private Float servicePrice;
+    private Float totalPrice;
 
-    @Column(name = "travel_price", nullable = false)
-    @Min(0)
-    private Float travelPrice;
+    @Column(name = "distance_kilometers", nullable = false)
+    private Float distanceKilometers;
 
-    @Column(name = "destination", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "user_address", nullable = false, columnDefinition = "TEXT")
     @Size(max = 100)
     private String userAddress;
 
@@ -60,11 +55,11 @@ public class BookingEntity implements IObject<BookingDTO> {
     private StatusEnum statusEnum;
 
     @Column(name = "is_decline", nullable = false, columnDefinition = "BIT")
-    private boolean isDecline;
+    private Boolean isDecline;
 
-//    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
-//    @CreatedDate
-//    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = true, columnDefinition = "DATETIME")
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(name = "started_at",nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime startedAt;
@@ -107,8 +102,8 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setAdditionalInformation(additionalInformation);
         bookingDTO.setUserAddress(userAddress);
         bookingDTO.setStatusEnum(statusEnum);
-        bookingDTO.setTotalPrice(servicePrice + travelPrice);
-//        bookingDTO.setCreatedAt(createdAt);
+        bookingDTO.setTotalPrice(totalPrice);
+        bookingDTO.setCreatedAt(createdAt);
         bookingDTO.setStartedAt(startedAt);
         bookingDTO.setEndedAt(endedAt);
         return bookingDTO;

@@ -23,36 +23,92 @@ import java.util.Optional;
 @Service
 public class BookingService extends AbstractService<BookingEntity, String, CreateBookingDTO, UpdateBookingDTO, PaginateBookingDTO> {
     @Override
-    protected void beforeCreate(BookingEntity entity) throws ProjectException {
+    protected void beforeCreate(BookingEntity bookingEntity) throws ProjectException {
         List<ErrorReport> errorReportList = new ArrayList<>();
 
-//        if(entity.getCreatedAt().isBefore(LocalDateTime.now())) {
-//            errorReportList.add(new ErrorReport(
-//                    "BookingService_beforeCreate",
-//                    ErrorEnum.ValidationError,
-//                    "Creation time cannot be in the past!"));
-//        }
+        Optional<AccountEntity> customer = accountsRepository.findById(bookingEntity.getCustomer().getId());
+        if (customer.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "AccountsService_beforeCreate",
+                    ErrorEnum.EntityNotFound,
+                    "Customer with ID " + bookingEntity.getCustomer().getId() + " does not exist."));
+        } else {
+            bookingEntity.setCustomer(customer.get());
+        }
 
-//        // Kiểm tra thời gian bắt đầu phải sau thời gian hiện tại và thời gian tạo
-//        if (entity.getStartedAt() != null && (entity.getStartedAt().isBefore(LocalDateTime.now()) || entity.getStartedAt().isBefore(entity.getCreatedAt()))) {
+        Optional<AccountEntity> veterinarian = accountsRepository.findById(bookingEntity.getVeterinarianIsBooked().getId());
+        if (veterinarian.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "AccountsService_beforeCreate",
+                    ErrorEnum.EntityNotFound,
+                    "Veterinarian with ID " + bookingEntity.getVeterinarianIsBooked().getId() + " does not exist."));
+        } else {
+            bookingEntity.setVeterinarianIsBooked(veterinarian.get());
+        }
+
+        Optional<ServiceEntity> service = servicesRepository.findById(bookingEntity.getService().getId());
+        if (service.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "ServicesService_beforeCreate",
+                    ErrorEnum.EntityNotFound,
+                    "Service with ID " + bookingEntity.getService().getId() + " does not exist."));
+        } else {
+            bookingEntity.setService(service.get());
+            bookingEntity.setTotalPrice(service.get().getPrice() + service.get().getTravelPricePerMeter() * bookingEntity.getDistanceKilometers());
+        }
+
+//        if (bookingEntity.getStartedAt() != null && (bookingEntity.getStartedAt().isBefore(LocalDateTime.now()) || bookingEntity.getStartedAt().isBefore(bookingEntity.getCreatedAt()))) {
 //            errorReportList.add(new ErrorReport(
 //                    "BookingService_beforeCreate",
 //                    ErrorEnum.ValidationError,
 //                    "The start time must be after the current time and after the creation time!"));
 //        }
-//
-//        // Kiểm tra thời gian kết thúc phải sau thời gian bắt đầu
-//        if (entity.getEndedAt() != null && entity.getStartedAt() != null && entity.getEndedAt().isBefore(entity.getStartedAt())) {
-//            errorReportList.add(new ErrorReport(
-//                    "BookingService_beforeCreate",
-//                    ErrorEnum.ValidationError,
-//                    "The end time must be after the start time!"));
-//        }
+
+        if (!errorReportList.isEmpty()) {
+            throw new ProjectException(errorReportList);
+        }
+
     }
 
     @Override
     protected void beforeUpdate(BookingEntity oldEntity, BookingEntity newEntity) throws ProjectException {
+        List<ErrorReport> errorReportList = new ArrayList<>();
 
+        Optional<AccountEntity> veterinarianOpt = accountsRepository.findById(newEntity.getVeterinarianIsBooked().getId());
+        if (veterinarianOpt.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "AccountsService_beforeUpdate",
+                    ErrorEnum.EntityNotFound,
+                    "Veterinarian with ID " + newEntity.getVeterinarianIsBooked().getId() + " does not exist."));
+        } else {
+            oldEntity.setVeterinarianIsBooked(veterinarianOpt.get());
+        }
+
+        Optional<ServiceEntity> serviceOpt = servicesRepository.findById(newEntity.getService().getId());
+        if (serviceOpt.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "ServicesService_beforeUpdate",
+                    ErrorEnum.EntityNotFound,
+                    "Service with ID " + newEntity.getService().getId() + " does not exist."));
+        } else {
+            oldEntity.setService(serviceOpt.get());
+            float totalPrice = serviceOpt.get().getPrice() +
+                    serviceOpt.get().getTravelPricePerMeter() * newEntity.getDistanceKilometers();
+            oldEntity.setTotalPrice(totalPrice);
+        }
+
+        if (newEntity.getStartedAt() != null &&
+                (newEntity.getStartedAt().isBefore(LocalDateTime.now()) ||
+                        newEntity.getStartedAt().isBefore(oldEntity.getStartedAt()))) {
+            errorReportList.add(new ErrorReport(
+                    "BookingService_beforeUpdate",
+                    ErrorEnum.ValidationError,
+                    "The start time must be after the current time and after the previous start time!"));
+        }
+
+        if (!errorReportList.isEmpty()) {
+            throw new ProjectException(errorReportList);
+        }
     }
 
     @Override
@@ -69,36 +125,36 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
     @Autowired
     BookingRepository bookingRepository;
 
-    public BookingEntity createBooking(CreateBookingDTO createBookingDTO) {
-        // Lấy đối tượng AccountEntity của Customer từ database
-        AccountEntity customer = accountsRepository.findById(createBookingDTO.getCustomerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
-        // Lấy đối tượng AccountEntity của Veterinarian từ database
-        AccountEntity veterinarian = accountsRepository.findById(createBookingDTO.getVeterianId())
-                .orElseThrow(() -> new IllegalArgumentException("Veterinarian not found"));
-
-        // Lấy đối tượng ServiceEntity từ database
-        ServiceEntity service = servicesRepository.findById(createBookingDTO.getServiceId())
-                .orElseThrow(() -> new IllegalArgumentException("Service not found"));
-
-        // Tạo đối tượng BookingEntity và set các giá trị
-        BookingEntity booking = new BookingEntity();
-        booking.setCustomer(customer);
-        booking.setVeterinarianIsBooked(veterinarian);
-        booking.setService(service);
-        booking.setDescription(createBookingDTO.getDescription());
-        booking.setServicePrice(createBookingDTO.getServicePrice());
-        booking.setTravelPrice(createBookingDTO.getTravelPrice());
-        booking.setDestination(createBookingDTO.getDestination());
-        booking.setMeetingMethodEnum(createBookingDTO.getMeetingMethod());
-        booking.setStartedAt(createBookingDTO.getStartAt());
-        booking.setStatusEnum(StatusEnum.UNPAID);
-        booking.setDecline(false);
-
-        // Lưu đối tượng BookingEntity vào database
-        return bookingRepository.save(booking);
-    }
+//    public BookingEntity createBooking(CreateBookingDTO createBookingDTO) {
+//        // Lấy đối tượng AccountEntity của Customer từ database
+//        AccountEntity customer = accountsRepository.findById(createBookingDTO.getCustomerId())
+//                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+//
+//        // Lấy đối tượng AccountEntity của Veterinarian từ database
+//        AccountEntity veterinarian = accountsRepository.findById(createBookingDTO.getVeterianId())
+//                .orElseThrow(() -> new IllegalArgumentException("Veterinarian not found"));
+//
+//        // Lấy đối tượng ServiceEntity từ database
+//        ServiceEntity service = servicesRepository.findById(createBookingDTO.getServiceId())
+//                .orElseThrow(() -> new IllegalArgumentException("Service not found"));
+//
+//        // Tạo đối tượng BookingEntity và set các giá trị
+//        BookingEntity booking = new BookingEntity();
+//        booking.setCustomer(customer);
+//        booking.setVeterinarianIsBooked(veterinarian);
+//        booking.setService(service);
+//        booking.setAdditionalInformation(createBookingDTO.getDescription());
+////        booking.setServicePrice(createBookingDTO.getServicePrice());
+////        booking.setTravelPrice(createBookingDTO.getTravelPrice());
+//        booking.setUserAddress(createBookingDTO.getUserAddress());
+//        booking.setMeetingMethodEnum(createBookingDTO.getMeetingMethod());
+//        booking.setStartedAt(createBookingDTO.getStartAt());
+//        booking.setStatusEnum(StatusEnum.UNPAID);
+//        booking.setDecline(false);
+//
+//        // Lưu đối tượng BookingEntity vào database
+//        return bookingRepository.save(booking);
+//    }
 
     public Optional<BookingEntity> getBookingById(String id) {
         return bookingRepository.findById(id);

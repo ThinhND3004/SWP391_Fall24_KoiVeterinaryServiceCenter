@@ -6,6 +6,7 @@ import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IDto;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,19 +31,14 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
     @NotBlank(message = "Service Id is required!")
     private String serviceId;
 
-    @NotNull(message = "Description must not be null!")
-    private String description;
+//    @NotNull(message = "Additional Information must not be null!")
+    private String additionalInformation;
 
-//    @NotNull(message = "Service Price is required!")
-//    @Min(0)
-//    private Float servicePrice;
+    @NotBlank(message = "Address is required!")
+    private String userAddress;
 
-//    @NotNull(message = "Travel Price is required!")
-//    @Min(0)
-//    private Float travelPrice;
-
-    @NotBlank(message = "Destination is required!")
-    private String destination;
+    @NotNull(message = "Distance is required!")
+    private Float distanceKilometers;
 
     @NotNull(message = "Meeting method is required!")
     private MeetingMethodEnum meetingMethod;
@@ -59,20 +55,20 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
         booking.setCustomer(customer);
 
         AccountEntity veterian = new AccountEntity();
-        veterian.setId(customerId);
+        veterian.setId(veterianId);
         booking.setVeterinarianIsBooked(veterian);
 
         ServiceEntity service = new ServiceEntity();
         service.setId(serviceId);
         booking.setService(service);
 
-        booking.setDescription(description);
-//        booking.setServicePrice(servicePrice);
-//        booking.setTravelPrice(travelPrice);
-        booking.setDestination(destination);
+        booking.setAdditionalInformation(additionalInformation);
+
+        booking.setDistanceKilometers(distanceKilometers);
+        booking.setUserAddress(userAddress);
         booking.setMeetingMethodEnum(meetingMethod);
         booking.setStatusEnum(StatusEnum.UNPAID);
-        booking.setDecline(false);
+        booking.setIsDecline(false);
         booking.setStartedAt(startAt);
 
         return booking;
