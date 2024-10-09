@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/timetable")
+@RequestMapping("/timetables")
 @Tag(name = "Timetables", description = "Timetables APIs")
 public class TimetableController {
     @Autowired

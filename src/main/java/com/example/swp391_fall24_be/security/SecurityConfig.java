@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.security;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.security.filter.CustomerFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration  
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     private CustomerFilter customerFilter;
@@ -36,15 +38,37 @@ public class SecurityConfig {
 //
 //         return httpSecurity.build();
 
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sets session management policy to stateless
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // Permits all requests to any path
-                        .requestMatchers(HttpMethod.GET, "/accounts")
+
+                        // PUBLIC ACCESS
+                        .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
+                            .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                            .permitAll()
+
+                        // CUSTOMER
+                        .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
+                            .hasAuthority(AccountRoleEnum.CUSTOMER.name())
+
+                        // VETERIAN
+                        .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
+                            .hasAuthority(AccountRoleEnum.VETERIAN.name())
+
+                        // ADMIN, STAFF, MANAGER
+                        .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
+                                        "/shipping/**")
+                            .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
+
+                        // HAS AN ACCOUNT
+                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
+                            .authenticated()
+                        .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**")
                             .authenticated()
 
-                        .anyRequest().permitAll()) // Requires authentication for any other requests
+                        .anyRequest().permitAll())
                 .build(); // Builds the security filter chain
     }
 }
