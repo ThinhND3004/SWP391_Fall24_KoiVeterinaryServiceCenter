@@ -5,9 +5,8 @@ import com.example.swp391_fall24_be.apis.prescription_medicine.dtos.PaginatePres
 import com.example.swp391_fall24_be.apis.prescription_medicine.dtos.UpdatePrescriptionMedicineDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class PrescriptionMedicineService extends AbstractService<
@@ -16,6 +15,14 @@ public class PrescriptionMedicineService extends AbstractService<
         CreatePrescriptionMedicineDto,
         UpdatePrescriptionMedicineDto,
         PaginatePrescriptionMedicineDto> {
+
+    private final PrescriptionMedicineRepository prescriptionMedicineRepository;
+
+    @Autowired
+    public PrescriptionMedicineService(PrescriptionMedicineRepository prescriptionMedicineRepository) {
+        this.prescriptionMedicineRepository = prescriptionMedicineRepository;
+        this.repository = prescriptionMedicineRepository;
+    }
 
     @Override
     protected void beforeCreate(PrescriptionMedicine entity) throws ProjectException {

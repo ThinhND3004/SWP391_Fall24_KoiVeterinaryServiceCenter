@@ -1,12 +1,10 @@
 package com.example.swp391_fall24_be.apis.timetables.DTOs;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.timetables.Timetable;
-import com.example.swp391_fall24_be.core.IDto;
+import com.example.swp391_fall24_be.apis.timetables.TimetableEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +15,10 @@ public class SaveTimetableDto {
     @NotNull(message = "Timetable is required")
     private List<RequestTimetableDto> timetableDTOS;
 
-    public List<Timetable> toList(String veterianId) {
-        List<Timetable> timetableList = new ArrayList<>();
+    public List<TimetableEntity> toList(String veterianId) {
+        List<TimetableEntity> timetableList = new ArrayList<>();
         for (RequestTimetableDto timetableDTO : timetableDTOS){
-            Timetable timetable = new Timetable();
+            TimetableEntity timetable = new TimetableEntity();
             timetable.setDayOfWeek(timetableDTO.getDayOfWeek());
             timetable.setStartTime(LocalTime.of(
                     timetableDTO.getStartTime().getHours(),
@@ -34,7 +32,7 @@ public class SaveTimetableDto {
 
             AccountEntity account = new AccountEntity();
             account.setId(veterianId);
-            timetable.setVeterian(account);
+            timetable.setVeterinarian(account);
 
             timetableList.add(timetable);
         }

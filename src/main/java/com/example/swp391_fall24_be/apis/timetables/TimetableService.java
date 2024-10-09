@@ -12,14 +12,14 @@ public class TimetableService {
     @Autowired
     private TimetableRepository repository;
 
-    public List<Timetable> doFindByVeterianId(String veterianId){
-        Optional<List<Timetable>> timetablesResult = repository.findByVeterianId(veterianId);
+    public List<TimetableEntity> doFindByVeterianId(String veterianId){
+        Optional<List<TimetableEntity>> timetablesResult = repository.findByVeterinarianId(veterianId);
         return timetablesResult.orElse(null);
     }
 
     @Transactional
-    public List<Timetable> doSave(String veterianId, List<Timetable> timetables){
-        repository.deleteAllByVeterianId(veterianId);
+    public List<TimetableEntity> doSave(String veterianId, List<TimetableEntity> timetables){
+        repository.deleteAllByVeterinarianId(veterianId);
         return repository.saveAll(timetables);
     }
 }

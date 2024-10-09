@@ -1,14 +1,9 @@
 package com.example.swp391_fall24_be.apis.feedbacks.DTOs;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
-import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
+import com.example.swp391_fall24_be.apis.feedbacks.FeedbackEntity;
 import com.example.swp391_fall24_be.core.IDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,14 +13,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateFeedbackDTO implements IDto<Feedback> {
+public class CreateFeedbackDTO implements IDto<FeedbackEntity> {
 
 //    @NotNull(message = "CustomerID is required!")
 //    @JsonProperty("customer_id")
@@ -55,8 +48,8 @@ public class CreateFeedbackDTO implements IDto<Feedback> {
     private boolean anonymous;
 
     @Override
-    public Feedback toEntity() {
-        Feedback feedback = new Feedback();
+    public FeedbackEntity toEntity() {
+        FeedbackEntity feedback = new FeedbackEntity();
 //        feedback.setCustomerId(customerId);
 //        feedback.setBookingIdList(bookingIdList);
         feedback.setStarRating(starRating);

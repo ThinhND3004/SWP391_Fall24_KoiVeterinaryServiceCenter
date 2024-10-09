@@ -1,7 +1,10 @@
 package com.example.swp391_fall24_be.apis.ponds;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
+import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
 import com.example.swp391_fall24_be.apis.ponds.dto.PondDto;
+import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "ponds")
 @NoArgsConstructor
@@ -23,9 +27,9 @@ public class PondEntity implements IObject<PondDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private AccountEntity customerID;
+//    @ManyToOne
+//    @JoinColumn(name = "customer_id")
+//    private AccountEntity customerID;
 
     @Column(name = "name")
     private String name;
@@ -53,6 +57,13 @@ public class PondEntity implements IObject<PondDto> {
 
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
+
+    @JoinColumn(name = "picture_id")
+    @OneToOne
+    private ImageEntity picture;
+
+    @OneToMany(mappedBy = "pond", cascade = CascadeType.ALL)
+    private List<ReportEntity> pondReportList;
 
     @Override
     public PondDto toResponseDto() {

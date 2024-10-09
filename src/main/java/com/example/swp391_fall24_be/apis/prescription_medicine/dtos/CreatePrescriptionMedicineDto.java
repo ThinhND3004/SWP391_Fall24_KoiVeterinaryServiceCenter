@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-import java.util.UUID;
-
 public class CreatePrescriptionMedicineDto implements IDto<PrescriptionMedicine> {
     @NotBlank(message = "Prescription Id must not be blank")
     @JsonProperty("prescriptionId")

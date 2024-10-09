@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/prescription_medicine")
 @Tag(name = "Prescription Medicine", description = "Save the amount of each medicine in prescription.")
@@ -20,6 +18,6 @@ public class PrescriptionMedicineController extends AbstractController<
         CreatePrescriptionMedicineDto,
         UpdatePrescriptionMedicineDto,
         PaginatePrescriptionMedicineDto,
-        PrescriptionMedicineDto>{
+        PrescriptionMedicineDto> {
 
 }

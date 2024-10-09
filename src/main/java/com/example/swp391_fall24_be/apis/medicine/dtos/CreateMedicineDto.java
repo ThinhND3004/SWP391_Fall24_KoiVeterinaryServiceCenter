@@ -1,7 +1,6 @@
 package com.example.swp391_fall24_be.apis.medicine.dtos;
 
 import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
-import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -9,10 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -35,15 +33,22 @@ public class CreateMedicineDto implements IDto<MedicineEntity> {
     @JsonProperty("price")
     private Float price;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+//    @JsonProperty("prescription_medicine")
+//    private List<String> prescriptionMedicineId;
+
     @Override
     public MedicineEntity toEntity() {
         MedicineEntity entity = new MedicineEntity();
-        entity.setPrescriptionEntities(new HashSet<>());
+//        entity.setPrescription(new HashSet<>());
         entity.setName(name);
         entity.setPrice(price);
         entity.setDescription(description);
         entity.setManufacturer(manufacturer);
-
+        entity.setCreatedAt(createdAt);
+//        entity.setPrescriptionMedicines(prescriptionMedicineId);
         return entity;
     }
 }

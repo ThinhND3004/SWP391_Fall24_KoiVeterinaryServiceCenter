@@ -1,10 +1,13 @@
 package com.example.swp391_fall24_be.apis.reports;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.ponds.PondEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
 import com.example.swp391_fall24_be.core.IObject;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -15,7 +18,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "treatments")
+@Entity(name = "reports")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -25,14 +28,6 @@ public class ReportEntity implements IObject<ReportDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @ManyToOne
-    @JoinColumn(name = "koi_species_id", nullable = false)
-    private KoiSpeciesEntity koiSpecies;
-
-    @JoinColumn(name = "prescription_id", nullable = false)
-    @OneToOne
-    private PrescriptionEntity prescription;
 
     @Column(name = "diagnosis", columnDefinition = "VARCHAR(100)")
     private String diagnosis;
@@ -44,8 +39,25 @@ public class ReportEntity implements IObject<ReportDto> {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "pond_id", nullable = false)
+    private PondEntity pond;
+
+    @ManyToOne
+    @JoinColumn(name = "koi_species_id", nullable = false)
+    private KoiSpeciesEntity koiSpecies;
+
+    @JoinColumn(name = "prescription_id", nullable = false)
     @OneToOne
-    private Booking booking;
+    private PrescriptionEntity prescription;
+
+    @OneToOne(mappedBy = "report")
+//    @JsonManagedReference
+    private BookingEntity booking;
+
+//    @ManyToOne
+//    @JoinColumn(name = "picture_id")
+//    private ImageEntity picture;
 
     @Override
     public ReportDto toResponseDto() {

@@ -15,15 +15,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 public class PrescriptionMedicine implements IObject<PrescriptionMedicineDto> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @JoinColumn(name = "prescription_id", nullable = false)
     @ManyToOne
+    @JoinColumn(name = "prescription_id", nullable = false)
     private PrescriptionEntity prescription;
 
-    @JoinColumn(name = "medicine_id", nullable = false)
     @ManyToOne
+    @JoinColumn(name = "medicine_id", nullable = false)
     private MedicineEntity medicine;
 
     @Column(name = "amount", nullable = false)

@@ -1,42 +1,41 @@
 package com.example.swp391_fall24_be.apis.prescription.dtos;
 
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
+import com.example.swp391_fall24_be.apis.prescription.PrescriptionStatusEnum;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
-import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 public class UpdatePrescriptionDto implements IDto<PrescriptionEntity> {
 
-    @NotNull(message = "Shipping is required!")
-    private ShippingEntity shippingEntity;
+//    @NotNull(message = "Shipping is required!")
+//    private ShippingEntity shippingEntity;
 
-    @NotNull(message = "Medicine is required!")
-    private MedicineEntity medicineEntity;
+    @NotNull(message = "Amount is required!")
+    @Positive(message = "Amount must be a positive number!")
+    private Integer amount;
 
     @NotNull(message = "Total price is required!")
     @Positive(message = "Total price must be a positive number!")
-    private float totalPrice;
+    private Float totalPrice;
 
-    @NotNull(message = "Create time is required!")
-    private LocalDateTime createAt;
+    @NotNull(message = "Status is required!")
+    private PrescriptionStatusEnum prescriptionStatus;
+
+    //    @NotNull(message = "Create time is required!")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @Override
     public PrescriptionEntity toEntity() {
         PrescriptionEntity prescription = new PrescriptionEntity();
-        if (shippingEntity != null) {
-            prescription.setShippingID(shippingEntity);
-        }
-        if (medicineEntity != null) {
-            prescription.setMedicineID(medicineEntity);
-        }
-
+        prescription.setAmount(amount);
         prescription.setTotalPrice(totalPrice);
-        prescription.setCreatedAt(createAt);
+        prescription.setPrescriptionStatus(prescriptionStatus);
+        prescription.setUpdatedAt(updatedAt);
         return prescription;
     }
 }

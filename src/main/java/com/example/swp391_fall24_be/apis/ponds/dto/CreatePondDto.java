@@ -54,7 +54,7 @@ public class CreatePondDto implements IDto<PondEntity> {
     @Override
     public PondEntity toEntity() {
         PondEntity entity = new PondEntity();
-        entity.setCustomerID(customerID);
+//        entity.setCustomerID(customerID);
         entity.setName(name);
         entity.setLocation(location);
         entity.setSizeSquareMeters(sizeSquareMeters);

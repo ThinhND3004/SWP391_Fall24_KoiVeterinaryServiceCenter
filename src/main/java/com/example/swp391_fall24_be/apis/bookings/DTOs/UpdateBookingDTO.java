@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.bookings.DTOs;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-public class UpdateBookingDTO implements IDto<Booking> {
+public class UpdateBookingDTO implements IDto<BookingEntity> {
 //    @JsonProperty("customer_id")
 //    @NotBlank(message = "CustomerID is required!")
 //    private Account customerId;
@@ -66,8 +66,8 @@ public class UpdateBookingDTO implements IDto<Booking> {
     @JsonProperty("ended_at")
     private LocalDateTime endedAt;
     @Override
-    public Booking toEntity() {
-        Booking booking = new Booking();
+    public BookingEntity toEntity() {
+        BookingEntity booking = new BookingEntity();
 //        booking.setCustomerId(customerId);
 //        booking.setVeterinarianId(veterinarianId);
 ////        booking.setServiceId(serviceId);

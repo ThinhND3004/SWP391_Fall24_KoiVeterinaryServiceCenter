@@ -1,0 +1,18 @@
+package com.example.swp391_fall24_be.deleteAPIs.medicine.dtos;
+
+import com.example.swp391_fall24_be.deleteAPIs.prescription.PrescriptionEntity;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.Set;
+@Getter
+@Setter
+public class MedicineDto {
+    private String name;
+    private String description;
+    private String manufacturer;
+    private float price;
+    private LocalDateTime createdAt;
+    private Set<PrescriptionEntity> prescriptionEntities;
+}

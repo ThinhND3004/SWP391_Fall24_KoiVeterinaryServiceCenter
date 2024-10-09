@@ -1,9 +1,14 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.notifications.NotificationEntity;
+import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
+import com.example.swp391_fall24_be.apis.timetables.TimetableEntity;
 import com.example.swp391_fall24_be.core.IObject;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -70,6 +75,28 @@ public class AccountEntity implements IObject<AccountDto>{
     @OneToOne
     private ImageEntity avatar;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private ProfileEntity profile;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+    private List<BookingEntity> customerBookingList;
+
+    @OneToMany(mappedBy = "veterinarianIsBooked")
+//    @JsonManagedReference
+    private List<BookingEntity> veterinarianAreBookedList;
+
+    @OneToMany(mappedBy = "veterinarian")
+    private List<TimetableEntity> veterinarianTimetableList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "VeterinarianService",
+            joinColumns = @JoinColumn(name = "veterinarian_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<ServiceEntity> services;
+
     public AccountEntity() {
     }
 
@@ -83,10 +110,6 @@ public class AccountEntity implements IObject<AccountDto>{
         this.address = address;
         this.isDisable = false;
         this.role = role;
-    }
-
-    public AccountEntity(String id) {
-        this.id = id;
     }
 
     @Override

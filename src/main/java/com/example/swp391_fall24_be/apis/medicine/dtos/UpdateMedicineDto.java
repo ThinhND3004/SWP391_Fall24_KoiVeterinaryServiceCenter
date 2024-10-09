@@ -1,18 +1,16 @@
 package com.example.swp391_fall24_be.apis.medicine.dtos;
 
 import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
-import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 public class UpdateMedicineDto implements IDto<MedicineEntity> {
+
     @NotBlank(message = "Name is required!")
     @JsonProperty("name")
     private String name;
@@ -27,27 +25,31 @@ public class UpdateMedicineDto implements IDto<MedicineEntity> {
     @JsonProperty("price")
     private float price;
 
-    private Set<PrescriptionEntity> prescriptionEntities;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-    public UpdateMedicineDto(MedicineEntity oldEntity) {
-        this.prescriptionEntities = oldEntity.getPrescriptionEntities();
-    }
+//    private Set<PrescriptionMedicine> prescriptionMedicines;
+
+//    public UpdateMedicineDto(MedicineEntity oldEntity) {
+//        this.prescription = oldEntity.getPrescription();
+//    }
 
     @Override
     public MedicineEntity toEntity() {
         MedicineEntity entity = new MedicineEntity();
 
-        if (name != null) {
+//        if (name != null) {
             entity.setName(name);
-        }
+//        }
             entity.setPrice(price);
-        if (description != null) {
+//        if (description != null) {
             entity.setDescription(description);
-        }
-        if (manufacturer != null) {
+//        }
+//        if (manufacturer != null) {
             entity.setManufacturer(manufacturer);
-        }
-        entity.setPrescriptionEntities(prescriptionEntities);
+            entity.setUpdatedAt(updatedAt);
+//        }
+//        entity.setPrescription(prescription);
         return entity;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.feedbacks.DTOs;
 
-import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
+import com.example.swp391_fall24_be.apis.feedbacks.FeedbackEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UpdateFeedbackDTO implements IDto<Feedback> {
+public class UpdateFeedbackDTO implements IDto<FeedbackEntity> {
 
     @NotNull(message = "Rating is required!")
     @Min(1)
@@ -31,8 +31,8 @@ public class UpdateFeedbackDTO implements IDto<Feedback> {
     private boolean anonymous;
 
     @Override
-    public Feedback toEntity() {
-        Feedback feedback = new Feedback();
+    public FeedbackEntity toEntity() {
+        FeedbackEntity feedback = new FeedbackEntity();
         feedback.setStarRating(starRating);
         feedback.setComment(comment != null ? comment : "");
         feedback.setAnonymous(anonymous);

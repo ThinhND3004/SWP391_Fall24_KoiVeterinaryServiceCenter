@@ -1,8 +1,5 @@
 package com.example.swp391_fall24_be.apis.feedbacks;
 
-import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
 import com.example.swp391_fall24_be.apis.feedbacks.DTOs.CreateFeedbackDTO;
 import com.example.swp391_fall24_be.apis.feedbacks.DTOs.FeedbackDTO;
 import com.example.swp391_fall24_be.apis.feedbacks.DTOs.PaginateFeedbackDTO;
@@ -20,7 +17,7 @@ import java.util.List;
 @RequestMapping("/feedbacks")
 @Tag(name = "Feedbacks", description = "Feedback APIs")
 public class FeedbackController extends AbstractController
-        <Feedback, String, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO, FeedbackDTO> {
+        <FeedbackEntity, String, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO, FeedbackDTO> {
     @Autowired
     private FeedbackService feedbackService;
 

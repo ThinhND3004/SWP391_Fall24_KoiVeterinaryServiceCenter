@@ -7,22 +7,20 @@ import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
-public class FeedbackService extends AbstractService<Feedback, String, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO> {
+public class FeedbackService extends AbstractService<FeedbackEntity, String, CreateFeedbackDTO, UpdateFeedbackDTO, PaginateFeedbackDTO> {
     @Override
-    protected void beforeCreate(Feedback entity) throws ProjectException {
+    protected void beforeCreate(FeedbackEntity entity) throws ProjectException {
 
     }
 
     @Override
-    protected void beforeUpdate(Feedback oldEntity, Feedback newEntity) throws ProjectException {
+    protected void beforeUpdate(FeedbackEntity oldEntity, FeedbackEntity newEntity) throws ProjectException {
 
     }
 
     @Override
-    public Feedback delete(String id) throws ProjectException {
+    public FeedbackEntity delete(String id) throws ProjectException {
         return null;
     }
 }

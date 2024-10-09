@@ -1,11 +1,13 @@
 package com.example.swp391_fall24_be.apis.timetables;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TimetableRepository extends JpaRepository<Timetable, String> {
-    void deleteAllByVeterianId(String veterian_id);
-    Optional<List<Timetable>> findByVeterianId(String veterian_id);
+@Repository
+public interface TimetableRepository extends JpaRepository<TimetableEntity, String> {
+    void deleteAllByVeterinarianId(String veterinarian_id);
+    Optional<List<TimetableEntity>> findByVeterinarianId(String veterinarian_id);
 }

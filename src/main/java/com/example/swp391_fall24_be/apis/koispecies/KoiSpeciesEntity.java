@@ -2,6 +2,7 @@ package com.example.swp391_fall24_be.apis.koispecies;
 
 import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.koispecies.dto.KoiSpeciesDto;
+import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "koi_species")
 @NoArgsConstructor
@@ -39,6 +41,9 @@ public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
 
     @Column(name = "update_at", columnDefinition = "DATETIME")
     private LocalDateTime updateAt;
+
+    @OneToMany(mappedBy = "koiSpecies", cascade = CascadeType.ALL)
+    private List<ReportEntity> koiSpeciesReportList;
 
     @Override
     public KoiSpeciesDto toResponseDto() {

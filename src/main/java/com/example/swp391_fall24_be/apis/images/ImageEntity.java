@@ -42,6 +42,9 @@ public class ImageEntity implements IObject<ImageDto> {
     @OneToOne(mappedBy = "picture")
     private KoiSpeciesEntity koiSpecies;
 
+    @OneToOne(mappedBy = "picture")
+    private KoiSpeciesEntity pond;
+
     @Override
     public ImageDto toResponseDto() {
         ImageDto dto = new ImageDto();
