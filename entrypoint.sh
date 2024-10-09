@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Wait for the SQL Server to be ready
 echo "Waiting for SQL Server to be available..."
 echo "DB_PASSWORD: $DB_PASSWORD"
 echo "DB_NAME: $DB_NAME"
