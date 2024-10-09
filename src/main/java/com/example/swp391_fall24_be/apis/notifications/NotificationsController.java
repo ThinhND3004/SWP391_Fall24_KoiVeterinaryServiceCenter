@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/notification")
+@RequestMapping("/notifications")
 @Tag(name = "Notification", description = "Send notification to account.")
 public class NotificationsController extends AbstractController<
         NotificationEntity,

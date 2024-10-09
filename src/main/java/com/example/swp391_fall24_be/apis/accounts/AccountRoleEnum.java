@@ -10,13 +10,13 @@ public enum AccountRoleEnum {
     ADMIN("admin"),
     MANAGER("manager");
 
-    private final String role;
+    private final String value;
 
-    AccountRoleEnum(String role) {
-        this.role = role;
+    AccountRoleEnum(String value) {
+        this.value = value;
     }
 
-    public String getRole() {
-        return role;
+    public String getValue() {
+        return value;
     }
 }

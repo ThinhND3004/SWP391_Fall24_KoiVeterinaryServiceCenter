@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 @RestController
-@RequestMapping("/medicine")
+@RequestMapping("/medicines")
 @Tag(name = "Medicines", description = "Medicine APIs")
 public class MedicineController extends AbstractController<
         MedicineEntity,
