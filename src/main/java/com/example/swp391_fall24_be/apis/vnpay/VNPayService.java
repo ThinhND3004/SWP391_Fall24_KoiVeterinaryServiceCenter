@@ -1,10 +1,7 @@
 package com.example.swp391_fall24_be.apis.vnpay;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
-import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
 import com.example.swp391_fall24_be.apis.vnpay.dtos.CreatePaymentDto;
 import com.example.swp391_fall24_be.config.VNPayConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
