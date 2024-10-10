@@ -34,7 +34,7 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         if(accountsRepository.findByEmail("veterian@example.com").isEmpty()){
             accountsRepository.save(new AccountEntity(
                     "veterian@example.com",
-                    "4714292bf9b9f367105af36f408496a46987d9f3caf818a368e7b260fea0ad16", // password: veterian
+                    "RxQpK/m582cQWvNvQISWpGmH2fPK+BijaOeyYP6grRY=", // password: veterian
                     "Veterian",
                     "Veterian",
                     LocalDate.of(1990, 5, 15),
