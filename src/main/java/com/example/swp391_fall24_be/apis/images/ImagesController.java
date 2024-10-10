@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/images")
 @CrossOrigin
@@ -55,11 +58,13 @@ public class ImagesController extends AbstractController
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot upload image!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }

@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,11 +35,13 @@ public class TimetableController {
 
         }
         catch(Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Save timetable failed!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
@@ -58,11 +61,13 @@ public class TimetableController {
 
         }
         catch(Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Save timetable failed!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
 

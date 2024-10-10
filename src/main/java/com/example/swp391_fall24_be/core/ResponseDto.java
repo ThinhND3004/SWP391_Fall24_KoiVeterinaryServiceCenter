@@ -1,19 +1,20 @@
 package com.example.swp391_fall24_be.core;
 
 import lombok.Data;
-import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 @Data
 public class ResponseDto<EntityType>{
     public int status;
     public String message;
     public EntityType data;
-    public String err;
+    public List<String> err;
 
     public ResponseDto() {
     }
 
-    public ResponseDto(int status, String message, EntityType data, String err) {
+    public ResponseDto(int status, String message, EntityType data, List<String> err) {
         this.status = status;
         this.message = message;
         this.data = data;
