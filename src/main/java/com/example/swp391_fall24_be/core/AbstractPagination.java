@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,9 +9,11 @@ public abstract class AbstractPagination<EntityType> implements IDto<EntityType>
     protected int page;
     protected int unitPerPage;
 
-    public Pageable getPage(){
+    @JsonIgnore
+    public PageRequest getPageRequest(){
         return PageRequest.of(page, unitPerPage);
     }
+
     public Pageable getSortedPage(String sortedValue, Sort.Direction directionEnum){
         return PageRequest.of(page,unitPerPage, Sort.by(directionEnum,sortedValue));
     }

@@ -94,7 +94,7 @@ public abstract class AbstractController<
     }
 
     @Override
-    public ResponseDto<ResponseType> doPut(@Parameter IdType id, @RequestBody UpdateDto dto) {
+    public ResponseDto<ResponseType> doPut(@Parameter IdType id, @Valid @RequestBody UpdateDto dto) {
         try {
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
