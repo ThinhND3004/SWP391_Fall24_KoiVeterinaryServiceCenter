@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/vnpay")
 public class VNPayController {
@@ -30,11 +33,13 @@ public class VNPayController {
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Cannot get VNP ReturnUrl successful!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }

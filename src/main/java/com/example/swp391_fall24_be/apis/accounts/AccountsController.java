@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/accounts")
 @Tag(name = "Accounts", description = "Account APIs")
@@ -30,11 +33,13 @@ public class AccountsController extends AbstractController<AccountEntity, String
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Get current account from token fail!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }

@@ -42,11 +42,13 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot get entities!",
                     null,
-                    e.getMessage()
+                    errorList
             );
 
         }
@@ -63,11 +65,13 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot get one entity!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
@@ -84,11 +88,13 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot create entity!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
@@ -104,11 +110,13 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot update entity!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
@@ -124,11 +132,13 @@ public abstract class AbstractController<
             );
         }
         catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot delete entity!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
