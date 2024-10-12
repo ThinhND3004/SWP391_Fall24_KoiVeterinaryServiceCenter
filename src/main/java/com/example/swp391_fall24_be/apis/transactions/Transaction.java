@@ -1,8 +1,7 @@
 package com.example.swp391_fall24_be.apis.transactions;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.bookings.Booking;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import jakarta.persistence.*;
@@ -32,7 +31,7 @@ public class Transaction {
 
     @JoinColumn(name = "booking_id") // Specify the foreign key column
     @OneToOne(optional = false)
-    private Booking booking;
+    private BookingEntity booking;
 
     @JoinColumn(name = "prescription_id") // Specify the foreign key column
     @OneToOne(optional = false)

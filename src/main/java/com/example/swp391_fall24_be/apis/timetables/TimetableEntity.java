@@ -1,11 +1,9 @@
 package com.example.swp391_fall24_be.apis.timetables;
 
-import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableDTO;
 import com.example.swp391_fall24_be.core.IObject;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +22,14 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Timetable implements IObject<TimetableDTO> {
+public class TimetableEntity implements IObject<TimetableDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "veterinarian_id", nullable = false)
-    @JsonProperty("veterinarian_id")
-    private AccountEntity veterian;
+    @JoinColumn(name = "profile", nullable = false)
+    private ProfileEntity profile;
 
     @Column(name = "day_of_week", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -57,7 +53,7 @@ public class Timetable implements IObject<TimetableDTO> {
     public TimetableDTO toResponseDto() {
         TimetableDTO timetableDTO = new TimetableDTO();
         timetableDTO.setId(id);
-        timetableDTO.setVeterinarianId(veterian.getId());
+        timetableDTO.setProfileId(profile.getId());
         timetableDTO.setStartTime(startTime);
         timetableDTO.setEndTime(endTime);
         timetableDTO.setCreatedAt(createdAt);

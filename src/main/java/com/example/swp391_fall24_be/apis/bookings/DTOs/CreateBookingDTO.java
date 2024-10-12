@@ -1,12 +1,13 @@
 package com.example.swp391_fall24_be.apis.bookings.DTOs;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IDto;
-import jakarta.persistence.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,9 +23,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateBookingDTO implements IDto<Booking> {
-    @NotBlank(message = "Customer Id is required!")
-    private String customerId;
+public class CreateBookingDTO implements IDto<BookingEntity> {
+
+    @Schema(hidden = true)
+    private AccountEntity customer;
 
     @NotBlank(message = "Veterian Id is required!")
     private String veterianId;
@@ -43,8 +45,12 @@ public class CreateBookingDTO implements IDto<Booking> {
     @Min(0)
     private Float travelPrice;
 
+    @NotNull(message = "Distance Meters is required!")
+    @Min(0)
+    private Float distanceMeters;
+
     @NotBlank(message = "Destination is required!")
-    private String destination;
+    private String userAddress;
 
     @NotNull(message = "Meeting method is required!")
     private MeetingMethodEnum meetingMethod;
@@ -53,15 +59,11 @@ public class CreateBookingDTO implements IDto<Booking> {
     private LocalDateTime startAt;
 
     @Override
-    public Booking toEntity() {
-        Booking booking = new Booking();
-
-        AccountEntity customer = new AccountEntity();
-        customer.setId(customerId);
-        booking.setCustomer(customer);
+    public BookingEntity toEntity() {
+        BookingEntity booking = new BookingEntity();
 
         AccountEntity veterian = new AccountEntity();
-        veterian.setId(customerId);
+        veterian.setId(veterianId);
         booking.setVeterian(veterian);
 
         ServiceEntity service = new ServiceEntity();
@@ -71,7 +73,8 @@ public class CreateBookingDTO implements IDto<Booking> {
         booking.setDescription(description);
         booking.setServicePrice(servicePrice);
         booking.setTravelPrice(travelPrice);
-        booking.setDestination(destination);
+        booking.setDistanceMeters(distanceMeters);
+        booking.setUserAddress(userAddress);
         booking.setMeetingMethodEnum(meetingMethod);
         booking.setStatusEnum(StatusEnum.UNPAID);
         booking.setDecline(false);

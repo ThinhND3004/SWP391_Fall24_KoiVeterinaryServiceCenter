@@ -17,14 +17,15 @@ import java.time.LocalDateTime;
 @Setter
 public class BookingDTO {
     private String id;
-    private AccountEntity customer;
-    private AccountEntity veterian;
-    private ServiceEntity service;
+    private String customerFullName;
+    private String veterinarianFullName;
+    private String serviceName;
     private ReportEntity reportId;
     private Feedback feedbackId;
     private String description;
     private float totalPrice;
-    private String destination;
+    private float distance_meters;
+    private String userAddress;
     private StatusEnum statusEnum;
     private LocalDateTime createdAt;
     private LocalDateTime startedAt;

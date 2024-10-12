@@ -1,6 +1,6 @@
 package com.example.swp391_fall24_be.apis.reports;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
@@ -45,7 +45,7 @@ public class ReportEntity implements IObject<ReportDto> {
     private LocalDateTime createdAt;
 
     @OneToOne
-    private Booking booking;
+    private BookingEntity booking;
 
     @Override
     public ReportDto toResponseDto() {
