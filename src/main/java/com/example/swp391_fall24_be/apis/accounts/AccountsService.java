@@ -7,6 +7,7 @@ import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ProjectException;
+import com.example.swp391_fall24_be.security.JwtProvider;
 import com.example.swp391_fall24_be.utils.CryptoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
     private CryptoUtils cryptoUtils;
     @Autowired
     private AccountsRepository accountsRepository;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Override
     protected void beforeCreate(AccountEntity account) throws ProjectException {
@@ -53,5 +57,10 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
     @Override
     public AccountEntity delete(String id) throws ProjectException {
         return null;
+    }
+
+    public AccountEntity getAccountByVerifyToken(String token)
+    {
+        return jwtProvider.verifyToken(token);
     }
 }
