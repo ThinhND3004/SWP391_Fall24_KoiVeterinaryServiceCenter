@@ -28,7 +28,10 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @Column(name = "type", nullable = false)
     private ServiceTypeEnum type;
 
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "overview", columnDefinition = "TEXT")
+    private String overview;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "meeting_method", nullable = false)

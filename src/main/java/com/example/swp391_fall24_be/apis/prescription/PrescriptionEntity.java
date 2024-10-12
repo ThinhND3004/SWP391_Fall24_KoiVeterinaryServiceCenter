@@ -1,6 +1,7 @@
 package com.example.swp391_fall24_be.apis.prescription;
 
 import com.example.swp391_fall24_be.apis.prescription.dtos.PrescriptionDto;
+import com.example.swp391_fall24_be.apis.prescription_medicine.PrescriptionMedicine;
 import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "prescriptions")
@@ -46,8 +48,8 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @Enumerated(EnumType.STRING)
     private PrescriptionStatusEnum status;
 
-    @ManyToMany(mappedBy = "prescriptionEntities")
-    private Set<MedicineEntity> medicineEntities;
+    @OneToMany(mappedBy = "prescription")
+    private List<PrescriptionMedicine> prescriptionMedicines;
 
     @OneToOne
     private ReportEntity report;
