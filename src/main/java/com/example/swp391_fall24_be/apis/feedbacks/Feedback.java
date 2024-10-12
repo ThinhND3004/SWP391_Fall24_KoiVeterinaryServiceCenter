@@ -1,10 +1,9 @@
 package com.example.swp391_fall24_be.apis.feedbacks;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.bookings.Booking;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.feedbacks.DTOs.FeedbackDTO;
 import com.example.swp391_fall24_be.core.IObject;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +14,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Entity(name = "feedbacks")
 @EntityListeners(AuditingEntityListener.class)
@@ -31,7 +28,7 @@ public class Feedback implements IObject<FeedbackDTO> {
 
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;
+    private BookingEntity booking;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)

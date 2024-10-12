@@ -15,12 +15,13 @@ import java.util.*;
 public class VNPayService {
 
     protected String returnPaymentUrl(CreatePaymentDto dto, String IpAddress) throws UnsupportedEncodingException {
+        VNPayConfiguration vnPayConfig = new VNPayConfiguration();
         long amount = (long) (dto.getTotalPrice() * 100);
 
         Map<String, String> vnp_Params = new HashMap<>();
-        vnp_Params.put("vnp_Version", VNPayConfiguration.vnp_Version);
-        vnp_Params.put("vnp_Command", VNPayConfiguration.vnp_Command);
-        vnp_Params.put("vnp_TmnCode", VNPayConfiguration.vnp_TmnCode);
+        vnp_Params.put("vnp_Version", vnPayConfig.getVnp_Version());
+        vnp_Params.put("vnp_Command", vnPayConfig.getVnp_Command());
+        vnp_Params.put("vnp_TmnCode", vnPayConfig.getVnp_TmnCode());
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_Locale", "vn");
@@ -28,7 +29,7 @@ public class VNPayService {
         vnp_Params.put("vnp_TxnRef", String.valueOf(dto.getPayment()));
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang: " + dto.getPayment());
         vnp_Params.put("vnp_OrderType", "270000"); // Cho dịch vụ y tế
-        vnp_Params.put("vnp_ReturnUrl", VNPayConfiguration.vnp_ReturnUrl);
+        vnp_Params.put("vnp_ReturnUrl", vnPayConfig.getVnp_ReturnUrl());
         vnp_Params.put("vnp_IpAddr", IpAddress);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -64,9 +65,9 @@ public class VNPayService {
             }
         }
         String queryUrl = query.toString();
-        String vnp_SecureHash = VNPayConfiguration.hmacSHA512(VNPayConfiguration.secretKey, hashData.toString());
+        String vnp_SecureHash = vnPayConfig.hmacSHA512(vnPayConfig.getSecretKey(), hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = VNPayConfiguration.vnp_PayUrl + "?" + queryUrl;
+        String paymentUrl = vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
 
         PaymentDto paymentDto = new PaymentDto();
         paymentDto.setStatus("OK");

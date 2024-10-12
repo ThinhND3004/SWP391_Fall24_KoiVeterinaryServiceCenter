@@ -6,7 +6,6 @@ import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IObject;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Booking implements IObject<BookingDTO> {
+public class BookingEntity implements IObject<BookingDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
@@ -49,20 +48,19 @@ public class Booking implements IObject<BookingDTO> {
     private Feedback feedbackId;
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    @Size(max = 500)
     private String description;
 
     @Column(name = "service_price", nullable = false)
-    @Min(0)
     private float servicePrice;
 
     @Column(name = "travel_price", nullable = false)
-    @Min(0)
     private float travelPrice;
 
-    @Column(name = "destination", nullable = false, columnDefinition = "TEXT")
-    @Size(max = 100)
-    private String destination;
+    @Column(name = "distance_meters")
+    private float distanceMeters;
+
+    @Column(name = "user_address", columnDefinition = "TEXT")
+    private String userAddress;
 
     @Column(name = "meeting_method", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -89,13 +87,13 @@ public class Booking implements IObject<BookingDTO> {
     public BookingDTO toResponseDto() {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
-        bookingDTO.setCustomer(customer);
-        bookingDTO.setVeterian(veterian);
-        bookingDTO.setService(service);
+        bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
+        bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
+        bookingDTO.setServiceName(service.getName());
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);
         bookingDTO.setDescription(description);
-        bookingDTO.setDestination(destination);
+        bookingDTO.setUserAddress(userAddress);
         bookingDTO.setStatusEnum(statusEnum);
         bookingDTO.setCreatedAt(createdAt);
         bookingDTO.setStartedAt(startedAt);

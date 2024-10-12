@@ -1,8 +1,10 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.notifications.NotificationEntity;
+import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -69,6 +71,13 @@ public class AccountEntity implements IObject<AccountDto>{
     @JoinColumn(name = "avatar_id")
     @OneToOne
     private ImageEntity avatar;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private ProfileEntity profile;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookingEntity> bookings;
+
 
     public AccountEntity() {
     }

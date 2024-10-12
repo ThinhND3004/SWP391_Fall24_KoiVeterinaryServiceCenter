@@ -1,14 +1,9 @@
 package com.example.swp391_fall24_be.apis.feedbacks.DTOs;
 
-import com.example.swp391_fall24_be.apis.bookings.Booking;
 import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import com.example.swp391_fall24_be.core.IDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +13,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,7 +45,7 @@ public class CreateFeedbackDTO implements IDto<Feedback> {
 
     @NotNull(message = "Anonymous Status is required!")
 //    @JsonProperty("anonymous")
-    private boolean anonymous;
+    private Boolean anonymous;
 
     @Override
     public Feedback toEntity() {

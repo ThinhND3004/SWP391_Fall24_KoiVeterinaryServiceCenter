@@ -1,5 +1,7 @@
 package com.example.swp391_fall24_be.apis.timetables;
 
+import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
+import com.example.swp391_fall24_be.apis.profiles.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +14,19 @@ public class TimetableService {
     @Autowired
     private TimetableRepository repository;
 
-    public List<Timetable> doFindByVeterianId(String veterianId){
-        Optional<List<Timetable>> timetablesResult = repository.findByVeterianId(veterianId);
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    public List<TimetableEntity> doFindByVeterianId(String veterianId){
+        ProfileEntity profile = profileRepository.findByAccountId(veterianId);
+        Optional<List<TimetableEntity>> timetablesResult = repository.findByProfileId(profile.getId());
         return timetablesResult.orElse(null);
     }
 
     @Transactional
-    public List<Timetable> doSave(String veterianId, List<Timetable> timetables){
-        repository.deleteAllByVeterianId(veterianId);
+    public List<TimetableEntity> doSave(String veterianId, List<TimetableEntity> timetables){
+        ProfileEntity profile = profileRepository.findByAccountId(veterianId);
+        repository.deleteAllByProfileId(profile.getId());
         return repository.saveAll(timetables);
     }
 }
