@@ -6,6 +6,8 @@ import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.PaginateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
+import com.example.swp391_fall24_be.apis.services.ServicesRepository;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ErrorReport;
@@ -27,6 +29,9 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
     @Autowired
     AccountsRepository accountsRepository;
 
+    @Autowired
+    ServicesRepository servicesRepository;
+
     @Override
     protected void beforeCreate(BookingEntity bookingEntity) throws ProjectException {
         List<ErrorReport> errorReportList = new ArrayList<>();
@@ -45,6 +50,16 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
                     ErrorEnum.EntityNotFound,
                     "Account with ID " + bookingEntity.getVeterian().getId() + " is not a veterian."));
         }
+        bookingEntity.setVeterian(findVeterianResult.get());
+
+        Optional<ServiceEntity> findServiceResult = servicesRepository.findById(bookingEntity.getService().getId());
+        if (findServiceResult.isEmpty()) {
+            errorReportList.add(new ErrorReport(
+                    "BookingsService_beforeCreate",
+                    ErrorEnum.EntityNotFound,
+                    "Service with ID " + bookingEntity.getService().getId() + " does not exist."));
+        }
+        bookingEntity.setService(findServiceResult.get());
 
         if (!errorReportList.isEmpty()) {
             throw new ProjectException(errorReportList);

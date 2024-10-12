@@ -48,7 +48,6 @@ public abstract class AbstractService<
     public EntityType create(CreateDto dto) throws ProjectException {
         EntityType entity = dto.toEntity();
         beforeCreate(entity);
-        System.out.println(entity);
         entity = repository.save(entity);
         return entity;
     }
