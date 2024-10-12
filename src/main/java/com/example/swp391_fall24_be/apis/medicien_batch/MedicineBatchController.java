@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/medicine_batch")
-@Tag(name = "Medicine_batches", description = "Medicine_batch APIs")
+@RequestMapping("/medicine-batches")
+@Tag(name = "Medicine batches", description = "Medicine Batches APIs")
 public class MedicineBatchController extends AbstractController<
         MedicineBatchEntity,
         String,

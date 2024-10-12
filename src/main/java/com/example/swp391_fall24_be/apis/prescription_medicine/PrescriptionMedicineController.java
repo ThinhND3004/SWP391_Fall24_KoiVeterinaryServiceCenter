@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/prescription_medicine")
+@RequestMapping("/prescription-medicine")
 @Tag(name = "Prescription Medicine", description = "Save the amount of each medicine in prescription.")
 public class PrescriptionMedicineController extends AbstractController<
         PrescriptionMedicine,

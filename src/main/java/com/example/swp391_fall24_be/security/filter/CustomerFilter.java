@@ -39,14 +39,13 @@ public class CustomerFilter extends OncePerRequestFilter {
 //                AccountRoleEnum role = gson.fromJson(String.valueOf(data), AccountRoleEnum.class);
                 AccountRoleEnum roleEnum = data.getRole();
 
-                System.out.println("Kiem tra : " + data + " - " + roleEnum.getRole());
+                System.out.println("Kiem tra : " + data + " - " + roleEnum.name());
 
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
                 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleEnum.name());
                 authorityList.add(simpleGrantedAuthority);
 
-
-                UsernamePasswordAuthenticationToken authen = new UsernamePasswordAuthenticationToken("", "", authorityList);
+                UsernamePasswordAuthenticationToken authen = new UsernamePasswordAuthenticationToken(data, null, authorityList);
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authen);

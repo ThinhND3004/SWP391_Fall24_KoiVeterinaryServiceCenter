@@ -2,6 +2,8 @@ package com.example.swp391_fall24_be.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
@@ -23,7 +25,8 @@ public abstract class AbstractService<
     public List<EntityType> findAll(PaginationDto dto){
         List<EntityType> entities;
         if(dto != null){
-            entities = repository.findAll(Example.of(dto.toEntity()));
+            Pageable page = dto.getPageRequest();
+            entities =  repository.findAll(Example.of(dto.toEntity()),page).getContent();
         }
         else entities = repository.findAll();
 

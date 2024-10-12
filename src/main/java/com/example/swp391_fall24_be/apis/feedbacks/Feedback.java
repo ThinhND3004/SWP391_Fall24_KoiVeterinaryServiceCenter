@@ -29,9 +29,9 @@ public class Feedback implements IObject<FeedbackDTO> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private List<Booking> bookingList;
+    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -58,7 +58,7 @@ public class Feedback implements IObject<FeedbackDTO> {
     public FeedbackDTO toResponseDto() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setId(id);
-        feedbackDTO.setBookingList(bookingList);
+        feedbackDTO.setBooking(booking);
         feedbackDTO.setCustomer(customer);
         feedbackDTO.setStarRating(starRating);
         feedbackDTO.setComment(comment);

@@ -13,6 +13,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${spring.mail.username}")
+    private String email;
+
     public void sendOrderConfirmationEmail(String to, String recipientName, String serviceName, String date, String time, String location, String referenceNumber, String amount, String paymentMethod, String companyName, String companyPhone, String companyWebsite) {
         String subject = "Order Confirmation for Your Recent Booking";
 
@@ -41,7 +44,7 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
-        message.setFrom("your-email@example.com");
+        message.setFrom(email);
 
         javaMailSender.send(message);
     }

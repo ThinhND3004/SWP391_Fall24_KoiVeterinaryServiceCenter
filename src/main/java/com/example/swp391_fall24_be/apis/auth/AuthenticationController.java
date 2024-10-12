@@ -6,9 +6,13 @@ import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,7 +30,9 @@ public class AuthenticationController {
             AccountLoginResponseDto response = authenticationService.loginWithUsernameAndPassword(loginDto);
             return new ResponseDto<>(HttpStatus.OK.value(), "Login successfully!", response, null);
         } catch (ProjectException e) {
-            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login!", null, e.getMessage());
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
+            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login!", null, errorList);
         }
     }
 
@@ -39,8 +45,10 @@ public class AuthenticationController {
             AccountLoginResponseDto response = authenticationService.loginWithGoogle(credential);
             return new ResponseDto<>(HttpStatus.OK.value(), "Login with google successfully!", response, null);
         } catch (ProjectException e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             System.out.println(e.getMessage());
-            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login with google!", null, e.getMessage());
+            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login with google!", null, errorList);
         }
     }
 }

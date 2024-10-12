@@ -1,19 +1,23 @@
 package com.example.swp391_fall24_be.apis.timetables;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.SaveTimetableDto;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableDTO;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/timetable")
+@RequestMapping("/timetables")
 @Tag(name = "Timetables", description = "Timetables APIs")
 public class TimetableController {
     @Autowired
@@ -31,11 +35,13 @@ public class TimetableController {
 
         }
         catch(Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Save timetable failed!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
     }
@@ -55,11 +61,13 @@ public class TimetableController {
 
         }
         catch(Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Save timetable failed!",
                     null,
-                    e.getMessage()
+                    errorList
             );
         }
 

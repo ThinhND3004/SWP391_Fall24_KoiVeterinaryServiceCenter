@@ -26,13 +26,6 @@ public class BookingService extends AbstractService<Booking, String, CreateBooki
                     ErrorEnum.ValidationError,
                     "Creation time cannot be in the past!"));
         }
-        // Kiểm tra thời gian cập nhật (nếu có) phải sau thời gian tạo
-        if (entity.getUpdatedAt() != null && entity.getUpdatedAt().isBefore(entity.getCreatedAt())) {
-            errorReportList.add(new ErrorReport(
-                    "BookingService_beforeCreate",
-                    ErrorEnum.ValidationError,
-                    "Update time cannot be before creation time!"));
-        }
 
         // Kiểm tra thời gian bắt đầu phải sau thời gian hiện tại và thời gian tạo
         if (entity.getStartedAt() != null && (entity.getStartedAt().isBefore(LocalDateTime.now()) || entity.getStartedAt().isBefore(entity.getCreatedAt()))) {

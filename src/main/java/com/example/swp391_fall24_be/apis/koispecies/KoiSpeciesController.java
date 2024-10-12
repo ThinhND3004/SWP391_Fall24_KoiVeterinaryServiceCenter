@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/koi_species")
+@RequestMapping("/koi-species")
 @Tag(name = "KoiSpecies", description = "Koi Species APIs")
 public class KoiSpeciesController extends AbstractController<KoiSpeciesEntity, String, CreateKoiSpeciesDto, UpdateKoiSpeciesDto, PaginateKoiSpeciesDto, KoiSpeciesDto> {
     private final KoiSpeciesService koiSpeciesService;
