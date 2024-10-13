@@ -7,6 +7,7 @@ import com.example.swp391_fall24_be.apis.images.dtos.UpdateImageDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,7 +74,8 @@ public class ImagesController extends AbstractController
     @ApiResponse(description = "Get image", headers = {
             @Header(name = "content-type", description = "image/jpeg")
     })
-    @GetMapping(value = "/get/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
+    @Operation(summary = "Get picture", description = "Get picture by id")
+    @GetMapping(value = "/picture/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
     public byte[] getImage(@PathVariable String id) throws ProjectException {
         return service.getImage(id);
     }

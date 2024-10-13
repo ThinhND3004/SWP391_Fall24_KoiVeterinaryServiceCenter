@@ -6,7 +6,6 @@ import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/auth")
@@ -51,7 +51,7 @@ public class AuthenticationController {
         } catch (ProjectException e) {
             List<String> errorList = new ArrayList<>();
             errorList.add(e.getMessage());
-            System.out.println(e.getMessage());
+            Logger.getAnonymousLogger().info("Error: " + e.getMessage());
             return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Cannot login with google!", null, errorList);
         }
     }
