@@ -5,8 +5,10 @@ import com.example.swp391_fall24_be.apis.notifications.dtos.NotificationDto;
 import com.example.swp391_fall24_be.apis.notifications.dtos.PaginateNotificationDto;
 import com.example.swp391_fall24_be.apis.notifications.dtos.UpdateNotificationDto;
 import com.example.swp391_fall24_be.core.AbstractController;
-import com.example.swp391_fall24_be.core.AbstractService;
+import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +23,10 @@ public class NotificationsController extends AbstractController<
         PaginateNotificationDto,
         NotificationDto
         > {
+
+    @MessageMapping("/send")
+    @SendTo("/topic/notifications")
+    public ResponseDto<NotificationDto> doMessage(CreateNotificationDto dto) {
+        return super.doPost(dto);
+    }
 }
