@@ -22,7 +22,7 @@ public class NotificationEntity implements IObject<NotificationDto> {
     private Long id;
 
     @JoinColumn(name = "account_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private AccountEntity account;
 
     @Column(name = "description", nullable = false, updatable = false)
@@ -39,6 +39,6 @@ public class NotificationEntity implements IObject<NotificationDto> {
         dto.setAccount(account);
         dto.setDescription(description);
         dto.setCreatedAt(createdAt);
-        return null;
+        return dto;
     }
 }
