@@ -65,7 +65,7 @@ public class AccountEntity implements IObject<AccountDto>{
     @Enumerated(EnumType.STRING)
     private AccountRoleEnum role;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
     private List<NotificationEntity> notifications;
 
     @JoinColumn(name = "avatar_id")
