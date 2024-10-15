@@ -17,8 +17,10 @@ import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.sub_class.TimeSlot;
 import com.example.swp391_fall24_be.utils.CryptoUtils;
+import com.example.swp391_fall24_be.utils.TimeUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -79,20 +81,85 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         return null;
     }
 
-    public List<AccountDto> findIdleAccountByTime(LocalDateTime searchTime){
-        // Check if veterian work on that time
-        List<AccountEntity> idleVeterian = accountsRepository.findIdleVeterianBySearchTime(searchTime);
-        List<AccountDto> accountDtos = new ArrayList<>();
-        for (AccountEntity veterian : idleVeterian){
-            accountDtos.add(veterian.toResponseDto());
-        }
+//    @Query(value = "SELECT a.* FROM accounts a " +
+//            "JOIN profiles p ON a.id = p.account_id " +
+//            "JOIN profiles_timetables pt ON pt.profiles_id = p.id " +
+//            "JOIN timetables t ON t.id = pt.timetables_id " +
+//            "JOIN bookings b ON a.id = b.veterian_id " +
+//            "JOIN services s ON b.service_id = s.id " +
+//            "WHERE :searchTime > CAST(t.start_time AS DATETIME2) AND :searchTime < CAST(t.end_time AS DATETIME2) " +
+//            "AND :searchTime > DATEADD(HOUR, s.estimated_time + 1, b.started_at) " +
+//            "AND :searchTime < DATEADD(HOUR, 1, b.started_at)",
+//            nativeQuery = true
+//    )
 
-        return accountDtos;
+    private ServiceEntity getServiceById(String id){
+        Optional<ServiceEntity> findServiceResult = servicesRepository.findById(id);
+        if(findServiceResult.isEmpty()){
+            throw new EntityNotFoundException("Service not found!");
+        }
+        return findServiceResult.get();
     }
 
-    private LocalTime setSlotEndTime(LocalTime startTime, LocalTime estimatedTime){
-        return startTime.plusHours(estimatedTime.getHour())
+    public List<VeterianRespDto> findIdleAccountByTime(String serviceId, LocalDateTime searchTime){
+        // Check if veterian work on that time
+        List<AccountEntity> idleVeterians = accountsRepository.findAllByRoleAndIsDisable(AccountRoleEnum.VETERIAN, false);
+        List<VeterianRespDto> veterianDtos = new ArrayList<>();
+        ServiceEntity bookedService = getServiceById(serviceId);
+        LocalTime estimatedTime = bookedService.getEstimatedTime();
+
+        LocalDateTime searchEndTime = searchTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());
+
+        for(AccountEntity veterian : idleVeterians){
+            // Check if the searchTime is in timetable
+            boolean isInTimetable = false;
+            boolean isInBooking = false;
+            System.out.println(veterian.getProfile().getId());
+            System.out.println(veterian.getProfile().getTimetables().toString());
+
+            for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
+
+                    if(
+                            searchTime.getDayOfWeek() == timetable.getDayOfWeek() &&
+                            (!searchTime.toLocalTime().isBefore(timetable.getStartTime()) &&
+                            !searchEndTime.toLocalTime().isAfter(timetable.getEndTime()))
+                    )
+                    {
+                        isInTimetable = true;
+                        break;
+                    }
+            }
+
+            if(isInTimetable){
+                // Check if searchTime is not in Booking time
+                List<BookingEntity> veterianBookingList = bookingRepository.
+                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(veterian, StatusEnum.CONFIRMED, StatusEnum.PENDING);
+                for (BookingEntity booking: veterianBookingList) {
+                    LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
+                            booking.getService().getEstimatedTime());
+
+                    // Find if search time is in Booking that has been reserved
+                    //    1. Check if start time is in Booking
+                    //    2. Check if end time is in Booking
+                    if (
+                            searchTime.isAfter(booking.getStartedAt()) && searchTime.isBefore(bookingEndTime) ||
+                            searchEndTime.isAfter(booking.getStartedAt()) && searchEndTime.isBefore(bookingEndTime)
+                    ) {
+                        isInBooking = true;
+                        break;
+                    }
+                }
+            }
+
+            if(isInTimetable && !isInBooking){
+                veterianDtos.add(veterian.toVeterianResponseDto(null));
+            }
+
+
+        }
+
+        return veterianDtos;
     }
 
     private List<TimeSlot>  getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
@@ -111,17 +178,14 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             for(TimetableEntity timetable : timetableList){
                 LocalTime slotStartTime = timetable.getStartTime();
                 LocalTime estimatedTime = bookedService.getEstimatedTime();
-                LocalTime slotEndTime = setSlotEndTime(slotStartTime,estimatedTime);
+                LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
 
-                List<BookingEntity> veterianBookingList = bookingRepository.findByVeterianOrderByStartedAtAsc(account);
+                List<BookingEntity> veterianBookingList = bookingRepository.
+                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(account, StatusEnum.CONFIRMED, StatusEnum.PENDING);
                 // Exclude time slot that appear in booking
                 for (BookingEntity booking: veterianBookingList){
                     // Out of range timetable
                     if(slotEndTime.isAfter(timetable.getEndTime())) break;
-
-                    // Check if booking is finished
-                    if (booking.getStatusEnum() != StatusEnum.CONFIRMED && booking.getStatusEnum() != StatusEnum.PENDING)
-                        continue;
 
                     // Check day of week
                     if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek()){
@@ -133,7 +197,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         if(slotStartTime.isBefore(bookingStartTime) && slotEndTime.isAfter(bookingStartTime)){
                             // Update start time
                             slotStartTime = bookingEndTime.plusHours(1);
-                            slotEndTime = setSlotEndTime(slotStartTime,estimatedTime);
+                            slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                             continue;
                         }
 
@@ -156,11 +220,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         List<AccountEntity> veterianList = accountsRepository.findAllByRoleAndIsDisable(AccountRoleEnum.VETERIAN, false);
         List<VeterianRespDto> veterianRespDtos = new ArrayList<>();
 
-        Optional<ServiceEntity> findServiceResult = servicesRepository.findById(serviceId);
-        if(findServiceResult.isEmpty()){
-            throw new EntityNotFoundException("Service not found!");
-        }
-        ServiceEntity bookedService = findServiceResult.get();
+        ServiceEntity bookedService = getServiceById(serviceId);
 
         for (AccountEntity veterian : veterianList){
             VeterianRespDto dto = new VeterianRespDto();
@@ -174,7 +234,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
             ProfileEntity profile = veterian.getProfile();
             profile.setTimetables(null);
-            dto.setProfile(profile);
+            dto.setProfileDto(profile.toResponseDto());
         }
         return veterianRespDtos;
     }

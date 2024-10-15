@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,25 +35,26 @@ public class AccountsController extends AbstractController<AccountEntity, String
             );
     }
 
-    @GetMapping("/idle-veterian-by-time/{startDate}")
-    public ResponseDto<List<AccountDto>> getIdleVeterianByTime(
-            @Param("startDate") LocalDateTime startTime
-            ){
+    @GetMapping("/idle-veterian-by-time/{serviceId}/{startDateTime}")
+    public ResponseDto<List<VeterianRespDto>> getIdleVeterianByTime(
+            @PathVariable String serviceId,
+            @PathVariable LocalDateTime startDateTime
+    ){
         return new ResponseDto<>(
                 HttpStatus.OK.value(),
-                "Get current account from token success!",
-                accountsService.findIdleAccountByTime(startTime),
+                "Get idle veterian by time successful!",
+                accountsService.findIdleAccountByTime(serviceId,startDateTime),
                 null
         );
     }
 
-    @GetMapping("/veterian-with-time-slot/{service-id}")
+    @GetMapping("/veterian-with-time-slot/{serviceId}")
     public ResponseDto<List<VeterianRespDto>> getVeterianWithTimeSlot(
-            @Param("service-id") String serviceId
+            @PathVariable String serviceId
     ){
         return new ResponseDto<>(
                 HttpStatus.OK.value(),
-                "Get current account from token success!",
+                "Get veterian with time slot successful!",
                 accountsService.findVeterianWithTimeSlot(serviceId),
                 null
         );

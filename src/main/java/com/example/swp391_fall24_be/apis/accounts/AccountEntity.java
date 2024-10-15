@@ -1,11 +1,13 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
 import com.example.swp391_fall24_be.apis.accounts.dtos.AccountDto;
+import com.example.swp391_fall24_be.apis.accounts.dtos.VeterianRespDto;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.notifications.NotificationEntity;
 import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
 import com.example.swp391_fall24_be.core.IObject;
+import com.example.swp391_fall24_be.sub_class.TimeSlot;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -111,6 +113,21 @@ public class AccountEntity implements IObject<AccountDto>{
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
         dto.setDisable(isDisable);
+        return dto;
+    }
+
+    public VeterianRespDto toVeterianResponseDto(List<TimeSlot> timeSlots){
+        VeterianRespDto dto = new VeterianRespDto();
+        dto.setEmail(email);
+        dto.setDob(dob);
+        dto.setAddress(address);
+        dto.setPhone(phone);
+        dto.setRole(role);
+
+        dto.setTimeSlot(timeSlots);
+
+        dto.setProfileDto(profile.toResponseDto());
+
         return dto;
     }
 }

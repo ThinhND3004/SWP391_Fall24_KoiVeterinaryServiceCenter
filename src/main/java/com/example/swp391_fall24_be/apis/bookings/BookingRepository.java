@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface BookingRepository extends JpaRepository<BookingEntity, String> {
     List<BookingEntity> findByVeterianOrderByStartedAtAsc(AccountEntity veterian);
 
+    List<BookingEntity> findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(AccountEntity veterian, StatusEnum statusEnum, StatusEnum statusEnum2);
+
 }
