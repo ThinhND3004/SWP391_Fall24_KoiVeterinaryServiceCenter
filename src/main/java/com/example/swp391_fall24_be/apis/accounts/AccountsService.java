@@ -15,6 +15,7 @@ import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ProjectException;
+import com.example.swp391_fall24_be.sub_class.TimeRange;
 import com.example.swp391_fall24_be.sub_class.TimeSlot;
 import com.example.swp391_fall24_be.utils.CryptoUtils;
 import com.example.swp391_fall24_be.utils.TimeUtils;
@@ -143,8 +144,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
                     if (
-                            searchTime.isAfter(booking.getStartedAt()) && searchTime.isBefore(bookingEndTime) ||
-                            searchEndTime.isAfter(booking.getStartedAt()) && searchEndTime.isBefore(bookingEndTime)
+                            (searchTime.isAfter(booking.getStartedAt()) && searchTime.isBefore(bookingEndTime)
+                            || searchEndTime.isAfter(booking.getStartedAt()) && searchEndTime.isBefore(bookingEndTime))
+                            || (searchTime.equals(booking.getStartedAt()) && searchEndTime.equals(bookingEndTime))
                     ) {
                         isInBooking = true;
                         break;
@@ -155,16 +157,16 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable && !isInBooking){
                 veterianDtos.add(veterian.toVeterianResponseDto(null));
             }
-
-
         }
-
         return veterianDtos;
     }
 
     private List<TimeSlot>  getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
         List<TimeSlot> timeSlotList = new ArrayList<>();
         LocalDate today = LocalDate.now();
+
+        List<BookingEntity> veterianBookingList = bookingRepository.
+                findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(account, StatusEnum.CONFIRMED, StatusEnum.PENDING);
 
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {
@@ -176,43 +178,54 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             timeSlot.setDate(currentDate);
 
             for(TimetableEntity timetable : timetableList){
-                LocalTime slotStartTime = timetable.getStartTime();
-                LocalTime estimatedTime = bookedService.getEstimatedTime();
-                LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
-
-                List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(account, StatusEnum.CONFIRMED, StatusEnum.PENDING);
                 // Exclude time slot that appear in booking
                 for (BookingEntity booking: veterianBookingList){
-                    // Out of range timetable
-                    if(slotEndTime.isAfter(timetable.getEndTime())) break;
+                    List<TimeRange> timeSlotPerBooking = new ArrayList<>();
+                    LocalTime slotStartTime = timetable.getStartTime();
+                    LocalTime estimatedTime = bookedService.getEstimatedTime();
+                    LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+                    while (!slotEndTime.isAfter(timetable.getEndTime())){
+                            //Check if it is current day and timetable == booking day of week
+                        System.out.println("DATE COMPARE: " + currentDate + " - " +booking.getStartedAt().toLocalDate() + " = "+
+                                currentDate.equals(booking.getStartedAt().toLocalDate()));
+                        System.out.println("DAY OF WEEK: " + timetable.getDayOfWeek() + " - " + booking.getStartedAt().getDayOfWeek() + " = " +
+                                (timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek()));
+                        if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
+                                currentDate.equals(booking.getStartedAt().toLocalDate())
+                        ) {
 
-                    // Check day of week
-                    if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek()){
-                        LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
-                        LocalTime bookingServiceEstimatedTime =  booking.getService().getEstimatedTime();
-                        LocalTime bookingEndTime = bookingStartTime.plusHours(bookingServiceEstimatedTime.getHour())
-                                .plusMinutes(bookingServiceEstimatedTime.getMinute());
-                        // Check if there is a booking in the time slot
-                        if(slotStartTime.isBefore(bookingStartTime) && slotEndTime.isAfter(bookingStartTime)){
-                            // Update start time
-                            slotStartTime = bookingEndTime.plusHours(1);
+                            LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
+                            LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
+                            LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
+                                // Check if there is a booking in the time slot
+
+                                if (
+                                        (slotStartTime.isAfter(bookingStartTime) && slotStartTime.isBefore(bookingEndTime)
+                                        || slotEndTime.isAfter(bookingStartTime) && slotEndTime.isBefore(bookingEndTime))
+                                        || (slotStartTime.equals(bookingStartTime) && slotEndTime.equals(bookingEndTime))
+                                ) {
+                                    // Update status
+                                    slotStartTime = bookingEndTime;
+                                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                                    continue;
+                                }
+                            }
+                            timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                            slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
                             slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
-                            continue;
                         }
-
+                        if(timeSlot.getSlots().isEmpty() ||
+                            timeSlot.getSlots().size() > timeSlotPerBooking.size()
+                        ){
+                            timeSlot.setSlots(timeSlotPerBooking);
+                        }
                     }
-
-                    // Save time slots
-                    if(slotEndTime.isAfter(timetable.getEndTime())) break;
-                    timeSlot.getSlots().put(slotStartTime,slotEndTime);
-
                 }
-                if (!timeSlot.getSlots().isEmpty())
+                if(!timeSlot.getSlots().isEmpty()){
                     timeSlotList.add(timeSlot);
-            }
-        }
+                }
 
+            }
         return timeSlotList;
     }
 
@@ -223,18 +236,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         ServiceEntity bookedService = getServiceById(serviceId);
 
         for (AccountEntity veterian : veterianList){
-            VeterianRespDto dto = new VeterianRespDto();
-            dto.setEmail(veterian.getEmail());
-            dto.setDob(veterian.getDob());
-            dto.setAddress(veterian.getAddress());
-            dto.setPhone(veterian.getPhone());
-            dto.setRole(veterian.getRole());
-
-            dto.setTimeSlot(getValidTimeSlot(veterian,bookedService));
-
-            ProfileEntity profile = veterian.getProfile();
-            profile.setTimetables(null);
-            dto.setProfileDto(profile.toResponseDto());
+            veterianRespDtos.add(
+                    veterian.toVeterianResponseDto(getValidTimeSlot(veterian,bookedService))
+            );
         }
         return veterianRespDtos;
     }
