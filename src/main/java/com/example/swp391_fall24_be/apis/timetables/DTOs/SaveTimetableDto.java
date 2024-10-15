@@ -17,10 +17,11 @@ public class SaveTimetableDto {
     @NotNull(message = "Timetable is required")
     private List<RequestTimetableDto> timetableDTOS;
 
-    public List<TimetableEntity> toList() {
+    public List<TimetableEntity> toList(ProfileEntity profile) {
         List<TimetableEntity> timetableList = new ArrayList<>();
         for (RequestTimetableDto timetableDTO : timetableDTOS){
             TimetableEntity timetable = new TimetableEntity();
+            timetable.setProfile(profile);
             timetable.setDayOfWeek(timetableDTO.getDayOfWeek());
             timetable.setStartTime(LocalTime.of(
                     timetableDTO.getStartTime().getHours(),

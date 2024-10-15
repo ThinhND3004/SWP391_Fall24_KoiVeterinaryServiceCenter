@@ -6,6 +6,7 @@ import com.example.swp391_fall24_be.apis.timetables.TimetableEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -46,7 +47,7 @@ public class ProfileEntity implements IObject<ProfileDto> {
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 
-    @OneToMany
+    @OneToMany(mappedBy = "profile")
     private List<TimetableEntity> timetables;
 
     public ProfileEntity() {
@@ -55,6 +56,11 @@ public class ProfileEntity implements IObject<ProfileDto> {
 
     @Override
     public ProfileDto toResponseDto() {
-        return null;
+        ProfileDto dto = new ProfileDto();
+        dto.setCertification(certification);
+        dto.setEducation(education);
+        dto.setCreateAt(createAt);
+        dto.setUpdateAt(updateAt);
+        return dto;
     }
 }
