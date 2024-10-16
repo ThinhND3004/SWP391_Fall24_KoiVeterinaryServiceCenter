@@ -14,7 +14,7 @@ services:
     expose:
       - "1433"
     env_file:
-      - .env
+      - .env.example
     volumes:
       - ms-sql-data:/var/opt/mssql
       - ./entrypoint.sh:/usr/src/entrypoint.sh
@@ -38,7 +38,7 @@ services:
       - TZ=Asia/Ho_Chi_Minh
       - DB_HOST=ms-sql-server
     env_file:
-      - .env
+      - .env.example
     volumes:
       - ./${LOCAL_PATH}:/app/${LOCAL_PATH}
     depends_on:
