@@ -3,22 +3,25 @@ package com.example.swp391_fall24_be.apis.accounts.dtos;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class UpdateAccountDto implements IDto<AccountEntity> {
     @NotBlank(message = "First name is required!")
-    @Max(value = 20, message = "Length of first name must not exceed 20 letters!")
+    @Size(max = 20, message = "Length of first name must not exceed 20 letters!")
     @JsonProperty("firstName")
     private String firstName;
     @NotBlank(message = "First name is required!")
-    @Max(value = 20, message = "Length of first name must not exceed 20 letters!")
+    @Size(max = 20, message = "Length of last name must not exceed 20 letters!")
     @JsonProperty("lastName")
     private String lastName;
-    @NotBlank(message = "Date of birth is required!")
+    @NotNull(message = "Date of birth is required!")
+    @Past(message = "Date of birth must be in the past!")
     @JsonProperty("dob")
     private LocalDate dob;
     @NotBlank(message = "Phone is required!")
@@ -27,7 +30,7 @@ public class UpdateAccountDto implements IDto<AccountEntity> {
     private String phone;
 
     @NotBlank(message = "Address is required!")
-    @Max(value = 200, message = "Length of address must not exceed 200 letters!")
+    @Size(max = 200, message = "Length of address must not exceed 200 letters!")
     @JsonProperty("address")
     private String address;
 
