@@ -3,9 +3,12 @@ package com.example.swp391_fall24_be.apis.timetables;
 import com.example.swp391_fall24_be.annotations.CurrentAccount;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.SaveTimetableDto;
+import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableDTO;
 import com.example.swp391_fall24_be.core.ResponseDto;
+import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +23,13 @@ public class TimetableController {
     @Autowired
     private TimetableService service;
 
-    @GetMapping("/{veterianId}")
-    private ResponseDto<List<TimetableEntity>> findAll(@PathVariable("veterianId") String veterianId){
+    @GetMapping
+    private ResponseDto<List<TimetableEntity>> findAll(){
         try {
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Save timetable successful!",
-                    service.doFindByVeterianId(veterianId),
+                    service.doFindByVeterianId(AuthUtils.getCurrentAccount()),
                     null
             );
 
@@ -43,16 +46,16 @@ public class TimetableController {
         }
     }
 
-    @PostMapping("/save/{veterianId}")
-    private ResponseDto<List<TimetableEntity>> saveTimetable(
-            @Parameter(hidden = true) @CurrentAccount AccountEntity account,
+    @PostMapping("/save")
+    private ResponseDto<List<TimetableDTO>> saveTimetable(
             @RequestBody SaveTimetableDto dto
     ) {
         try {
+            AccountEntity currentAccount = AuthUtils.getCurrentAccount();
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Save timetable successful!",
-                    service.doSave(account.getId(), dto.toList()),
+                    service.doSave(currentAccount, dto.toList(currentAccount.getProfile())),
                     null
             );
 

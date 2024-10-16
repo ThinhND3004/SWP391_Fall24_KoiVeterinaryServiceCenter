@@ -27,8 +27,8 @@ public class TimetableEntity implements IObject<TimetableDTO> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "profile", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "profile_id", nullable = false)
     private ProfileEntity profile;
 
     @Column(name = "day_of_week", nullable = false)

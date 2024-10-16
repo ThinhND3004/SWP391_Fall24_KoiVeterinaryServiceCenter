@@ -1,10 +1,5 @@
 package com.example.swp391_fall24_be.core;
 
-import com.example.swp391_fall24_be.annotations.CurrentAccount;
-import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
-import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

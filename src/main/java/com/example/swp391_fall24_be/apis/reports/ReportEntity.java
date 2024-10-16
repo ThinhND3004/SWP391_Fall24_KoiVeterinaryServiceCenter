@@ -15,7 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "treatments")
+@Entity(name = "reports")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
