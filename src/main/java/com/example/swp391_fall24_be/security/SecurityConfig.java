@@ -47,7 +47,7 @@ public class SecurityConfig {
                         // PUBLIC ACCESS
                         .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
                             .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                        .requestMatchers(HttpMethod.GET, "/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**", "/accounts/**")
                             .permitAll()
 
                         // CUSTOMER
