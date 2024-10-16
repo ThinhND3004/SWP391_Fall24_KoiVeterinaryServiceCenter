@@ -10,7 +10,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -32,7 +35,8 @@ public class UpdateBookingDTO implements IDto<BookingEntity> {
     @Column(name = "status", nullable = false)
     private StatusEnum statusEnum;
 
-    @NotBlank(message = "Start Date is required!")
+    @NotNull(message = "Start Date is required!")
+    @FutureOrPresent(message = "Start Date must be in the future or present")
     private LocalDateTime startedAt;
 
     @Override
