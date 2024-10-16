@@ -7,6 +7,7 @@ import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,6 +55,7 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
     private MeetingMethodEnum meetingMethod;
 
     @NotNull(message = "Start At is required!")
+    @FutureOrPresent(message = "Start At must be in the future or present")
     private LocalDateTime startAt;
 
     @Override
