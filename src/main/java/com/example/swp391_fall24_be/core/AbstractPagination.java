@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+
 public abstract class AbstractPagination<EntityType> implements IDto<EntityType>  {
     protected int page;
     protected int unitPerPage;
