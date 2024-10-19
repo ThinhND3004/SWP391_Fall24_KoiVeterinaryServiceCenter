@@ -20,7 +20,7 @@ public abstract class AbstractPagination<EntityType> implements IDto<EntityType>
     }
 
     public AbstractPagination(Integer page, Integer unitPerPage) {
-        this.page = page != null ? page : 1;
+        this.page = page != null ? page-1  : 0;
         this.unitPerPage = unitPerPage != null ? unitPerPage : 10;
     }
 }

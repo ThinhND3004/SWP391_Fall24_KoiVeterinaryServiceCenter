@@ -27,14 +27,26 @@ public class AccountsController extends AbstractController<AccountEntity, String
     private AccountsService accountsService;
     @GetMapping("/current")
     public ResponseDto<AccountDto> getAccountDetails(@Parameter(hidden = true) @CurrentAccount AccountEntity account) {
-            return new ResponseDto<>(
-                    HttpStatus.OK.value(),
-                    "Get current account from token success!",
-                    account.toResponseDto(),
-                    null
-            );
+        return new ResponseDto<>(
+            HttpStatus.OK.value(),
+            "Get current account from token success!",
+            account.toResponseDto(),
+            null
+        );
     }
 
+    @GetMapping("/search-by-name/{searchName}")
+    public ResponseDto<List<AccountDto>> getSearchAccounts(
+            PaginateAccountDto paginateAccountDto,
+            @PathVariable("searchName") String searchName
+    ) {
+        return new ResponseDto<>(
+                HttpStatus.OK.value(),
+                "Get current account from token success!",
+                accountsService.getAccountsBySearchFullName(paginateAccountDto, searchName),
+                null
+        );
+    }
     @GetMapping("/idle-veterian-by-time/{serviceId}/{startDateTime}")
     public ResponseDto<List<VeterianRespDto>> getIdleVeterianByTime(
             @PathVariable String serviceId,
