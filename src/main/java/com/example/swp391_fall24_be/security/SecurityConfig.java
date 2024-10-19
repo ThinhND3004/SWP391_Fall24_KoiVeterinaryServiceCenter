@@ -44,14 +44,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // PUBLIC ACCESS
+                        .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
+                            .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/accounts/**")
+                            .permitAll()
 
-                            // PUBLIC ACCESS
-                            .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
-                                .permitAll()
-                            .requestMatchers(HttpMethod.GET,"/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
-                                .permitAll()
-                            .requestMatchers(HttpMethod.OPTIONS, "/**")
-                                .permitAll()
+                        .requestMatchers(HttpMethod.GET,"/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                            .permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**")
+                            .permitAll()
 
 
                             // HAS AN ACCOUNT

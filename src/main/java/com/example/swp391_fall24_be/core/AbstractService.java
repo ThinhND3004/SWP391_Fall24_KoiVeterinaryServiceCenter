@@ -28,7 +28,7 @@ public abstract class AbstractService<
         List<EntityType> entities;
         if(dto != null){
             Pageable page = dto.getPageRequest();
-            entities =  repository.findAll(Example.of(dto.toEntity()),page).getContent();
+            entities =  repository.findAll(Example.of(dto.toEntity()));
         }
         else entities = repository.findAll();
 
