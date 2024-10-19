@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,6 +44,19 @@ public class AccountsController extends AbstractController<AccountEntity, String
                 null
         );
     }
+
+    @PostMapping("/update-status")
+    public ResponseDto<Boolean> updateStatus(
+            @RequestBody UpdateStatusAccountDto dto
+    ){
+        return new ResponseDto<>(
+                HttpStatus.OK.value(),
+                "Update status for account successful",
+                accountsService.updateStatus(dto),
+                null
+        );
+    }
+
     @GetMapping("/idle-veterian-by-time/{serviceId}/{startDateTime}")
     public ResponseDto<List<VeterianRespDto>> getIdleVeterianByTime(
             @PathVariable String serviceId,
