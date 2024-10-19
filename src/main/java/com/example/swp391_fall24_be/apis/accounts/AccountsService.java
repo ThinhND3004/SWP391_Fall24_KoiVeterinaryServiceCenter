@@ -21,6 +21,7 @@ import com.example.swp391_fall24_be.utils.CryptoUtils;
 import com.example.swp391_fall24_be.utils.TimeUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -82,17 +83,15 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         return null;
     }
 
-//    @Query(value = "SELECT a.* FROM accounts a " +
-//            "JOIN profiles p ON a.id = p.account_id " +
-//            "JOIN profiles_timetables pt ON pt.profiles_id = p.id " +
-//            "JOIN timetables t ON t.id = pt.timetables_id " +
-//            "JOIN bookings b ON a.id = b.veterian_id " +
-//            "JOIN services s ON b.service_id = s.id " +
-//            "WHERE :searchTime > CAST(t.start_time AS DATETIME2) AND :searchTime < CAST(t.end_time AS DATETIME2) " +
-//            "AND :searchTime > DATEADD(HOUR, s.estimated_time + 1, b.started_at) " +
-//            "AND :searchTime < DATEADD(HOUR, 1, b.started_at)",
-//            nativeQuery = true
-//    )
+    public List<AccountDto> getAccountsBySearchFullName(PaginateAccountDto paginateAccountDto, String searchValue){
+        Pageable pageable = paginateAccountDto.getPageRequest();
+        List<AccountEntity> accounts = accountsRepository.findBySearchFullName(searchValue,paginateAccountDto.role,pageable);
+        List<AccountDto> accountDtos = new ArrayList<>();
+        for (AccountEntity account : accounts){
+            accountDtos.add(account.toResponseDto());
+        }
+        return accountDtos;
+    }
 
     private ServiceEntity getServiceById(String id){
         Optional<ServiceEntity> findServiceResult = servicesRepository.findById(id);

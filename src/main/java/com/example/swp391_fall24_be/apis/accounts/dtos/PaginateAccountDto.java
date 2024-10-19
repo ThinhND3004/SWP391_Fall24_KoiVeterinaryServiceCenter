@@ -7,7 +7,7 @@ import com.example.swp391_fall24_be.core.AbstractPagination;
 import java.beans.ConstructorProperties;
 
 public class PaginateAccountDto extends AbstractPagination<AccountEntity> {
-    protected AccountRoleEnum role;
+    public AccountRoleEnum role;
 
     @ConstructorProperties({"page", "unitPerPage", "role"})
     public PaginateAccountDto(Integer page, Integer unitPerPage, AccountRoleEnum role) {

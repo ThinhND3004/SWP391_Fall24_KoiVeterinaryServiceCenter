@@ -44,30 +44,32 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // PUBLIC ACCESS
-                        .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
-                            .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
-                            .permitAll()
+                            // PUBLIC ACCESS
+                            .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
+                                .permitAll()
+                            .requestMatchers(HttpMethod.GET,"/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                                .permitAll()
+                            .requestMatchers(HttpMethod.OPTIONS, "/**")
+                                .permitAll()
 
-                        // CUSTOMER
-                        .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
-                            .hasAuthority(AccountRoleEnum.CUSTOMER.name())
+                            // HAS AN ACCOUNT
+                            .requestMatchers("/bookings/**", "/images/**","/notifications/**")
+                                .authenticated()
+                            .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
+                                .authenticated()
 
-                        // VETERIAN
-                        .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
-                            .hasAuthority(AccountRoleEnum.VETERIAN.name())
+                            // CUSTOMER
+                            .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
+                                .hasAuthority(AccountRoleEnum.CUSTOMER.name())
 
-                        // ADMIN, STAFF, MANAGER
-                        .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
-                                        "/shipping/**")
-                            .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
+                            // VETERIAN
+                            .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
+                                .hasAuthority(AccountRoleEnum.VETERIAN.name())
 
-                        // HAS AN ACCOUNT
-                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
-                            .authenticated()
-                        .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**")
-                            .authenticated()
+                            // ADMIN, STAFF, MANAGER
+                            .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
+                                            "/shipping/**")
+                                .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
 
                         .anyRequest().permitAll())
                 .build();
