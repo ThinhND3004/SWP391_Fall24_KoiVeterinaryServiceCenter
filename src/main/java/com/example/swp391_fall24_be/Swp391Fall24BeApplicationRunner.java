@@ -3,17 +3,25 @@ package com.example.swp391_fall24_be;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
+import com.example.swp391_fall24_be.apis.services.ServiceMeetingMethodEnum;
+import com.example.swp391_fall24_be.apis.services.ServiceTypeEnum;
+import com.example.swp391_fall24_be.apis.services.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Component
 public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
     @Autowired
     private AccountsRepository accountsRepository;
+
+    @Autowired
+    private ServicesRepository servicesRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -39,6 +47,18 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
                     "Veterian",
                     LocalDate.of(1990, 5, 15),
                     "0121111111",
+                    "123 Elm St, Springfield",
+                    AccountRoleEnum.VETERIAN
+            ));
+        }
+        if(accountsRepository.findByEmail("veterian1@example.com").isEmpty()){
+            accountsRepository.save(new AccountEntity(
+                    "veterian1@example.com",
+                    "RxQpK/m582cQWvNvQISWpGmH2fPK+BijaOeyYP6grRY=", // password: veterian
+                    "Veterian",
+                    "Veterian",
+                    LocalDate.of(1990, 5, 15),
+                    "0121111119",
                     "123 Elm St, Springfield",
                     AccountRoleEnum.VETERIAN
             ));
@@ -100,5 +120,57 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
             ));
         }
         System.out.println("APPLICATION RUNNER COMPLETE!");
+
+//        servicesRepository.save(new ServiceEntity(
+//                "Online Consultant",
+//                ServiceTypeEnum.KOI,
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                ServiceMeetingMethodEnum.ONLINE,
+//                200.00f,
+//                0.0f,
+//                LocalTime.of(45 / 60,  45 % 60),
+//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+//                false
+//        ));
+//
+//        servicesRepository.save(new ServiceEntity(
+//                "Pond Quality",
+//                ServiceTypeEnum.POND,
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                ServiceMeetingMethodEnum.OFFLINE_HOME,
+//                500.00f,
+//                1.0f,
+//                LocalTime.of(120 / 60,  120 % 60),
+//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+//                false
+//        ));
+//
+//        servicesRepository.save(new ServiceEntity(
+//                "Koi Treatment at home",
+//                ServiceTypeEnum.KOI,
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                ServiceMeetingMethodEnum.OFFLINE_HOME,
+//                600.00f,
+//                1.0f,
+//                LocalTime.of(120 / 60,  120 % 60),
+//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+//                false
+//        ));
+//
+//        servicesRepository.save(new ServiceEntity(
+//                "Koi Treatment at center",
+//                ServiceTypeEnum.KOI,
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+//                ServiceMeetingMethodEnum.OFFLINE_CENTER,
+//                600.00f,
+//                0.0f,
+//                LocalTime.of(120 / 60,  120 % 60),
+//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+//                false
+//        ));
     }
 }

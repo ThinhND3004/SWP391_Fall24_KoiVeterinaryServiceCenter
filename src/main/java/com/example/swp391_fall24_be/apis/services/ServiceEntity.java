@@ -57,6 +57,25 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @Column(name = "is_disable", nullable = false)
     private boolean isDisable;
 
+    @Column(name = "address")
+    private String address;
+
+    public ServiceEntity(String name, ServiceTypeEnum type, String overview, String description, ServiceMeetingMethodEnum meetingMethod, float price, float travelPricePerMeter, LocalTime estimatedTime, String address, boolean isDisable) {
+        this.name = name;
+        this.type = type;
+        this.overview = overview;
+        this.description = description;
+        this.meetingMethod = meetingMethod;
+        this.price = price;
+        this.travelPricePerMeter = travelPricePerMeter;
+        this.estimatedTime = estimatedTime;
+        this.address = address;
+        this.isDisable = isDisable;
+    }
+
+    public ServiceEntity() {
+    }
+
     @Override
     public ServiceDto toResponseDto() {
         ServiceDto dto = new ServiceDto();

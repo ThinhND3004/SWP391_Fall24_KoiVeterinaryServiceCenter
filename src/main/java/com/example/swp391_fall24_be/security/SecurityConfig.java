@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
                             // PUBLIC ACCESS
                             .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
                                 .permitAll()
@@ -51,6 +52,7 @@ public class SecurityConfig {
                                 .permitAll()
                             .requestMatchers(HttpMethod.OPTIONS, "/**")
                                 .permitAll()
+
 
                             // HAS AN ACCOUNT
                             .requestMatchers("/bookings/**", "/images/**","/notifications/**")
