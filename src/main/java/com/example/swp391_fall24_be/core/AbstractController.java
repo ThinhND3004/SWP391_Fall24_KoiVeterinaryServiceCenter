@@ -33,12 +33,24 @@ public abstract class AbstractController<
             for (EntityType entity : entityList){
                 responseData.add(entity.toResponseDto());
             }
-            return new ResponseDto<>(
-                    HttpStatus.OK.value(),
-                    "Get many successfully!",
-                    responseData,
-                    null
-            );
+            if (responseData.isEmpty())
+            {
+                return new ResponseDto<>(
+                        HttpStatus.OK.value(),
+                        "Get many failed!",
+                        responseData,
+                        null
+                );
+            } else {
+                return new ResponseDto<>(
+                        HttpStatus.OK.value(),
+                        "Get many successfully!",
+                        responseData,
+                        null
+                );
+            }
+
+
         }
         catch (Exception e){
             List<String> errorList = new ArrayList<>();

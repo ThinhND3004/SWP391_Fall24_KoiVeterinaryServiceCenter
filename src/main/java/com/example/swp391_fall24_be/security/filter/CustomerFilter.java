@@ -39,7 +39,7 @@ public class CustomerFilter extends OncePerRequestFilter {
 //                AccountRoleEnum role = gson.fromJson(String.valueOf(data), AccountRoleEnum.class);
                 AccountRoleEnum roleEnum = data.getRole();
 
-                Logger.getAnonymousLogger().info("Kiem tra : " + roleEnum.name());
+                Logger.getAnonymousLogger().info("CHECK ROLE IN CUSTOMFILTER: " + roleEnum.name());
 
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
                 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleEnum.name());

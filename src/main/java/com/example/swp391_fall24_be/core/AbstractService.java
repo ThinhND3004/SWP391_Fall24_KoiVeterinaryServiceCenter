@@ -5,11 +5,12 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public abstract class AbstractService<
         EntityType,
         IdType,
@@ -17,6 +18,7 @@ public abstract class AbstractService<
         UpdateDto extends IDto<EntityType>,
         PaginationDto extends AbstractPagination<EntityType>
 > implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
+
     @Autowired
     protected JpaRepository<EntityType, IdType> repository;
 
