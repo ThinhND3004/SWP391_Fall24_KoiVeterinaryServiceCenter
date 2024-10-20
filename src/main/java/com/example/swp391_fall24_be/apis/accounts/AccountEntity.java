@@ -123,9 +123,8 @@ public class AccountEntity implements IObject<AccountDto>{
         dto.setAddress(address);
         dto.setPhone(phone);
         dto.setRole(role);
-
+        dto.setFullName(firstName + " " + lastName);
         dto.setTimeSlot(timeSlots);
-
         dto.setProfileDto(profile.toResponseDto());
 
         return dto;

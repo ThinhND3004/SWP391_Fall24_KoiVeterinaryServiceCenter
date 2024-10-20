@@ -61,6 +61,7 @@ public class ProfileEntity implements IObject<ProfileDto> {
         dto.setEducation(education);
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
+        dto.setYearOfExperience(yearOfExperience);
         return dto;
     }
 }
