@@ -21,6 +21,7 @@ public abstract class AbstractController<
         PaginationDto extends AbstractPagination<EntityType>,
         ResponseType
 > implements IController<EntityType, IdType, CreateDto, UpdateDto, PaginationDto, ResponseType> {
+
     @Autowired
     protected AbstractService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto> service;
     @Override
@@ -31,6 +32,7 @@ public abstract class AbstractController<
         try {
             List<EntityType> entityList = service.findAll(paginationDto);
             for (EntityType entity : entityList){
+                System.out.println("KIEM TRA SERVICE ENTITY: " + entity.toString());
                 responseData.add(entity.toResponseDto());
             }
             if (responseData.isEmpty())

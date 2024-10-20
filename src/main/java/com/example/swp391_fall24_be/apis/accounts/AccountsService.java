@@ -21,8 +21,10 @@ import com.example.swp391_fall24_be.utils.CryptoUtils;
 import com.example.swp391_fall24_be.utils.TimeUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -82,17 +84,20 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         return null;
     }
 
-//    @Query(value = "SELECT a.* FROM accounts a " +
-//            "JOIN profiles p ON a.id = p.account_id " +
-//            "JOIN profiles_timetables pt ON pt.profiles_id = p.id " +
-//            "JOIN timetables t ON t.id = pt.timetables_id " +
-//            "JOIN bookings b ON a.id = b.veterian_id " +
-//            "JOIN services s ON b.service_id = s.id " +
-//            "WHERE :searchTime > CAST(t.start_time AS DATETIME2) AND :searchTime < CAST(t.end_time AS DATETIME2) " +
-//            "AND :searchTime > DATEADD(HOUR, s.estimated_time + 1, b.started_at) " +
-//            "AND :searchTime < DATEADD(HOUR, 1, b.started_at)",
-//            nativeQuery = true
-//    )
+    public List<AccountDto> getAccountsBySearchFullName(PaginateAccountDto paginateAccountDto, String searchValue){
+        Pageable pageable = paginateAccountDto.getPageRequest();
+        List<AccountEntity> accounts = accountsRepository.findBySearchFullName(searchValue,paginateAccountDto.role,pageable);
+        List<AccountDto> accountDtos = new ArrayList<>();
+        for (AccountEntity account : accounts){
+            accountDtos.add(account.toResponseDto());
+        }
+        return accountDtos;
+    }
+    @Transactional
+    public boolean updateStatus(UpdateStatusAccountDto dto){
+        int result = accountsRepository.updateAccountStatus(dto.getEmail(),dto.getStatus());
+        return result > 0;
+    }
 
     private ServiceEntity getServiceById(String id){
         Optional<ServiceEntity> findServiceResult = servicesRepository.findById(id);
@@ -116,11 +121,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             // Check if the searchTime is in timetable
             boolean isInTimetable = false;
             boolean isInBooking = false;
-            System.out.println(veterian.getProfile().getId());
-            System.out.println(veterian.getProfile().getTimetables().toString());
+            if(veterian.getProfile() == null) continue;;
 
             for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
-
                     if(
                             searchTime.getDayOfWeek() == timetable.getDayOfWeek() &&
                             (!searchTime.toLocalTime().isBefore(timetable.getStartTime()) &&
@@ -179,21 +182,18 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
             for(TimetableEntity timetable : timetableList){
                 // Exclude time slot that appear in booking
-                for (BookingEntity booking: veterianBookingList){
+
                     List<TimeRange> timeSlotPerBooking = new ArrayList<>();
                     LocalTime slotStartTime = timetable.getStartTime();
                     LocalTime estimatedTime = bookedService.getEstimatedTime();
                     LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                     while (!slotEndTime.isAfter(timetable.getEndTime())){
                             //Check if it is current day and timetable == booking day of week
-                        System.out.println("DATE COMPARE: " + currentDate + " - " +booking.getStartedAt().toLocalDate() + " = "+
-                                currentDate.equals(booking.getStartedAt().toLocalDate()));
-                        System.out.println("DAY OF WEEK: " + timetable.getDayOfWeek() + " - " + booking.getStartedAt().getDayOfWeek() + " = " +
-                                (timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek()));
-                        if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
+                        for (BookingEntity booking: veterianBookingList){
+
+                            if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
                         ) {
-
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
@@ -210,10 +210,11 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                     continue;
                                 }
                             }
-                            timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
-                            slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                            slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+
                         }
+                        timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                        slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                        slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                         if(timeSlot.getSlots().isEmpty() ||
                             timeSlot.getSlots().size() > timeSlotPerBooking.size()
                         ){
@@ -236,6 +237,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         ServiceEntity bookedService = getServiceById(serviceId);
 
         for (AccountEntity veterian : veterianList){
+            if(veterian.getProfile() == null) continue;
             veterianRespDtos.add(
                     veterian.toVeterianResponseDto(getValidTimeSlot(veterian,bookedService))
             );

@@ -35,8 +35,8 @@ public class BookingEntity implements IObject<BookingDTO> {
     @JoinColumn(name = "service_id", nullable = false)
     private ServiceEntity service;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "veterian_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "veterian_id")
     private AccountEntity veterian;
 
     @OneToOne

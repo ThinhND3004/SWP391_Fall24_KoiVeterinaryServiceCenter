@@ -47,27 +47,33 @@ public class SecurityConfig {
                         // PUBLIC ACCESS
                         .requestMatchers("/auth/**","/swagger-ui/**", "/vnpay/**")
                             .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                        .requestMatchers(HttpMethod.POST, "/accounts/**")
                             .permitAll()
 
-                        // CUSTOMER
-                        .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
-                            .hasAuthority(AccountRoleEnum.CUSTOMER.name())
+                        .requestMatchers(HttpMethod.GET,"/koi-species/**", "/services/**","/prescriptions/**","/ponds/**","/shipping/**")
+                            .permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**")
+                            .permitAll()
 
-                        // VETERIAN
-                        .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
-                            .hasAuthority(AccountRoleEnum.VETERIAN.name())
 
-                        // ADMIN, STAFF, MANAGER
-                        .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
-                                        "/shipping/**")
-                            .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
+                            // HAS AN ACCOUNT
+                            .requestMatchers("/bookings/**", "/images/**","/notifications/**")
+                                .authenticated()
+                            .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
+                                .authenticated()
 
-                        // HAS AN ACCOUNT
-                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
-                            .authenticated()
-                        .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**")
-                            .authenticated()
+                            // CUSTOMER
+                            .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
+                                .hasAuthority(AccountRoleEnum.CUSTOMER.name())
+
+                            // VETERIAN
+                            .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
+                                .hasAuthority(AccountRoleEnum.VETERIAN.name())
+
+                            // ADMIN, STAFF, MANAGER
+                            .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
+                                            "/shipping/**")
+                                .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
 
                         .anyRequest().permitAll())
                 .build();

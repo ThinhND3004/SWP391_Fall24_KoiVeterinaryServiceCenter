@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-@Service
+
 public abstract class AbstractService<
         EntityType,
         IdType,
@@ -18,6 +18,7 @@ public abstract class AbstractService<
         UpdateDto extends IDto<EntityType>,
         PaginationDto extends AbstractPagination<EntityType>
 > implements IService<EntityType, IdType, CreateDto, UpdateDto, PaginationDto>{
+
 
     @Autowired
     protected JpaRepository<EntityType, IdType> repository;
@@ -28,7 +29,7 @@ public abstract class AbstractService<
         List<EntityType> entities;
         if(dto != null){
             Pageable page = dto.getPageRequest();
-            entities =  repository.findAll(Example.of(dto.toEntity()),page).getContent();
+            entities =  repository.findAll(Example.of(dto.toEntity()));
         }
         else entities = repository.findAll();
 
