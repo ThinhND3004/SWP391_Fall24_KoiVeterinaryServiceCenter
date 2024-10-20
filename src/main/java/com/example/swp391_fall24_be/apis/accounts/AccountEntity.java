@@ -61,7 +61,7 @@ public class AccountEntity implements IObject<AccountDto>{
     private LocalDateTime updateAt;
 
     @Column (nullable = false, name = "is_disable")
-    private boolean isDisable;
+    private Boolean isDisable;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)

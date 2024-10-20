@@ -7,12 +7,10 @@ import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +20,7 @@ public class AccountsController extends AbstractController<AccountEntity, String
 
     @Autowired
     private AccountsService accountsService;
+
     @GetMapping("/current")
     public ResponseDto<AccountDto> getAccountDetails(@Parameter(hidden = true) @CurrentAccount AccountEntity account) {
         return new ResponseDto<>(

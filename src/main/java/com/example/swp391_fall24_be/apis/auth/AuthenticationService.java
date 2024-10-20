@@ -53,7 +53,7 @@ public class AuthenticationService {
         dto.setAddress(account.getAddress());
         dto.setPhone(account.getPhone());
         dto.setRole(account.getRole());
-        dto.setDisable(account.isDisable());
+        dto.setDisable(account.getIsDisable());
 
         dto.setCreateAt(account.getCreateAt());
         return dto;
