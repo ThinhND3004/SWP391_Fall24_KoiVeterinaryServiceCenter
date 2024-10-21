@@ -1,7 +1,5 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
-import lombok.Data;
-
 public enum AccountRoleEnum {
     CUSTOMER("customer"),
     VETERIAN("veterian"),
