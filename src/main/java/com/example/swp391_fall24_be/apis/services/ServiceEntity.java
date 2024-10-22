@@ -57,10 +57,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @Column(name = "is_disable", nullable = false)
     private Boolean isDisable;
 
-    @Column(name = "address")
-    private String address;
-
-    public ServiceEntity(String name, ServiceTypeEnum type, String overview, String description, ServiceMeetingMethodEnum meetingMethod, float price, float travelPricePerMeter, LocalTime estimatedTime, String address, boolean isDisable) {
+    public ServiceEntity(String name, ServiceTypeEnum type, String overview, String description, ServiceMeetingMethodEnum meetingMethod, float price, float travelPricePerMeter, LocalTime estimatedTime, boolean isDisable) {
         this.name = name;
         this.type = type;
         this.overview = overview;
@@ -69,7 +66,6 @@ public class ServiceEntity implements IObject<ServiceDto> {
         this.price = price;
         this.travelPricePerMeter = travelPricePerMeter;
         this.estimatedTime = estimatedTime;
-        this.address = address;
         this.isDisable = isDisable;
     }
 
@@ -91,7 +87,6 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setCreatedAt(createdAt);
         dto.setUpdatedAt(updatedAt);
         dto.setDisable(isDisable);
-        dto.setAddress("Long Thanh My Ward, Thủ Đức, 71216, Vietnam");
         return dto;
     }
 }
