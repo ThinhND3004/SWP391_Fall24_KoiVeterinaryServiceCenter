@@ -77,7 +77,7 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
         booking.setUserAddress(userAddress);
         booking.setMeetingMethodEnum(meetingMethod);
         booking.setStatusEnum(StatusEnum.UNPAID);
-        booking.setDecline(false);
+        booking.setIsDecline(false);
         booking.setStartedAt(startAt);
 
         return booking;

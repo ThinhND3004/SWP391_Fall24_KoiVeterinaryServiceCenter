@@ -59,7 +59,7 @@ public class CreateServiceDto implements IDto<ServiceEntity> {
                         estimatedTime.getMinutes()
                 )
         );
-        service.setDisable(false);
+        service.setIsDisable(false);
 
         return service;
     }

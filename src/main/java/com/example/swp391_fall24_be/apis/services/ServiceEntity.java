@@ -38,10 +38,10 @@ public class ServiceEntity implements IObject<ServiceDto> {
     private ServiceMeetingMethodEnum meetingMethod;
 
     @Column(name = "price", nullable = false)
-    private float price;
+    private Float price;
 
     @Column(name = "travel_price_per_meter", nullable = false)
-    private float travelPricePerMeter;
+    private Float travelPricePerMeter;
 
     @Column(name = "estimated_time", nullable = false)
     private LocalTime estimatedTime;
@@ -55,7 +55,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
     private LocalDateTime updatedAt;
 
     @Column(name = "is_disable", nullable = false)
-    private boolean isDisable;
+    private Boolean isDisable;
 
     @Column(name = "address")
     private String address;
@@ -84,6 +84,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setType(type);
         dto.setDescription(description);
         dto.setPrice(price);
+        dto.setMeetingMethod(meetingMethod);
         dto.setTravelPricePerMeter(travelPricePerMeter);
         dto.setEstimatedTime(estimatedTime);
         dto.setCreatedAt(createdAt);
