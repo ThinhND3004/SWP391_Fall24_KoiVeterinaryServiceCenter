@@ -22,6 +22,10 @@ public class CreateServiceDto implements IDto<ServiceEntity> {
     @JsonProperty("type")
     private ServiceTypeEnum type;
 
+    @NotBlank(message = "Overview is required!")
+    @JsonProperty("overview")
+    private String overview;
+
     @NotBlank(message = "Description is required!")
     @JsonProperty("description")
     private String description;

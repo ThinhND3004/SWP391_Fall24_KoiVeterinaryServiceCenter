@@ -27,28 +27,28 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
     @Schema(hidden = true)
     private AccountEntity customer;
 
-    @NotBlank(message = "Veterian Id is required!")
+//    @NotBlank(message = "Veterian Id is required!")
     private String veterianId;
 
     @NotBlank(message = "Service Id is required!")
     private String serviceId;
 
-    @NotNull(message = "Description must not be null!")
-    private String description;
+//    @NotNull(message = "Additional Information must not be null!")
+    private String additionalInformation;
 
     @NotNull(message = "Service Price is required!")
     @Min(0)
     private Float servicePrice;
 
-    @NotNull(message = "Travel Price is required!")
-    @Min(0)
+//    @NotNull(message = "Travel Price is required!")
+//    @Min(0)
     private Float travelPrice;
 
-    @NotNull(message = "Distance Meters is required!")
-    @Min(0)
+//    @NotNull(message = "Distance Meters is required!")
+//    @Min(0)
     private Float distanceMeters;
 
-    @NotBlank(message = "Destination is required!")
+//    @NotBlank(message = "User Address is required!")
     private String userAddress;
 
     @NotNull(message = "Meeting method is required!")
@@ -61,16 +61,20 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
     @Override
     public BookingEntity toEntity() {
         BookingEntity booking = new BookingEntity();
+        booking.setCustomer(customer);
 
-        AccountEntity veterian = new AccountEntity();
-        veterian.setId(veterianId);
-        booking.setVeterian(veterian);
+        if (veterianId != null && !veterianId.isEmpty()) {
+            AccountEntity veterian = new AccountEntity();
+            veterian.setId(veterianId);
+            booking.setVeterian(veterian);
+        } else
+            booking.setVeterian(null);
 
         ServiceEntity service = new ServiceEntity();
         service.setId(serviceId);
         booking.setService(service);
 
-        booking.setDescription(description);
+        booking.setAdditionInformation(additionalInformation);
         booking.setServicePrice(servicePrice);
         booking.setTravelPrice(travelPrice);
         booking.setDistanceMeters(distanceMeters);
