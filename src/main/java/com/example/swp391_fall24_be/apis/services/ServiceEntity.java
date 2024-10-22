@@ -82,6 +82,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setId(id);
         dto.setName(name);
         dto.setType(type);
+        dto.setOverview(overview);
         dto.setDescription(description);
         dto.setPrice(price);
         dto.setMeetingMethod(meetingMethod);
@@ -90,6 +91,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setCreatedAt(createdAt);
         dto.setUpdatedAt(updatedAt);
         dto.setDisable(isDisable);
+        dto.setAddress("Long Thanh My Ward, Thủ Đức, 71216, Vietnam");
         return dto;
     }
 }

@@ -43,7 +43,7 @@ public class UpdateBookingDTO implements IDto<BookingEntity> {
     public BookingEntity toEntity() {
         BookingEntity booking = new BookingEntity();
 
-        booking.setDescription(description);
+        booking.setAdditionInformation(description);
         booking.setUserAddress(userAddress);
         booking.setStatusEnum(statusEnum);
         booking.setStartedAt(startedAt);

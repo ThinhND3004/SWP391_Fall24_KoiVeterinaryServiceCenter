@@ -23,7 +23,7 @@ public class BookingDTO {
     private String serviceName;
     private ReportEntity reportId;
     private Feedback feedbackId;
-    private String description;
+    private String additionalInformation;
     private float totalPrice;
     private float distance_meters;
     private String userAddress;

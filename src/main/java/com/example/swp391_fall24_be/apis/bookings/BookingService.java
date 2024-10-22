@@ -38,19 +38,22 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 
         bookingEntity.setCustomer(AuthUtils.getCurrentAccount());
 
-        Optional<AccountEntity> findVeterianResult = accountsRepository.findById(bookingEntity.getVeterian().getId());
-        if (findVeterianResult.isEmpty()) {
-            errorReportList.add(new ErrorReport(
-            "BookingsService_beforeCreate",
-                    ErrorEnum.EntityNotFound,
-                    "Veterinarian with ID " + bookingEntity.getVeterian().getId() + " does not exist."));
-        } else if(findVeterianResult.get().getRole() != AccountRoleEnum.VETERIAN){
-            errorReportList.add(new ErrorReport(
-                    "BookingsService_beforeCreate",
-                    ErrorEnum.EntityNotFound,
-                    "Account with ID " + bookingEntity.getVeterian().getId() + " is not a veterian."));
+        if (bookingEntity.getVeterian() != null){
+            Optional<AccountEntity> findVeterianResult = accountsRepository.findById(bookingEntity.getVeterian().getId());
+            if (findVeterianResult.isEmpty()) {
+                errorReportList.add(new ErrorReport(
+                        "BookingsService_beforeCreate",
+                        ErrorEnum.EntityNotFound,
+                        "Veterinarian with ID " + bookingEntity.getVeterian().getId() + " does not exist."));
+            } else if(findVeterianResult.get().getRole() != AccountRoleEnum.VETERIAN){
+                errorReportList.add(new ErrorReport(
+                        "BookingsService_beforeCreate",
+                        ErrorEnum.EntityNotFound,
+                        "Account with ID " + bookingEntity.getVeterian().getId() + " is not a veterian."));
+            }
+            bookingEntity.setVeterian(findVeterianResult.get());
         }
-        bookingEntity.setVeterian(findVeterianResult.get());
+
 
         Optional<ServiceEntity> findServiceResult = servicesRepository.findById(bookingEntity.getService().getId());
         if (findServiceResult.isEmpty()) {

@@ -47,19 +47,19 @@ public class BookingEntity implements IObject<BookingDTO> {
     @JoinColumn(name = "feedback_id")
     private Feedback feedbackId;
 
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    private String description;
+    @Column(name = "addition_information", nullable = true, columnDefinition = "NVARCHAR(225)")
+    private String additionInformation;
 
     @Column(name = "service_price", nullable = false)
     private Float servicePrice;
 
-    @Column(name = "travel_price", nullable = false)
+    @Column(name = "travel_price", nullable = true)
     private Float travelPrice;
 
     @Column(name = "distance_meters")
     private Float distanceMeters;
 
-    @Column(name = "user_address", columnDefinition = "TEXT")
+    @Column(name = "user_address", columnDefinition = "NVARCHAR(225)")
     private String userAddress;
 
     @Column(name = "meeting_method", nullable = false)
@@ -70,8 +70,8 @@ public class BookingEntity implements IObject<BookingDTO> {
     @Enumerated(EnumType.STRING)
     private StatusEnum statusEnum;
 
-    @Column(name = "is_decline", nullable = false, columnDefinition = "BIT")
-    private Boolean isDecline;
+    @Column(name = "is_decline", nullable = true, columnDefinition = "BIT")
+    private Boolean isDecline = false;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
     @CreatedDate
@@ -88,12 +88,16 @@ public class BookingEntity implements IObject<BookingDTO> {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
         bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
-        if(veterian != null) bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
+        if(veterian != null)
+            bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
+        else
+            bookingDTO.setVeterinarianFullName(null);
+
         bookingDTO.setServiceId(service.getId());
         bookingDTO.setServiceName(service.getName());
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);
-        bookingDTO.setDescription(description);
+        bookingDTO.setAdditionalInformation(additionInformation);
         bookingDTO.setUserAddress(userAddress);
         bookingDTO.setStatusEnum(statusEnum);
         bookingDTO.setCreatedAt(createdAt);
