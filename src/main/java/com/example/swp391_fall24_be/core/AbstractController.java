@@ -32,7 +32,6 @@ public abstract class AbstractController<
         try {
             List<EntityType> entityList = service.findAll(paginationDto);
             for (EntityType entity : entityList){
-                System.out.println("KIEM TRA SERVICE ENTITY: " + entity.toString());
                 responseData.add(entity.toResponseDto());
             }
             return new ResponseDto<>(

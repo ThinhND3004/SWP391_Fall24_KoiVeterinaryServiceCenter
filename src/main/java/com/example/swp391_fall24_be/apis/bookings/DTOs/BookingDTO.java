@@ -19,6 +19,7 @@ public class BookingDTO {
     private String id;
     private String customerFullName;
     private String veterinarianFullName;
+    private String serviceId;
     private String serviceName;
     private ReportEntity reportId;
     private Feedback feedbackId;
