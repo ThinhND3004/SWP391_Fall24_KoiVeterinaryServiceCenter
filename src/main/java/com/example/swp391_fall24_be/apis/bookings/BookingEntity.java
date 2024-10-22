@@ -51,13 +51,13 @@ public class BookingEntity implements IObject<BookingDTO> {
     private String description;
 
     @Column(name = "service_price", nullable = false)
-    private float servicePrice;
+    private Float servicePrice;
 
     @Column(name = "travel_price", nullable = false)
-    private float travelPrice;
+    private Float travelPrice;
 
     @Column(name = "distance_meters")
-    private float distanceMeters;
+    private Float distanceMeters;
 
     @Column(name = "user_address", columnDefinition = "TEXT")
     private String userAddress;
@@ -71,7 +71,7 @@ public class BookingEntity implements IObject<BookingDTO> {
     private StatusEnum statusEnum;
 
     @Column(name = "is_decline", nullable = false, columnDefinition = "BIT")
-    private boolean isDecline;
+    private Boolean isDecline;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
     @CreatedDate
@@ -88,7 +88,8 @@ public class BookingEntity implements IObject<BookingDTO> {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
         bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
-        bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
+        if(veterian != null) bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
+        bookingDTO.setServiceId(service.getId());
         bookingDTO.setServiceName(service.getName());
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);

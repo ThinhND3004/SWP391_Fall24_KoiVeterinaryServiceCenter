@@ -133,18 +133,16 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(veterian, StatusEnum.CONFIRMED, StatusEnum.PENDING);
+                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(veterian, StatusEnum.CONFIRMED, StatusEnum.CONFIRMED);
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
-
                     // Find if search time is in Booking that has been reserved
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
                     if (
-                            (searchTime.isAfter(booking.getStartedAt()) && searchTime.isBefore(bookingEndTime)
-                            || searchEndTime.isAfter(booking.getStartedAt()) && searchEndTime.isBefore(bookingEndTime))
-                            || (searchTime.equals(booking.getStartedAt()) && searchEndTime.equals(bookingEndTime))
+                            (!searchTime.isBefore(booking.getStartedAt()) && !searchTime.isAfter(bookingEndTime))
+                            || (!searchEndTime.isBefore(booking.getStartedAt()) && !searchEndTime.isAfter(bookingEndTime))
                     ) {
                         isInBooking = true;
                         break;
