@@ -33,7 +33,7 @@ public class EmailService {
         sendEmail(to, subject, body);
     }
 
-    public void sendInvitationForVeterinarian(String to, String recipientName, String serviceName, String serviceMethod, String date, String time, String location, String referenceNumber, String companyName, String companyPhone, String companyWebsite) {
+    public void sendInvitationForVeterinarian(String to, String recipientName, String serviceName, String serviceMethod, String date, String time, String location, String referenceNumber, String companyName, String companyWebsite) {
         String subject = "Invitation for Veterinarian";
         String body = "Dear " + recipientName + ",\n\n"
                 + "You have been invited to provide " + serviceName + " " +  serviceMethod + "!\n\n"
@@ -42,8 +42,7 @@ public class EmailService {
                 + "Time: " + time + "\n"
                 + "Location: " + location + "\n"
                 + "Reference Number: " + referenceNumber + "\n"
-                + "If you have any questions or need to make changes to the appointment, please contact us at " + companyPhone + " or visit our website at " + companyWebsite + ".\n\n"
-                + "For accept the invitation, please go to http://localhost:5173/veterinarian_booking.\n\n"
+                + "For accept or decline the invitation, please go to " + companyWebsite + ".\n\n"
                 + "Sincerely,\n"
                 + companyName + " Team";
         sendEmail(to, subject, body);
