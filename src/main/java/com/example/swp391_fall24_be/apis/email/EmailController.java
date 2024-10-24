@@ -38,7 +38,6 @@ public class EmailController {
                                                         @RequestParam String location,
                                                         @RequestParam String referenceNumber,
                                                         @RequestParam String companyName,
-                                                        @RequestParam String companyPhone,
                                                         @RequestParam String companyWebsite) {
         emailService.sendInvitationForVeterinarian(to, recipientName, serviceName, serviceMethod, date, time, location, referenceNumber, companyName, companyWebsite);
         return new ResponseEntity<>("Invitation for veterinarian email sent successfully!", HttpStatus.OK);
