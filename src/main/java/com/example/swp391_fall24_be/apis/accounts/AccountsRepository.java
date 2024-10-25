@@ -32,4 +32,5 @@ public interface AccountsRepository extends JpaRepository<AccountEntity, String>
     );
 
     List<AccountEntity> findAllByRoleAndIsDisable(AccountRoleEnum role, boolean disable);
+
 }
