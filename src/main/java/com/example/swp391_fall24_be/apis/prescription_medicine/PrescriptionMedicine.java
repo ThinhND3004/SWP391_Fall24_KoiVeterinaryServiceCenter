@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class PrescriptionMedicine implements IObject<PrescriptionMedicineDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @JoinColumn(name = "prescription_id", nullable = false)
     @ManyToOne
@@ -27,7 +27,7 @@ public class PrescriptionMedicine implements IObject<PrescriptionMedicineDto> {
     private MedicineEntity medicine;
 
     @Column(name = "amount", nullable = false)
-    private int amount;
+    private Integer amount;
 
     @Override
     public PrescriptionMedicineDto toResponseDto() {

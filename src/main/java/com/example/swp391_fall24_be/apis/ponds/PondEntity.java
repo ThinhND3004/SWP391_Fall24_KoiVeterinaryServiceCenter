@@ -9,7 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "ponds")
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
+@EntityListeners(AuditingEntityListener.class)
 public class PondEntity implements IObject<PondDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -25,37 +28,44 @@ public class PondEntity implements IObject<PondDto> {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private AccountEntity customerID;
+    private AccountEntity customer;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "location")
-    private String location;
-
     @Column(name = "size_square_meters")
-    private float sizeSquareMeters;
+    private Float sizeSquareMeters;
 
     @Column(name = "depth_meters")
-    private float depthMeters;
+    private Float depthMeters;
 
     @Column(name = "water_type")
     private String waterType;
 
     @Column(name = "temperature_celsius")
-    private float temperatureCelsius;
+    private Float temperatureCelsius;
 
     @Column(name = "pH_level")
-    private float pHLevel;
+    private Float pHLevel;
 
     @Column(name = "last_maintenance_date")
-    private LocalDateTime lastMaintenanceDate;
+    private LocalDate lastMaintenanceDate;
 
     @Column(name = "date_created")
+    @CreatedDate
     private LocalDateTime dateCreated;
 
     @Override
     public PondDto toResponseDto() {
-        return null;
+        PondDto pondDto = new PondDto();
+        pondDto.setName(name);
+        pondDto.setDepthMeters(depthMeters);
+        pondDto.setWaterType(waterType);
+        pondDto.setSizeSquareMeters(sizeSquareMeters);
+        pondDto.setTemperatureCelsius(temperatureCelsius);
+        pondDto.setPHLevel(pHLevel);
+        pondDto.setLastMaintenanceDate(lastMaintenanceDate);
+        pondDto.setDateCreated(dateCreated);
+        return pondDto;
     }
 }

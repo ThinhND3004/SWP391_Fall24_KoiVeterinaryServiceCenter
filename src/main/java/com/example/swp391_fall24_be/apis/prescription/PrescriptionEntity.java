@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,22 +24,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
+@EntityListeners(AuditingEntityListener.class)
 public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "medicine_id", nullable = false)
-    private MedicineEntity medicineID;
-
-    @ManyToOne
-    @JoinColumn(name = "shipping_id", nullable = false)
+    @JoinColumn(name = "shipping_id")
     private ShippingEntity shippingID;
 
     @Column(name = "total_price",nullable = false, columnDefinition = "FLOAT")
-    private float totalPrice;
+    private Float totalPrice;
 
     @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME")
     @CreatedDate
@@ -51,14 +48,10 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @OneToMany(mappedBy = "prescription")
     private List<PrescriptionMedicine> prescriptionMedicines;
 
-    @OneToOne
-    private ReportEntity report;
-
     @Override
     public PrescriptionDto toResponseDto() {
         PrescriptionDto prescriptionDto = new PrescriptionDto();
         prescriptionDto.setShippingEntity(shippingID);
-        prescriptionDto.setMedicineEntity(medicineID);
         prescriptionDto.setTotalPrice(totalPrice);
         prescriptionDto.setCreatAt(createdAt);
         return prescriptionDto;

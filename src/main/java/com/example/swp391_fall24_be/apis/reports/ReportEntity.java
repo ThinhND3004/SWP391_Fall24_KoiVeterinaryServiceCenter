@@ -2,6 +2,7 @@ package com.example.swp391_fall24_be.apis.reports;
 
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.ponds.PondEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
 import com.example.swp391_fall24_be.core.IObject;
@@ -12,25 +13,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "reports")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
+@EntityListeners(AuditingEntityListener.class)
 public class ReportEntity implements IObject<ReportDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "koi_species_id", nullable = false)
-    private KoiSpeciesEntity koiSpecies;
+    @ManyToMany
+    @JoinTable(joinColumns = @JoinColumn(name = "report_id"))
+    private List<KoiSpeciesEntity> koiSpecies;
 
-    @JoinColumn(name = "prescription_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "pond_id")
+    private PondEntity pond;
+
+    @JoinColumn(name = "prescription_id")
     @OneToOne
     private PrescriptionEntity prescription;
 
@@ -51,7 +59,9 @@ public class ReportEntity implements IObject<ReportDto> {
     public ReportDto toResponseDto() {
         ReportDto treatmentDto = new ReportDto();
         treatmentDto.setKoiSpecies(koiSpecies);
-        treatmentDto.setPrescription(prescription);
+//        treatmentDto.setPrescription(prescription);
+        treatmentDto.setPond(pond);
+
         treatmentDto.setDiagnosis(diagnosis);
         treatmentDto.setNotes(notes);
         return treatmentDto;
