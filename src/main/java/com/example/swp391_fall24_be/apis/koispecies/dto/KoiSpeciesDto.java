@@ -8,5 +8,6 @@ import java.time.LocalDateTime;
 public class KoiSpeciesDto {
     private String id;
     private String name;
+    private String description;
     private LocalDateTime createdAt;
 }

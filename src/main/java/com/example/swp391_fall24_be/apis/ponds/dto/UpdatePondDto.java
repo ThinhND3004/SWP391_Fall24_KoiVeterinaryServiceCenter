@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UpdatePondDto implements IDto<PondEntity> {
@@ -45,13 +46,12 @@ public class UpdatePondDto implements IDto<PondEntity> {
     private float pHLevel;
 
     @JsonProperty("last_maintenance_date")
-    private LocalDateTime lastMaintenanceDate;
+    private LocalDate lastMaintenanceDate;
 
     @Override
     public PondEntity toEntity() {
         PondEntity entity = new PondEntity();
         entity.setName(name);
-        entity.setLocation(location);
         entity.setSizeSquareMeters(sizeSquareMeters);
         entity.setDepthMeters(depthMeters);
         entity.setWaterType(waterType);

@@ -29,7 +29,7 @@ public class CreatePrescriptionDto implements IDto<PrescriptionEntity> {
     public PrescriptionEntity toEntity() {
         PrescriptionEntity prescription = new PrescriptionEntity();
         prescription.setShippingID(shippingEntity);
-        prescription.setMedicineID(medicineEntity);
+//        prescription.setMedicineID(medicineEntity);
         prescription.setTotalPrice(totalPrice);
         prescription.setCreatedAt(createAt);
         return prescription;

@@ -8,22 +8,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreatePondDto implements IDto<PondEntity> {
     @NotBlank(message = "Customer is required!")
     @JsonProperty("customer_id")
-    private AccountEntity customerID;
+    private String customerID;
 
     @NotBlank(message = "Name is required!")
     @Size(max = 50, message = "Length of name must not exceed 50 letters!")
     @JsonProperty("name")
     private String name;
-
-    @NotBlank(message = "Location is required!")
-    @Size(max = 200, message = "Length of location must not exceed 200 letters!")
-    @JsonProperty("location")
-    private String location;
 
     @NotBlank(message = "Size is required!")
     @JsonProperty("size_square_meters")
@@ -49,14 +45,17 @@ public class CreatePondDto implements IDto<PondEntity> {
     private float pHLevel;
 
     @JsonProperty("last_maintenance_date")
-    private LocalDateTime lastMaintenanceDate;
+    private LocalDate lastMaintenanceDate;
 
     @Override
     public PondEntity toEntity() {
         PondEntity entity = new PondEntity();
-        entity.setCustomerID(customerID);
+
+        AccountEntity customer = new AccountEntity();
+        customer.setId(customerID);
+        entity.setCustomer(customer);
+
         entity.setName(name);
-        entity.setLocation(location);
         entity.setSizeSquareMeters(sizeSquareMeters);
         entity.setDepthMeters(depthMeters);
         entity.setWaterType(waterType);

@@ -29,7 +29,6 @@ public class UpdateReportDto implements IDto<ReportEntity> {
 
         KoiSpeciesEntity koiSpecies = new KoiSpeciesEntity();
         koiSpecies.setId(koiSpeciesID);
-        treatment.setKoiSpecies(koiSpecies);
 
         PrescriptionEntity prescription = new PrescriptionEntity();
         prescription.setId(prescriptionID);

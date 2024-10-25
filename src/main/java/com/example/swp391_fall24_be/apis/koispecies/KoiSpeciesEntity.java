@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +20,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false, name = "name", columnDefinition = "VARCHAR(20)")
@@ -38,6 +42,7 @@ public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
     private LocalDateTime createAt;
 
     @Column(name = "update_at", columnDefinition = "DATETIME")
+    @LastModifiedDate
     private LocalDateTime updateAt;
 
     @Override
@@ -45,6 +50,7 @@ public class KoiSpeciesEntity implements IObject<KoiSpeciesDto> {
         KoiSpeciesDto dto = new KoiSpeciesDto();
         dto.setId(id);
         dto.setName(name);
+        dto.setDescription(description);
         dto.setCreatedAt(createAt);
         return dto;
     }

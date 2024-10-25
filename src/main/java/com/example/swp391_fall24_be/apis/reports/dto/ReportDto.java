@@ -6,10 +6,11 @@ import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ReportDto {
-    private KoiSpeciesEntity koiSpecies;
+    private List<KoiSpeciesEntity> koiSpecies;
     private PondEntity pond;
     private PrescriptionEntity prescription;
     private String diagnosis;

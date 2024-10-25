@@ -31,9 +31,6 @@ public class UpdatePrescriptionDto implements IDto<PrescriptionEntity> {
         if (shippingEntity != null) {
             prescription.setShippingID(shippingEntity);
         }
-        if (medicineEntity != null) {
-            prescription.setMedicineID(medicineEntity);
-        }
 
         prescription.setTotalPrice(totalPrice);
         prescription.setCreatedAt(createAt);
