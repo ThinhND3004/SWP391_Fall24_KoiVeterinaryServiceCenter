@@ -1,6 +1,7 @@
 package com.example.swp391_fall24_be.apis.accounts.dtos;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,4 +19,5 @@ public class AccountDto {
     private String address;
     private boolean isDisable;
     private AccountRoleEnum role;
+    private ImageEntity imageEntity;
 }

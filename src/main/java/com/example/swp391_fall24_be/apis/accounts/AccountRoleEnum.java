@@ -2,7 +2,7 @@ package com.example.swp391_fall24_be.apis.accounts;
 
 public enum AccountRoleEnum {
     CUSTOMER("customer"),
-    VETERIAN("Veterian"),
+    VETERIAN("veterian"),
     STAFF("staff"),
     DELIVERY_STAFF("delivery_staff"),
     ADMIN("admin"),
