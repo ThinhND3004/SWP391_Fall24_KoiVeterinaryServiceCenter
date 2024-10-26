@@ -26,7 +26,7 @@ public class VNPayService {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_BankCode", "NCB");
-        vnp_Params.put("vnp_TxnRef", String.valueOf(dto.getPayment()));
+        vnp_Params.put("vnp_TxnRef", UUID.randomUUID().toString());
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang: " + dto.getPayment());
         vnp_Params.put("vnp_OrderType", "270000"); // Cho dịch vụ y tế
         vnp_Params.put("vnp_ReturnUrl", vnPayConfig.getVnp_ReturnUrl());
@@ -80,6 +80,5 @@ public class VNPayService {
     public String checkReturnUrl(String vnp_TxnRef, String vnp_ResponseCode){
         String message = vnp_ResponseCode.equals("00") ? "GD thanh cong" : "GD khong thanh cong";
         return message;
-
     }
 }
