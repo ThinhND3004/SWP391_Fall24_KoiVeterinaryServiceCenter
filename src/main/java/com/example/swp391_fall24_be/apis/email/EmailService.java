@@ -16,29 +16,39 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     public void sendOrderConfirmationEmail(String to, String recipientName, String serviceName, String date, String time, String location, String referenceNumber, String amount, String paymentMethod, String companyName, String companyPhone, String companyWebsite) {
-        String subject = "Order Confirmation for Your Recent Booking";
+        String subject = "Order Confirmation";
+        String body = "Dear " + recipientName + ",\n\n"
+                + "Thank you for booking " + serviceName + "!\n\n"
+                + "Here are the details of your booking:\n"
+                + "Date: " + date + "\n"
+                + "Time: " + time + "\n"
+                + "Location: " + location + "\n"
+                + "Reference Number: " + referenceNumber + "\n"
+                + "Amount: " + amount + "\n"
+                + "Payment Method: " + paymentMethod + "\n\n"
+                + "If you have any questions or need to make changes to your booking, please contact us at " + companyPhone + " or visit our website at " + companyWebsite + ".\n\n"
+                + "Thank you for choosing " + companyName + "!\n\n"
+                + "Sincerely,\n"
+                + companyName + " Team";
+        sendEmail(to, subject, body);
+    }
 
-        String body = "Dear " + recipientName + ",\n\n" +
-                "I hope this message finds you well.\n\n" +
-                "We are pleased to confirm your order for the " + serviceName + " scheduled on " + date + " at " + time + ". Below are the details of your booking:\n\n" +
-                "Service Details:\n\n" +
-                "Service: " + serviceName + "\n" +
-                "Date: " + date + "\n" +
-                "Time: " + time + "\n" +
-                "Location: " + location + "\n" +
-                "Booking Reference: " + referenceNumber + "\n\n" +
-                "Payment Information:\n\n" +
-                "Total Amount: " + amount + "\n" +
-                "Payment Method: " + paymentMethod + "\n\n" +
-                "If you have any questions or require further assistance, please do not hesitate to reach out to us at [contact email/phone number].\n\n" +
-                "Thank you for choosing " + companyName + ". We look forward to serving you!\n\n" +
-                "Best regards,\n" +
-                "[Your Name]\n" +
-                "[Your Position]\n" +
-                companyName + "\n" +
-                companyPhone + "\n" +
-                companyWebsite;
+    public void sendInvitationForVeterinarian(String to, String recipientName, String serviceName, String serviceMethod, String date, String time, String location, String referenceNumber, String companyName, String companyWebsite) {
+        String subject = "Invitation for Veterinarian";
+        String body = "Dear " + recipientName + ",\n\n"
+                + "You have been invited to provide " + serviceName + " " +  serviceMethod + "!\n\n"
+                + "Here are the details of the appointment:\n"
+                + "Date: " + date + "\n"
+                + "Time: " + time + "\n"
+                + "Location: " + location + "\n"
+                + "Reference Number: " + referenceNumber + "\n"
+                + "For accept or decline the invitation, please go to " + companyWebsite + ".\n\n"
+                + "Sincerely,\n"
+                + companyName + " Team";
+        sendEmail(to, subject, body);
+    }
 
+    public void sendEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);

@@ -25,12 +25,21 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private AccountEntity account;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
     @Column(name = "description", nullable = false, updatable = false)
     private String description;
+
+    @Column(name = "type", nullable = false)
+    private NotificationTypeEnum type;
 
     @Column(name = "created_at", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Column(name = "read_at")
+    private LocalDateTime readAt;
 
 
     @Override
@@ -38,6 +47,8 @@ public class NotificationEntity implements IObject<NotificationDto> {
         NotificationDto dto = new NotificationDto();
         dto.setAccount(account);
         dto.setDescription(description);
+        dto.setType(type);
+        dto.setReadAt(readAt);
         dto.setCreatedAt(createdAt);
         return dto;
     }
