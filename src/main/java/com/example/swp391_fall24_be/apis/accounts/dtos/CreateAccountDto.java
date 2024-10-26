@@ -59,6 +59,7 @@ public class CreateAccountDto implements IDto<AccountEntity> {
         account.setPhone(phone);
         account.setAddress(address);
         account.setRole(role);
+        account.setIsDisable(false);
         return account;
     }
 }

@@ -92,4 +92,24 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         return null;
     }
 
+    public BookingEntity assignVeterian(String bookingId, String veterianEmail){
+        Optional<AccountEntity> findVeterian = accountsRepository.findByEmail(veterianEmail);
+        if(findVeterian.isEmpty()) throw new Error("Cannot find veterian with this email " + veterianEmail);
+        AccountEntity veterian = findVeterian.get();
+        if (veterian.getRole() != AccountRoleEnum.VETERIAN)
+            throw new Error("This email" + veterianEmail +" is not a veterian");
+
+
+        Optional<BookingEntity> findBooking = bookingRepository.findById(bookingId);
+        if(findBooking.isPresent()){
+            BookingEntity booking = findBooking.get();
+            if (booking.getStatusEnum() != StatusEnum.PENDING) throw new Error("Booking is not in PENDING state");
+            booking.setVeterian(veterian);
+            booking.setStatusEnum(StatusEnum.CONFIRMED);
+            booking = bookingRepository.save(booking);
+            return booking;
+        }
+        throw new Error("Cannot find booking is not a veterian");
+    }
+
 }
