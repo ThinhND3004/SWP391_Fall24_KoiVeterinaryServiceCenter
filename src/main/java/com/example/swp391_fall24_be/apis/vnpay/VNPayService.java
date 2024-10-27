@@ -80,6 +80,5 @@ public class VNPayService {
     public String checkReturnUrl(String vnp_TxnRef, String vnp_ResponseCode){
         String message = vnp_ResponseCode.equals("00") ? "GD thanh cong" : "GD khong thanh cong";
         return message;
-
     }
 }
