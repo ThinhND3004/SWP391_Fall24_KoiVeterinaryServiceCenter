@@ -55,25 +55,28 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**")
                             .permitAll()
 
+                        // HAS AN ACCOUNT
+                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
+                        .authenticated()
+                        .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
+                        .authenticated()
 
-                            // HAS AN ACCOUNT
-                            .requestMatchers("/bookings/**", "/images/**","/notifications/**")
-                                .authenticated()
-                            .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
-                                .authenticated()
+                        // CUSTOMER
+                        .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
+                        .hasAuthority(AccountRoleEnum.CUSTOMER.name())
 
-                            // CUSTOMER
-                            .requestMatchers(HttpMethod.POST, "/bookings/**", "/feedbacks/**")
-                                .hasAuthority(AccountRoleEnum.CUSTOMER.name())
+                        // VETERIAN
+                        .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
+                        .hasAuthority(AccountRoleEnum.VETERIAN.name())
 
-                            // VETERIAN
-                            .requestMatchers(HttpMethod.POST, "/timetables/**", "/reports/**")
-                                .hasAuthority(AccountRoleEnum.VETERIAN.name())
+                        // ADMIN, STAFF, MANAGER
+                        .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
+                                "/shipping/**")
+                        .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
 
-                            // ADMIN, STAFF, MANAGER
-                            .requestMatchers("/koi-species/**", "/services/**","/prescriptions/**", "/prescription-medicine/**", "/ponds/**", "/medicine-batches/**",
-                                            "/shipping/**")
-                                .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.STAFF.name(),AccountRoleEnum.MANAGER.name())
+                        // MANAGER, ADMIN
+                        .requestMatchers("/dashboard/**")
+                        .hasAnyAuthority(AccountRoleEnum.ADMIN.name(), AccountRoleEnum.MANAGER.name())
 
                         .anyRequest().permitAll())
                 .build();
