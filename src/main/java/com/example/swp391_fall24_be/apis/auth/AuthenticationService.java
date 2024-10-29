@@ -26,10 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum.CUSTOMER;
 
@@ -147,10 +144,14 @@ public class AuthenticationService {
                 if (!isExistingAccount) {
                     account = new AccountEntity();
                     account.setEmail((String) userInfo.get("email"));
+
+                    System.out.println("KIEM TRA EMAIL: " + account.getEmail());
+                    System.out.println("KIEM TRA ID: " + account.getId());
                     account.setFirstName((String) userInfo.get("given_name"));
                     account.setLastName((String) userInfo.get("family_name"));
                     account.setRole(AccountRoleEnum.CUSTOMER);
                     account.setIsDisable(false);
+                    account.setPhone(generateRandomPhoneNumber());
                     account.setUpdateAt(LocalDateTime.now());
                     account.setCreateAt(LocalDateTime.now());
 
@@ -166,6 +167,18 @@ public class AuthenticationService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to validate Google token: " + e.getMessage());
         }
+    }
+
+    public String generateRandomPhoneNumber() {
+        Random random = new Random();
+        StringBuilder phoneNumber = new StringBuilder("0");
+
+        for (int i = 0; i < 9; i++) {
+            int digit = random.nextInt(10);
+            phoneNumber.append(digit);
+        }
+
+        return phoneNumber.toString();
     }
 
 }
