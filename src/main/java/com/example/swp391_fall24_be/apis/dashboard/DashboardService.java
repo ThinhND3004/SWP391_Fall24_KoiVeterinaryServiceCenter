@@ -1,120 +1,116 @@
 package com.example.swp391_fall24_be.apis.dashboard;
 
-import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
-import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
-import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
-import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
-import com.example.swp391_fall24_be.apis.feedbacks.FeedbackRepository;
-import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
-import com.example.swp391_fall24_be.apis.prescription.PrescriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class DashboardService {
-
-    @Autowired
-    AccountsRepository accountsRepository;
-
     @Autowired
     BookingRepository bookingRepository;
-
-    @Autowired
-    FeedbackRepository feedbackRepository;
-
-    @Autowired
-    PrescriptionRepository prescriptionRepository;
 
     public DashboardData getBookingDashboardData() {
         DashboardData dashboardData = new DashboardData();
 
-        // Example data fetching and processing
-        List<AccountEntity> accounts = accountsRepository.findAllByRoleAndIsDisable(AccountRoleEnum.CUSTOMER, false);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.minusMonths(12);
+        List<BookingEntity> bookingsIn12Months = bookingRepository.findAllByStartedAtBetween(start, now);
         List<BookingEntity> bookings = bookingRepository.findAll();
-        List<Feedback> feedbacks = feedbackRepository.findAll();
-        // Populate the dashboard data
-
-
-        //total sales
-        //visitors
-        //total bookings
-        //refunded bookings
-
-        //total working hours
-        //average working hours
-        //salary
-
-        double totalSales = bookings.stream().mapToDouble(BookingEntity::getServicePrice).sum();
-        int visitors = accounts.size();
-        int totalBookings = bookings.size();
-        int refundedBookings = (int) bookings.stream().filter(BookingEntity::getIsDecline).count();
-
-
-        dashboardData.getData().put("totalSales", totalSales);
-        dashboardData.getData().put("visitors",visitors);
-        dashboardData.getData().put("totalBookings", totalBookings);
-        dashboardData.getData().put("refundedBookings", refundedBookings);
-
-        //revenue (per month)
-        //service rating (per service)
-        //prescription revenue (per month)
         Map<String, Double> revenuePerMonth = new HashMap<>();
+        Map<String, Integer> chosenServices = new HashMap<>();
+        Map<String, Integer> startTime = new HashMap<>();
+
+        bookingsIn12Months.forEach(booking -> {
+            String month = booking.getStartedAt().getMonth().toString();
+            double price = booking.getService().getPrice();
+            revenuePerMonth.put(month, revenuePerMonth.get(month) + price);
+        });
+
         bookings.forEach(booking -> {
-            String month = booking.getCreatedAt().getMonth().toString();
-            double revenue = booking.getServicePrice();
-            if (revenuePerMonth.containsKey(month)) {
-                revenuePerMonth.put(month, revenuePerMonth.get(month) + revenue);
-            } else {
-                revenuePerMonth.put(month, revenue);
-            }
-        });
-        dashboardData.getData().put("revenues", revenuePerMonth);
+            String serviceId = booking.getService().getId();
+            chosenServices.put(serviceId, chosenServices.get(serviceId) + 1);
 
-        Map<String, Double> serviceRating = new HashMap<>();
-        feedbacks.forEach(feedback -> {
-            String service = feedback.getBooking().getService().getName();
-            double rating = feedback.getStarRating();
-            if (serviceRating.containsKey(service)) {
-                serviceRating.put(service, (serviceRating.get(service) + rating) / 2);
-            } else {
-                serviceRating.put(service, rating);
-            }
+            //day of week and time
+            String time = booking.getStartedAt().getDayOfWeek().toString() + "_" +
+                    booking.getStartedAt().getHour() + "_" +
+                    booking.getStartedAt().getMinute();
+            startTime.put(time, startTime.get(time) + 1);
         });
-        dashboardData.getData().put("serviceRating", serviceRating);
 
-        Map<String, Double> prescriptionRevenuePerMonth = new HashMap<>();
-        List<PrescriptionEntity> prescriptions = prescriptionRepository.findAll();
-        prescriptions.forEach(prescription -> {
-            String month = prescription.getCreatedAt().getMonth().toString();
-            double revenue = prescription.getPrescriptionMedicines().stream().mapToDouble(medicine -> medicine.getMedicine().getPrice() * medicine.getAmount()).sum();
-            if (prescriptionRevenuePerMonth.containsKey(month)) {
-                prescriptionRevenuePerMonth.put(month, prescriptionRevenuePerMonth.get(month) + revenue);
-            } else {
-                prescriptionRevenuePerMonth.put(month, revenue);
-            }
-        });
+        dashboardData.getData().put("revenue", monthlyData(revenuePerMonth));
+        dashboardData.getData().put("services", chosenServices);
+        dashboardData.getData().put("startTime", startTime);
         return dashboardData;
     }
 
     public DashboardData getVeterinarianDashboardData() {
         DashboardData dashboardData = new DashboardData();
 
-        List<AccountEntity> accounts = accountsRepository.findAllByRoleAndIsDisable(AccountRoleEnum.CUSTOMER, false);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        List<BookingEntity> bookingsInMonth = bookingRepository.findAllByStartedAtBetween(start, now);
         List<BookingEntity> bookings = bookingRepository.findAll();
 
-        int totalWorkingHours = bookings.stream().mapToInt(booking -> booking.getEndedAt().getHour() - booking.getStartedAt().getHour()).sum();
-        int averageWorkingHours = totalWorkingHours / accounts.size();
-        int salary = totalWorkingHours * 20; // Assuming hourly rate is 20 units
+        AtomicLong totalWorkTime = new AtomicLong();
+        Map<String, Double> averageWorkTime = new HashMap<>();
+        Map<String, Long> totalWorkTimeInMonth = new HashMap<>();
 
-        dashboardData.getData().put("totalWorkingHours", totalWorkingHours);
-        dashboardData.getData().put("averageWorkingHours", averageWorkingHours);
-        dashboardData.getData().put("salary", salary);
+        bookings.forEach(booking -> {
+            LocalDateTime startedAt = booking.getStartedAt();
+            LocalDateTime endedAt = booking.getEndedAt();
+            long duration = Duration.between(startedAt, endedAt).toHours();
+
+            totalWorkTime.addAndGet(duration);
+        });
+
+        bookingsInMonth.forEach(booking -> {
+            String veterianId = booking.getVeterian().getId();
+
+            LocalDateTime startedAt = booking.getStartedAt();
+            LocalDateTime endedAt = booking.getEndedAt();
+            Long duration = Duration.between(startedAt, endedAt).toHours();
+
+            totalWorkTimeInMonth.put(veterianId, totalWorkTimeInMonth.get(veterianId) + duration);
+            double average = (double) totalWorkTimeInMonth.get(veterianId) / totalWorkTimeInMonth.size();
+            averageWorkTime.put(veterianId, average);
+        });
+
+        dashboardData.getData().put("totalWorkTime", totalWorkTime);
+        dashboardData.getData().put("averageWorkTime", averageWorkTime);
+        dashboardData.getData().put("totalWorkTimePerMonth", totalWorkTimeInMonth);
+
         return dashboardData;
+    }
+
+    private List<Map<String, Object>> monthlyData(Map<String, ?> dataPerMonth) {
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+        Map<String, Map<String, Object>> monthlyData = new HashMap<>();
+
+        dataPerMonth.forEach((key, value) -> {
+            String[] parts = key.split("_");
+            String month = parts[0];
+            String type = parts[1];
+
+            monthlyData.putIfAbsent(month, new HashMap<>());
+            monthlyData.get(month).put(type, value);
+        });
+
+        monthlyData.forEach((month, data) -> {
+            Map<String, Object> monthData = new HashMap<>();
+            monthData.put("month", month);
+            monthData.put("data", data);
+            formattedData.add(monthData);
+        });
+
+        return formattedData;
     }
 }
