@@ -121,56 +121,56 @@ public class Swp391Fall24BeApplicationRunner implements ApplicationRunner {
         }
         System.out.println("APPLICATION RUNNER COMPLETE!");
 
-//        servicesRepository.save(new ServiceEntity(
-//                "Online Consultant",
-//                ServiceTypeEnum.KOI,
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                ServiceMeetingMethodEnum.ONLINE,
-//                200.00f,
-//                0.0f,
-//                LocalTime.of(45 / 60,  45 % 60),
-//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
-//                false
-//        ));
-//
-//        servicesRepository.save(new ServiceEntity(
-//                "Pond Quality",
-//                ServiceTypeEnum.POND,
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                ServiceMeetingMethodEnum.OFFLINE_HOME,
-//                500.00f,
-//                1.0f,
-//                LocalTime.of(120 / 60,  120 % 60),
-//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
-//                false
-//        ));
-//
-//        servicesRepository.save(new ServiceEntity(
-//                "Koi Treatment at home",
-//                ServiceTypeEnum.KOI,
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                ServiceMeetingMethodEnum.OFFLINE_HOME,
-//                600.00f,
-//                1.0f,
-//                LocalTime.of(120 / 60,  120 % 60),
-//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
-//                false
-//        ));
-//
-//        servicesRepository.save(new ServiceEntity(
-//                "Koi Treatment at center",
-//                ServiceTypeEnum.KOI,
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
-//                ServiceMeetingMethodEnum.OFFLINE_CENTER,
-//                600.00f,
-//                0.0f,
-//                LocalTime.of(120 / 60,  120 % 60),
-//                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
-//                false
-//        ));
+        servicesRepository.save(new ServiceEntity(
+                "Online Consultant",
+                ServiceTypeEnum.KOI,
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                ServiceMeetingMethodEnum.ONLINE,
+                200.00f,
+                0.0f,
+                LocalTime.of(45 / 60,  45 % 60),
+                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+                false
+        ));
+
+        servicesRepository.save(new ServiceEntity(
+                "Pond Quality",
+                ServiceTypeEnum.POND,
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                ServiceMeetingMethodEnum.OFFLINE_HOME,
+                500.00f,
+                1.0f,
+                LocalTime.of(120 / 60,  120 % 60),
+                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+                false
+        ));
+
+        servicesRepository.save(new ServiceEntity(
+                "Koi Treatment at home",
+                ServiceTypeEnum.KOI,
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                ServiceMeetingMethodEnum.OFFLINE_HOME,
+                600.00f,
+                1.0f,
+                LocalTime.of(120 / 60,  120 % 60),
+                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+                false
+        ));
+
+        servicesRepository.save(new ServiceEntity(
+                "Koi Treatment at center",
+                ServiceTypeEnum.KOI,
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                "Koi Care Clinic is a unique facility that specializes in providing comprehensive care for koi fish. Our team of experienced professionals offers a wide range of services, including routine check-ups, disease diagnosis and treatment, pond maintenance, and water quality testing.",
+                ServiceMeetingMethodEnum.OFFLINE_CENTER,
+                600.00f,
+                0.0f,
+                LocalTime.of(120 / 60,  120 % 60),
+                "Long Thanh My Ward, Thu Duc, 71216, Vietnam",
+                false
+        ));
     }
 }
