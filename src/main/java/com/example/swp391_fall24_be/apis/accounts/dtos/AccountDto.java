@@ -19,5 +19,5 @@ public class AccountDto {
     private String address;
     private boolean isDisable;
     private AccountRoleEnum role;
-    private ImageEntity imageEntity;
+    private String imageEntityId;
 }
