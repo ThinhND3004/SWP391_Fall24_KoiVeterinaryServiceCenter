@@ -1,5 +1,7 @@
 package com.example.swp391_fall24_be.apis.images;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.images.dtos.CreateImageDto;
 import com.example.swp391_fall24_be.apis.images.dtos.ImageDto;
 import com.example.swp391_fall24_be.apis.images.dtos.PaginateImageDto;
@@ -8,6 +10,7 @@ import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -52,6 +57,10 @@ public class ImagesService extends AbstractService<
 
     @Value("${local.path}")
     private String imagesPath;
+
+
+    @Autowired
+    private AccountsRepository accountsRepository;
 
     public ImageDto upload(MultipartFile multipartFile) throws ProjectException {
         if (multipartFile == null || multipartFile.isEmpty()) {
@@ -116,5 +125,38 @@ public class ImagesService extends AbstractService<
         fileInputStream.read(fileContent);
         fileInputStream.close();
         return fileContent;
+    }
+
+
+    public AccountEntity setAccountImg(String id, MultipartFile multipartFile) throws ProjectException {
+        AccountEntity result = null;
+
+        try {
+            Optional<AccountEntity> account = accountsRepository.findById(id);
+
+            if (account.isPresent()) {
+                ImageDto imageEntity = upload(multipartFile);
+
+                if (imageEntity != null) {
+                    ImageEntity newAvt = new ImageEntity();
+
+                    newAvt.setId(imageEntity.getId());
+                    newAvt.setAccount(account.get());
+                    newAvt.setLocalPath(imageEntity.getLocalPath());
+                    newAvt.setName(imageEntity.getName());
+                    newAvt.setUpdateAt(LocalDateTime.now());
+
+
+                    account.get().setAvatar(newAvt);
+                    accountsRepository.save(account.get());
+                    result = account.get();
+                }
+
+            }
+        } catch (Exception e)
+        {
+            System.out.println("SET AVT ERR: " + e.toString());
+        }
+        return result;
     }
 }

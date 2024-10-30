@@ -84,7 +84,7 @@ public class AccountEntity implements IObject<AccountDto>{
     public AccountEntity() {
     }
 
-    public AccountEntity(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role) {
+    public AccountEntity(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role, ImageEntity imageEntity) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -94,10 +94,23 @@ public class AccountEntity implements IObject<AccountDto>{
         this.address = address;
         this.isDisable = false;
         this.role = role;
+        this.avatar = imageEntity;
     }
 
     public AccountEntity(String id) {
         this.id = id;
+    }
+
+    public AccountEntity(String mail, String s, String customer, String customer1, LocalDate of, String number, String s1, AccountRoleEnum accountRoleEnum) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.phone = phone;
+        this.address = address;
+        this.isDisable = false;
+        this.role = role;
     }
 
     @Override
@@ -113,6 +126,7 @@ public class AccountEntity implements IObject<AccountDto>{
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
         dto.setDisable(isDisable);
+        dto.setImageEntityId(avatar.getId());
         return dto;
     }
 
