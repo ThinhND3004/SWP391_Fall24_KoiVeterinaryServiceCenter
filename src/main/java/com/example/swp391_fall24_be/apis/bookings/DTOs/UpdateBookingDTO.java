@@ -23,13 +23,13 @@ import java.time.LocalDateTime;
 @Data
 public class UpdateBookingDTO implements IDto<BookingEntity> {
 
-    @NotBlank(message = "Description is required!")
-    @Size(max = 255, message = "Description length must be between 1 and 255 characters")
-    private String description;
+//    @NotBlank(message = "Additional Information is required!")
+//    @Size(max = 255, message = "Description length must be between 1 and 255 characters")
+//    private String additionalInformation;
 
-    @NotBlank(message = "Destination is required!")
-    @Size(max = 255, message = "User Address length must be less than 255 characters")
-    private String userAddress;
+//    @NotBlank(message = "Destination is required!")
+//    @Size(max = 255, message = "User Address length must be less than 255 characters")
+//    private String userAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -42,9 +42,8 @@ public class UpdateBookingDTO implements IDto<BookingEntity> {
     @Override
     public BookingEntity toEntity() {
         BookingEntity booking = new BookingEntity();
-
-        booking.setAdditionInformation(description);
-        booking.setUserAddress(userAddress);
+//        booking.setAdditionalInformation(additionalInformation);
+//        booking.setUserAddress(userAddress);
         booking.setStatusEnum(statusEnum);
         booking.setStartedAt(startedAt);
         return booking;

@@ -237,4 +237,72 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         }
         return veterianRespDtos;
     }
+
+    public AccountEntity getAccountByEmail(String email) {
+        Optional<AccountEntity> optionalAccount = accountsRepository.findByEmail(email);
+        return optionalAccount.get();
+    }
+
+    public AccountEntity updateAccountByEmail(String email, UpdateAccountDto updateAccountDto) throws ProjectException {
+        AccountEntity oldAccountEntity = getAccountByEmail(email);
+        AccountEntity updateAccountEntity = updateAccountDto.toEntity();
+        //set new fields
+        oldAccountEntity.setFirstName(updateAccountEntity.getFirstName());
+        oldAccountEntity.setLastName(updateAccountEntity.getLastName());
+        oldAccountEntity.setDob(updateAccountEntity.getDob());
+        oldAccountEntity.setPhone(updateAccountEntity.getPhone());
+        oldAccountEntity.setAddress(updateAccountEntity.getAddress());
+        oldAccountEntity.setUpdateAt(LocalDateTime.now());
+
+        oldAccountEntity = accountsRepository.save(oldAccountEntity);
+        return oldAccountEntity;
+    }
+
+    public int changePassword(ChangePasswordRequest request) {
+//        Optional<AccountEntity> accountOptional = accountsRepository.findByEmail(request.getEmail());
+        AccountEntity foundAccount = getAccountByEmail(request.getEmail());
+        // Khởi tạo response mặc định
+        int response = -1;
+
+        // Kiểm tra tài khoản có tồn tại
+        if (foundAccount != null) {
+//            AccountEntity account = accountOptional.get();
+
+            // Xác minh mật khẩu cũ
+            if (cryptoUtils.verify(request.getOldPassword(), foundAccount.getPassword())) {
+                // Mã hóa mật khẩu mới
+                String newHashedPassword = cryptoUtils.crypto(request.getNewPassword());
+                foundAccount.setPassword(newHashedPassword);
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                accountsRepository.save(foundAccount);
+                response = 1;
+//                System.out.println(response.getMessage());
+            } else {
+                response = 0;
+//                System.out.println(response.getMessage());
+            }
+        } else {
+            response = -1;
+//            System.out.println(response.getMessage());
+        }
+//        System.out.println(response.getMessage());
+        return response;
+    }
+
+    public int verifyPassword(PasswordVerificationRequest request) {
+        int response = -1;
+        AccountEntity foundAccount = getAccountByEmail(request.getEmail());
+        if (foundAccount != null) {
+            // Xác minh mật khẩu cũ
+            if (cryptoUtils.verify(request.getPassword(), foundAccount.getPassword())) {
+                response = 1;
+            } else {
+                response = 0;
+            }
+        } else {
+            response = -1;
+        }
+        return response;
+    }
 }
