@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.medicine;
 
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.medicine.dtos.MedicineDto;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.core.IObject;
@@ -44,6 +45,10 @@ public class MedicineEntity implements IObject<MedicineDto> {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JoinColumn(name = "image_id")
+    @OneToOne
+    private ImageEntity medicineImage;
+
     @ManyToMany
     @JoinTable(
             name = "medicine_prescription",
@@ -62,6 +67,7 @@ public class MedicineEntity implements IObject<MedicineDto> {
         dto.setManufacturer(manufacturer);
         dto.setPrescriptionEntities(prescriptionEntities);
         dto.setCreatedAt(createdAt);
+        dto.setMediImage_id(medicineImage.getId());
         return dto;
     }
 }

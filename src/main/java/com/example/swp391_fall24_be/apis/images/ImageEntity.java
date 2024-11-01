@@ -3,6 +3,8 @@ package com.example.swp391_fall24_be.apis.images;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.images.dtos.ImageDto;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
+
 public class ImageEntity implements IObject<ImageDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,6 +41,12 @@ public class ImageEntity implements IObject<ImageDto> {
 
     @OneToOne(mappedBy = "avatar")
     private AccountEntity account;
+
+    @OneToOne(mappedBy = "serviceImage")
+    private ServiceEntity service;
+
+    @OneToOne(mappedBy = "medicineImage")
+    private MedicineEntity medicine;
 
     @OneToOne(mappedBy = "picture")
     private KoiSpeciesEntity koiSpecies;
