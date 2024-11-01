@@ -16,4 +16,5 @@ public class MedicineDto {
     private float price;
     private LocalDateTime createdAt;
     private Set<PrescriptionEntity> prescriptionEntities;
+    private String mediImage_id;
 }

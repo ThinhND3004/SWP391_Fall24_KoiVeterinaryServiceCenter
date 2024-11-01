@@ -22,4 +22,5 @@ public class ServiceDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean isDisable;
+    private String serImageId;
 }

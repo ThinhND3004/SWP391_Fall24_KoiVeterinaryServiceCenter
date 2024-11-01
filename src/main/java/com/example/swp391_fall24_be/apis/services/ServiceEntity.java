@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.services;
 
+import com.example.swp391_fall24_be.apis.images.ImageEntity;
 import com.example.swp391_fall24_be.apis.services.dtos.ServiceDto;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
@@ -54,6 +55,10 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @JoinColumn(name = "image_id")
+    @OneToOne
+    private ImageEntity serviceImage;
+
     @Column(name = "is_disable", nullable = false)
     private Boolean isDisable;
 
@@ -87,6 +92,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setCreatedAt(createdAt);
         dto.setUpdatedAt(updatedAt);
         dto.setDisable(isDisable);
+        dto.setSerImageId(serviceImage.getId());
         return dto;
     }
 }
