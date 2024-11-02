@@ -1,9 +1,9 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
-import com.example.swp391_fall24_be.annotations.CurrentAccount;
 import com.example.swp391_fall24_be.apis.accounts.dtos.*;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
+import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +23,26 @@ public class AccountsController extends AbstractController<AccountEntity, String
     private AccountsService accountsService;
 
     @GetMapping("/current")
-    public ResponseDto<AccountDto> getAccountDetails(@Parameter(hidden = true) @CurrentAccount AccountEntity account) {
-        return new ResponseDto<>(
-            HttpStatus.OK.value(),
-            "Get current account from token success!",
-            account.toResponseDto(),
-            null
-        );
+    public ResponseDto<AccountDto> getAccountDetails() {
+        try {
+            AccountDto dto = AuthUtils.getCurrentAccount().toResponseDto();
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Get current account from token success!",
+                    dto,
+                    null
+            );
+        }
+        catch (Exception e){
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Cannot get current account details!",
+                    null,
+                    errors
+            );
+        }
     }
 
     @GetMapping("/search-by-name/{searchName}")
