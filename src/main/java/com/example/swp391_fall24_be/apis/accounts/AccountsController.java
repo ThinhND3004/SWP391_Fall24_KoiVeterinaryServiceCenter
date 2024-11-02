@@ -1,6 +1,5 @@
 package com.example.swp391_fall24_be.apis.accounts;
 
-import com.example.swp391_fall24_be.annotations.CurrentAccount;
 import com.example.swp391_fall24_be.apis.accounts.dtos.*;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
