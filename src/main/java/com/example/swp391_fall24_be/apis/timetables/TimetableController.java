@@ -20,7 +20,7 @@ import java.util.List;
 @Tag(name = "Timetables", description = "Timetables APIs")
 public class TimetableController {
     @Autowired
-    private TimetableService service;
+    private TimetableService timetableService;
 
     @GetMapping
     private ResponseDto<List<TimetableEntity>> findAll(){
@@ -28,7 +28,7 @@ public class TimetableController {
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Save timetable successful!",
-                    service.doFindByVeterianId(AuthUtils.getCurrentAccount()),
+                    timetableService.doFindByVeterianId(AuthUtils.getCurrentAccount()),
                     null
             );
 
@@ -54,7 +54,7 @@ public class TimetableController {
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Save timetable successful!",
-                    service.doSave(currentAccount, dto.toList(currentAccount.getProfile())),
+                    timetableService.doSave(currentAccount, dto.toList(currentAccount.getProfile())),
                     null
             );
 
