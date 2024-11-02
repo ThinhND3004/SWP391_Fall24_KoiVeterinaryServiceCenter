@@ -87,17 +87,17 @@ public class BookingEntity implements IObject<BookingDTO> {
     public BookingDTO toResponseDto() {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
-//        bookingDTO.setCustomerFullName(customer.getId());
+        bookingDTO.setCustomerFullName(customer.getId());
         bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
         if(veterian != null)
             bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
         else
             bookingDTO.setVeterinarianFullName("will be available soon");
 
-//        bookingDTO.setServiceId(service.getId());
+        bookingDTO.setServiceId(service.getId());
         bookingDTO.setServiceName(service.getName());
         bookingDTO.setMeetingMethod(meetingMethodEnum.toString());
-//        bookingDTO.setType();
+        bookingDTO.setType(service.getType().name());
         bookingDTO.setServicePrice(servicePrice);
         bookingDTO.setTravelPrice(travelPrice);
         bookingDTO.setTotalPrice(servicePrice + travelPrice * distanceMeters);
