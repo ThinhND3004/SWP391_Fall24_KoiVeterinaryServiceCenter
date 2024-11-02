@@ -2,6 +2,7 @@ package com.example.swp391_fall24_be.apis.accounts;
 
 import com.example.swp391_fall24_be.apis.accounts.dtos.*;
 import com.example.swp391_fall24_be.core.AbstractController;
+import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -95,5 +96,53 @@ public class AccountsController extends AbstractController<AccountEntity, String
         );
     }
 
+    @PutMapping("/update-by-email/{email}")
+    public ResponseDto<AccountDto> updateByEmail(@PathVariable String email,
+                                                 @RequestBody UpdateAccountDto updateAccountDto)
+            throws ProjectException {
+        return new ResponseDto<>(
+                HttpStatus.OK.value(),
+                "Search current account success!",
+                accountsService.updateAccountByEmail(email, updateAccountDto).toResponseDto(),
+                null
+        );
+    }
 
+    @PostMapping("/verify-password")
+    public ResponseDto<Void> verifyPassword(@RequestBody PasswordVerificationRequest request){
+        int response = accountsService.verifyPassword(request);
+        int status = 500;
+        String message = "Internal Server Error";
+        if (response == 1){
+            status = HttpStatus.OK.value();
+            message = "Password matched!";
+        } else if (response == 0){
+            status = HttpStatus.NOT_FOUND.value();
+            message = "Password not matched!";
+        } else {
+            status = HttpStatus.NOT_FOUND.value();
+            message = "Account not found!";
+        }
+
+        return new ResponseDto<>(status, message, null, null);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseDto<Void> changePassword(@RequestBody ChangePasswordRequest request){
+        int response = accountsService.changePassword(request);
+        int status = 500;
+        String message = "Internal Server Error";
+        if (response == 1){
+            status = HttpStatus.OK.value();
+            message = "Change password successfully!";
+        } else if (response == 0){
+            status = HttpStatus.NOT_FOUND.value();
+            message = "Old password is not matched!";
+        } else {
+            status = HttpStatus.NOT_FOUND.value();
+            message = "Account not found!";
+        }
+
+        return new ResponseDto<>(status, message, null, null);
+    }
 }

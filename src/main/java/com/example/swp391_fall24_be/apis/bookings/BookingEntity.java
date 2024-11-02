@@ -48,7 +48,7 @@ public class BookingEntity implements IObject<BookingDTO> {
     private Feedback feedbackId;
 
     @Column(name = "addition_information", nullable = true, columnDefinition = "NVARCHAR(225)")
-    private String additionInformation;
+    private String additionalInformation;
 
     @Column(name = "service_price", nullable = false)
     private Float servicePrice;
@@ -87,19 +87,24 @@ public class BookingEntity implements IObject<BookingDTO> {
     public BookingDTO toResponseDto() {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(id);
-        bookingDTO.setCustomerId(customer.getId());
+//        bookingDTO.setCustomerFullName(customer.getId());
         bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
         if(veterian != null)
             bookingDTO.setVeterinarianFullName(veterian.getFirstName() + " " + veterian.getLastName());
         else
-            bookingDTO.setVeterinarianFullName(null);
+            bookingDTO.setVeterinarianFullName("will be available soon");
 
-        bookingDTO.setServiceId(service.getId());
+//        bookingDTO.setServiceId(service.getId());
         bookingDTO.setServiceName(service.getName());
-        bookingDTO.setServiceType(service.getType().name());
+        bookingDTO.setMeetingMethod(meetingMethodEnum.toString());
+//        bookingDTO.setType();
+        bookingDTO.setServicePrice(servicePrice);
+        bookingDTO.setTravelPrice(travelPrice);
+        bookingDTO.setTotalPrice(servicePrice + travelPrice * distanceMeters);
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbackId(feedbackId);
-        bookingDTO.setAdditionalInformation(additionInformation);
+        bookingDTO.setAdditionalInformation(additionalInformation);
+        bookingDTO.setDistance_meters(distanceMeters);
         bookingDTO.setUserAddress(userAddress);
         bookingDTO.setStatusEnum(statusEnum);
         bookingDTO.setCreatedAt(createdAt);
