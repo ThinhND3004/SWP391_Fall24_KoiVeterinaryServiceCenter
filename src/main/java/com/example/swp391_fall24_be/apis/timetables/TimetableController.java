@@ -1,6 +1,5 @@
 package com.example.swp391_fall24_be.apis.timetables;
 
-import com.example.swp391_fall24_be.annotations.CurrentAccount;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.SaveTimetableDto;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableDTO;

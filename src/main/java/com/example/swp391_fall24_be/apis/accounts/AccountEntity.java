@@ -126,7 +126,7 @@ public class AccountEntity implements IObject<AccountDto>{
         dto.setCreateAt(createAt);
         dto.setUpdateAt(updateAt);
         dto.setDisable(isDisable);
-//        dto.setImageEntityId(avatar.getId());
+        if(avatar != null) dto.setImageEntityId(avatar.getId());
         return dto;
     }
 
