@@ -2,16 +2,18 @@ package com.example.swp391_fall24_be.apis.dashboard;
 
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
+import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
@@ -26,29 +28,86 @@ public class DashboardService {
         List<BookingEntity> bookingsIn12Months = bookingRepository.findAllByStartedAtBetween(start, now);
         List<BookingEntity> bookings = bookingRepository.findAll();
         Map<String, Double> revenuePerMonth = new HashMap<>();
-        Map<String, Integer> chosenServices = new HashMap<>();
-        Map<String, Integer> startTime = new HashMap<>();
+        Map<String, Map<String, Object>> chosenServices = new HashMap<>();
+        Map<Double, Integer> serviceRating = new HashMap<>();
+        Map<String, Integer> startTimeDaily = new HashMap<>();
+        Map<String, Integer> startTimeWeekly = new HashMap<>();
 
         bookingsIn12Months.forEach(booking -> {
-            String month = booking.getStartedAt().getMonth().toString();
-            double price = booking.getService().getPrice();
-            revenuePerMonth.put(month, revenuePerMonth.get(month) + price);
+            LocalDateTime createdAt = booking.getCreatedAt();
+            if (createdAt != null) {
+                String month = createdAt.getMonth().toString();
+                double price = booking.getService().getPrice();
+                revenuePerMonth.put(month, revenuePerMonth.getOrDefault(month, 0d) + price);
+            }
         });
 
         bookings.forEach(booking -> {
-            String serviceId = booking.getService().getId();
-            chosenServices.put(serviceId, chosenServices.get(serviceId) + 1);
+            LocalDateTime startedAt = booking.getStartedAt();
 
-            //day of week and time
-            String time = booking.getStartedAt().getDayOfWeek().toString() + "_" +
-                    booking.getStartedAt().getHour() + "_" +
-                    booking.getStartedAt().getMinute();
-            startTime.put(time, startTime.get(time) + 1);
+            String serviceId = booking.getService().getId();
+            chosenServices.putIfAbsent(serviceId, new HashMap<>());
+            chosenServices.get(serviceId).put("name", booking.getService().getName());
+            chosenServices.get(serviceId).put("count", (int) chosenServices.get(serviceId).getOrDefault("count", 0) + 1);
+
+            if (startedAt != null) {
+                String dayOfWeek = startedAt.getDayOfWeek().toString();
+                String time = startedAt.getHour() + "_" + startedAt.getMinute();
+                startTimeDaily.put(time, startTimeDaily.getOrDefault(time, 0) + 1);
+                startTimeWeekly.put(dayOfWeek, startTimeWeekly.getOrDefault(dayOfWeek, 0) + 1);
+            }
+
+            Feedback feedback = booking.getFeedbackId();
+            if (feedback != null) {
+                double rating = feedback.getStarRating();
+                serviceRating.put(rating, serviceRating.getOrDefault(rating, 0) + 1);
+            }
         });
 
-        dashboardData.getData().put("revenue", monthlyData(revenuePerMonth));
+        dashboardData.getData().put("revenue", revenuePerMonth.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey((month1, month2) -> {
+                    List<String> months = List.of("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
+                    return Integer.compare(months.indexOf(month1), months.indexOf(month2));
+                }))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                )));
         dashboardData.getData().put("services", chosenServices);
-        dashboardData.getData().put("startTime", startTime);
+        dashboardData.getData().put("rating", serviceRating);
+        dashboardData.getData().put("startTimeDaily", startTimeDaily.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey((time1, time2) -> {
+                    String[] parts1 = time1.split("_");
+                    String[] parts2 = time2.split("_");
+                    int hour1 = Integer.parseInt(parts1[0]);
+                    int minute1 = Integer.parseInt(parts1[1]);
+                    int hour2 = Integer.parseInt(parts2[0]);
+                    int minute2 = Integer.parseInt(parts2[1]);
+                    if (hour1 != hour2) {
+                        return Integer.compare(hour1, hour2);
+                    } else {
+                        return Integer.compare(minute1, minute2);
+                    }
+                }))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                )));
+        dashboardData.getData().put("startTimeWeekly", startTimeWeekly.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey((day1, day2) -> {
+                    List<String> daysOfWeek = List.of("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY");
+                    return Integer.compare(daysOfWeek.indexOf(day1), daysOfWeek.indexOf(day2));
+                }))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                )));
         return dashboardData;
     }
 
@@ -56,32 +115,39 @@ public class DashboardService {
         DashboardData dashboardData = new DashboardData();
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime start = now.withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         List<BookingEntity> bookingsInMonth = bookingRepository.findAllByStartedAtBetween(start, now);
         List<BookingEntity> bookings = bookingRepository.findAll();
 
         AtomicLong totalWorkTime = new AtomicLong();
-        Map<String, Double> averageWorkTime = new HashMap<>();
-        Map<String, Long> totalWorkTimeInMonth = new HashMap<>();
+        Map<String, Map<String, Object>> averageWorkTime = new HashMap<>();
+        Map<String, Map<String, Object>> totalWorkTimeInMonth = new HashMap<>();
 
         bookings.forEach(booking -> {
             LocalDateTime startedAt = booking.getStartedAt();
             LocalDateTime endedAt = booking.getEndedAt();
-            long duration = Duration.between(startedAt, endedAt).toHours();
-
-            totalWorkTime.addAndGet(duration);
+            if (startedAt != null && endedAt != null) {
+                long duration = Duration.between(startedAt, endedAt).toHours();
+                totalWorkTime.addAndGet(duration);
+            }
         });
 
         bookingsInMonth.forEach(booking -> {
-            String veterianId = booking.getVeterian().getId();
-
             LocalDateTime startedAt = booking.getStartedAt();
             LocalDateTime endedAt = booking.getEndedAt();
-            Long duration = Duration.between(startedAt, endedAt).toHours();
+            if (startedAt != null && endedAt != null) {
+                String veterianId = booking.getVeterian().getId();
+                long duration = Duration.between(startedAt, endedAt).toHours();
 
-            totalWorkTimeInMonth.put(veterianId, totalWorkTimeInMonth.get(veterianId) + duration);
-            double average = (double) totalWorkTimeInMonth.get(veterianId) / totalWorkTimeInMonth.size();
-            averageWorkTime.put(veterianId, average);
+                totalWorkTimeInMonth.putIfAbsent(veterianId, new HashMap<>());
+                totalWorkTimeInMonth.get(veterianId).put("name", booking.getService().getName());
+                totalWorkTimeInMonth.get(veterianId).put("count", (long) totalWorkTimeInMonth.get(veterianId).getOrDefault("count", 0L) + duration);
+
+                double average = (double) totalWorkTimeInMonth.get(veterianId).get("count") / totalWorkTimeInMonth.size();
+                averageWorkTime.put(veterianId, new HashMap<>());
+                averageWorkTime.get(veterianId).put("name", booking.getService().getName());
+                averageWorkTime.get(veterianId).put("average", average);
+            }
         });
 
         dashboardData.getData().put("totalWorkTime", totalWorkTime);
@@ -89,28 +155,5 @@ public class DashboardService {
         dashboardData.getData().put("totalWorkTimePerMonth", totalWorkTimeInMonth);
 
         return dashboardData;
-    }
-
-    private List<Map<String, Object>> monthlyData(Map<String, ?> dataPerMonth) {
-        List<Map<String, Object>> formattedData = new ArrayList<>();
-        Map<String, Map<String, Object>> monthlyData = new HashMap<>();
-
-        dataPerMonth.forEach((key, value) -> {
-            String[] parts = key.split("_");
-            String month = parts[0];
-            String type = parts[1];
-
-            monthlyData.putIfAbsent(month, new HashMap<>());
-            monthlyData.get(month).put(type, value);
-        });
-
-        monthlyData.forEach((month, data) -> {
-            Map<String, Object> monthData = new HashMap<>();
-            monthData.put("month", month);
-            monthData.put("data", data);
-            formattedData.add(monthData);
-        });
-
-        return formattedData;
     }
 }

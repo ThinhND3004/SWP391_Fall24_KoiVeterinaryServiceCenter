@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/dashboard")
 @Tag(name = "dashboard", description = "Dashboard APIs")
@@ -31,11 +34,13 @@ public class DashboardController {
                     null
             );
         } catch (Exception e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot get booking dashboard data!",
                     null,
-                    null
+                    errorList
             );
         }
     }
@@ -52,11 +57,13 @@ public class DashboardController {
                     null
             );
         } catch (Exception e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
                     "Cannot get veterinarian dashboard data!",
                     null,
-                    null
+                    errorList
             );
         }
     }
