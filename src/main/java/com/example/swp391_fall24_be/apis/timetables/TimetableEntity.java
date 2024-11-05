@@ -53,7 +53,7 @@ public class TimetableEntity implements IObject<TimetableDTO> {
     public TimetableDTO toResponseDto() {
         TimetableDTO timetableDTO = new TimetableDTO();
         timetableDTO.setId(id);
-        timetableDTO.setProfileId(profile.getId());
+        timetableDTO.setDayOfWeek(dayOfWeek.name());
         timetableDTO.setStartTime(startTime);
         timetableDTO.setEndTime(endTime);
         timetableDTO.setCreatedAt(createdAt);

@@ -1,12 +1,15 @@
 package com.example.swp391_fall24_be.apis.bookings;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.PaginateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
+import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,31 @@ public class BookingController extends AbstractController<BookingEntity, String,
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
+    }
+
+    @GetMapping("/by-veterian")
+    public ResponseDto<List<BookingDTO>> getByVeterian(
+            @Valid PaginateBookingDTO paginateBookingDTO
+    ){
+        try {
+            AccountEntity veterian = AuthUtils.getCurrentAccount();
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Get booking for veterian successful!",
+                    bookingService.getByVeterian(veterian, paginateBookingDTO.toEntity().getStatusEnum()),
+                    null
+            );
+        }
+        catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Get booking for veterian fail!",
+                    null,
+                    errorList
+            );
+        }
     }
 
     @PostMapping("/assign-veterian/{bookingId}/{veterianEmail}")

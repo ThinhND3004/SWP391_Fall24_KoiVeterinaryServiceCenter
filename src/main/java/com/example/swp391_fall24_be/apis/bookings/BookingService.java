@@ -3,6 +3,7 @@ package com.example.swp391_fall24_be.apis.bookings;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
 import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
+import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.PaginateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
@@ -14,6 +15,7 @@ import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -110,6 +112,25 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
             return booking;
         }
         throw new Error("Cannot find booking is not a veterian");
+    }
+
+    public List<BookingDTO> getByVeterian(AccountEntity veterian, StatusEnum status){
+        BookingEntity findBooking = new BookingEntity();
+        AccountEntity findVeterian = new AccountEntity();
+        findVeterian.setEmail(veterian.getEmail());
+        findBooking.setVeterian(findVeterian);
+        findBooking.setStatusEnum(status);
+
+        List<BookingEntity> veterianBookingList = bookingRepository.findAll(Example.of(findBooking));
+        if(veterianBookingList.isEmpty()){
+            throw new Error("Cannot find booking with this token!");
+        }
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for(BookingEntity booking : veterianBookingList ){
+            bookingDTOList.add(booking.toResponseDto());
+        }
+
+        return bookingDTOList;
     }
 
 }
