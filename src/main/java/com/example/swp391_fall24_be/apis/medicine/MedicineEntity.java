@@ -67,7 +67,7 @@ public class MedicineEntity implements IObject<MedicineDto> {
         dto.setManufacturer(manufacturer);
         dto.setPrescriptionEntities(prescriptionEntities);
         dto.setCreatedAt(createdAt);
-        dto.setMediImage_id(medicineImage.getId());
+        if(medicineImage != null) dto.setMediImage_id(medicineImage.getId());
         return dto;
     }
 }
