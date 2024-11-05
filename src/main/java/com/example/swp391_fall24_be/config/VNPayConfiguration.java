@@ -27,7 +27,7 @@ public class VNPayConfiguration {
     private String vnp_PayUrl="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
     @Value("${payment.vnp_ReturnUrl}")
-    private String vnp_ReturnUrl="http://localhost:8080/vnpay/return-url";
+    private String vnp_ReturnUrl="http://localhost:5173/payment-result";
 
     @Value("${payment.vnp_TmnCode}")
     private String vnp_TmnCode="MG093VEW";

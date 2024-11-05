@@ -9,25 +9,17 @@ import java.beans.ConstructorProperties;
 
 public class PaginateBookingDTO extends AbstractPagination<BookingEntity> {
     protected StatusEnum status;
-    public String veterianEmail;
 
-    @ConstructorProperties({"page", "unitPerPage", "status", "veterianEmail"})
-    public PaginateBookingDTO(Integer page, Integer unitPerPage, StatusEnum status, String accountId) {
+    @ConstructorProperties({"page", "unitPerPage", "status"})
+    public PaginateBookingDTO(Integer page, Integer unitPerPage, StatusEnum status) {
         super(page, unitPerPage);
         this.status = status;
-        this.veterianEmail = accountId;
     }
 
     @Override
     public BookingEntity toEntity() {
         BookingEntity booking = new BookingEntity();
         booking.setStatusEnum(status);
-
-        if(veterianEmail != null && !veterianEmail.isEmpty()){
-            AccountEntity veterian = new AccountEntity();
-            veterian.setEmail(veterianEmail);
-            booking.setVeterian(veterian);
-        }
 
         return booking;
     }

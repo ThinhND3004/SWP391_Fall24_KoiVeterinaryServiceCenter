@@ -20,10 +20,17 @@ public class TimetableService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public List<TimetableEntity> doFindByVeterianId(AccountEntity veterian){
+    public List<TimetableDTO> doFindByVeterianId(AccountEntity veterian){
         ProfileEntity profile = profileRepository.findProfileEntityByAccount(veterian);
         Optional<List<TimetableEntity>> timetablesResult = repository.findByProfileId(profile.getId());
-        return timetablesResult.orElse(null);
+
+        List<TimetableEntity> timetableEntities = timetablesResult.orElse(null);
+        List<TimetableDTO> timetableDTOS = new ArrayList<>();
+        for(TimetableEntity entity : timetableEntities){
+            timetableDTOS.add(entity.toResponseDto());
+        }
+        return timetableDTOS;
+
     }
 
     @Transactional

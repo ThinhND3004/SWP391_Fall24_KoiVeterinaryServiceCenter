@@ -97,7 +97,7 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setServiceId(service.getId());
         bookingDTO.setServiceName(service.getName());
         bookingDTO.setMeetingMethod(meetingMethodEnum.toString());
-        bookingDTO.setType(service.getType().name());
+        bookingDTO.setType(service.getType().name() );
         bookingDTO.setServicePrice(servicePrice);
         bookingDTO.setTravelPrice(travelPrice);
         bookingDTO.setTotalPrice(servicePrice + travelPrice * distanceMeters);

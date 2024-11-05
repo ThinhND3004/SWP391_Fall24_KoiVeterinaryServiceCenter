@@ -92,7 +92,7 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setCreatedAt(createdAt);
         dto.setUpdatedAt(updatedAt);
         dto.setDisable(isDisable);
-        dto.setSerImageId(serviceImage.getId());
+        if(serviceImage != null) dto.setSerImageId(serviceImage.getId());
         return dto;
     }
 }

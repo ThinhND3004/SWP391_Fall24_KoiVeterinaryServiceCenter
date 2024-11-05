@@ -22,12 +22,12 @@ public class TimetableController {
     @Autowired
     private TimetableService timetableService;
 
-    @GetMapping
-    private ResponseDto<List<TimetableEntity>> findAll(){
+    @GetMapping("")
+    private ResponseDto<List<TimetableDTO>> findAll(){
         try {
             return new ResponseDto<>(
                     HttpStatus.OK.value(),
-                    "Save timetable successful!",
+                    "Get timetable by token successful!",
                     timetableService.doFindByVeterianId(AuthUtils.getCurrentAccount()),
                     null
             );
@@ -38,7 +38,7 @@ public class TimetableController {
             errorList.add(e.getMessage());
             return new ResponseDto<>(
                     HttpStatus.BAD_REQUEST.value(),
-                    "Save timetable failed!",
+                    "Get timetable by token failed!",
                     null,
                     errorList
             );

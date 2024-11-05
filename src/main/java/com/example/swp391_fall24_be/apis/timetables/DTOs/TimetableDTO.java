@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Setter
 public class TimetableDTO {
     private String id;
-    private String profileId;
+    private String dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDateTime createdAt;
