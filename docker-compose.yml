@@ -36,7 +36,7 @@ services:
       - "8080:8080/tcp"
     environment:
       - TZ=Asia/Ho_Chi_Minh
-      - DB_HOST=ms-sql-server
+      - DB_HOST=${DB_HOST}
     env_file:
       - .env
     volumes:
