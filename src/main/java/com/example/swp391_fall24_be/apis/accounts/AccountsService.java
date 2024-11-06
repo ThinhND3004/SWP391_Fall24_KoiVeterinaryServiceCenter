@@ -133,7 +133,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(veterian, StatusEnum.CONFIRMED, StatusEnum.CONFIRMED);
+                        findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
@@ -162,7 +162,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         LocalDate today = LocalDate.now();
 
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(account, StatusEnum.CONFIRMED, StatusEnum.PENDING);
+                findByVeterianAndStatusEnum(account, StatusEnum.CONFIRMED);
 
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {
@@ -193,14 +193,14 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                 // Check if there is a booking in the time slot
 
                                 if (
-                                        (slotStartTime.isAfter(bookingStartTime) && slotStartTime.isBefore(bookingEndTime)
-                                        || slotEndTime.isAfter(bookingStartTime) && slotEndTime.isBefore(bookingEndTime))
-                                        || (slotStartTime.equals(bookingStartTime) && slotEndTime.equals(bookingEndTime))
+                                        ((!slotStartTime.isBefore(bookingStartTime) && !slotStartTime.isAfter(bookingEndTime))
+                                        || (!slotEndTime.isBefore(bookingStartTime) && !slotEndTime.isAfter(bookingEndTime)))
                                 ) {
-                                    // Update status
+                                    System.out.println("DAY : "+currentDate);
+                                    System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
+                                    // Update slot start time
                                     slotStartTime = bookingEndTime;
                                     slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                                    continue;
                                 }
                             }
 

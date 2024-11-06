@@ -45,11 +45,13 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @Override
     public NotificationDto toResponseDto() {
         NotificationDto dto = new NotificationDto();
-        dto.setAccount(account);
+        dto.setAccountEmail(account.getEmail());
+        dto.setTitle(title);
         dto.setDescription(description);
         dto.setType(type);
         dto.setReadAt(readAt);
         dto.setCreatedAt(createdAt);
+
         return dto;
     }
 }

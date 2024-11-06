@@ -11,8 +11,8 @@ import jakarta.validation.constraints.Size;
 
 public class CreateNotificationDto implements IDto<NotificationEntity> {
     @NotBlank(message = "Account Id must not be blank!")
-    @JsonProperty("accountId")
-    private AccountEntity accountId;
+    @JsonProperty("accountEmail")
+    private String accountEmail;
 
     @NotBlank(message = "Title must not be blank!")
     @Size(max = 200, message = "Title must not pass 200 letters!")
@@ -31,7 +31,11 @@ public class CreateNotificationDto implements IDto<NotificationEntity> {
     @Override
     public NotificationEntity toEntity() {
         NotificationEntity notification = new NotificationEntity();
-        notification.setAccount(accountId);
+
+        AccountEntity account = new AccountEntity();
+        account.setEmail(accountEmail);
+        notification.setAccount(account);
+
         notification.setTitle(title);
         notification.setDescription(description);
         notification.setType(type);

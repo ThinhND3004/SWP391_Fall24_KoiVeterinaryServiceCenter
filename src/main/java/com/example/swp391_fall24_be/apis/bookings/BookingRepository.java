@@ -9,9 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, String> {
-    List<BookingEntity> findByVeterianOrderByStartedAtAsc(AccountEntity veterian);
-
-    List<BookingEntity> findByVeterianAndStatusEnumOrStatusEnumOrderByStartedAtAsc(AccountEntity veterian, StatusEnum statusEnum, StatusEnum statusEnum2);
+    List<BookingEntity> findByVeterianAndStatusEnum(AccountEntity veterian, StatusEnum statusEnum2);
 
     List<BookingEntity> findAllByStartedAtBetween(LocalDateTime startedAt, LocalDateTime endedAt);
 }
