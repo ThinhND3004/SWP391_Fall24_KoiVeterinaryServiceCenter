@@ -7,7 +7,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Data
 public class NotificationDto {
-    private AccountEntity account;
+    private String accountEmail;
+    private String title;
     private String description;
     private NotificationTypeEnum type;
     private LocalDateTime readAt;
