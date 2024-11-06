@@ -184,18 +184,18 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                             //Check if it is current day and timetable == booking day of week
                         boolean isChecked = false;
                         for (BookingEntity booking: veterianBookingList){
-
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
-                        ) {
+                            ) {
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
                                 // Check if there is a booking in the time slot
 
                                 if (
-                                        ((!slotStartTime.isBefore(bookingStartTime) && !slotStartTime.isAfter(bookingEndTime))
-                                        || (!slotEndTime.isBefore(bookingStartTime) && !slotEndTime.isAfter(bookingEndTime)))
+                                        ((slotStartTime.isAfter(bookingStartTime) && slotStartTime.isBefore(bookingEndTime))
+                                        || (slotEndTime.isAfter(bookingStartTime) && slotEndTime.isBefore(bookingEndTime)))
+                                        || (slotStartTime.equals(bookingStartTime) && slotEndTime.equals(bookingEndTime))
                                 ) {
                                     System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
                                     System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
@@ -205,13 +205,12 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                     isChecked = true;
                                 }
                             }
-
                         }
                         timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
-                        if(!isChecked){
-                            slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                            slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
-                        }
+
+                        slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                        slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+
                         if(timeSlot.getSlots().isEmpty() ||
                             timeSlot.getSlots().size() > timeSlotPerBooking.size()
                         ){
