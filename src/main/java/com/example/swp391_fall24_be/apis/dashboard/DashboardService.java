@@ -143,7 +143,7 @@ public class DashboardService {
                 totalWorkTimeInMonth.get(veterianId).put("name", booking.getService().getName());
                 totalWorkTimeInMonth.get(veterianId).put("count", (long) totalWorkTimeInMonth.get(veterianId).getOrDefault("count", 0L) + duration);
 
-                double average = (double) totalWorkTimeInMonth.get(veterianId).get("count") / totalWorkTimeInMonth.size();
+                double average = (double) ((Long) totalWorkTimeInMonth.get(veterianId).get("count")) / totalWorkTimeInMonth.size();
                 averageWorkTime.put(veterianId, new HashMap<>());
                 averageWorkTime.get(veterianId).put("name", booking.getService().getName());
                 averageWorkTime.get(veterianId).put("average", average);
