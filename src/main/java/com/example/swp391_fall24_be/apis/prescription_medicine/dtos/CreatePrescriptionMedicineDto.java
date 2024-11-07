@@ -15,7 +15,7 @@ public class CreatePrescriptionMedicineDto implements IDto<PrescriptionMedicine>
     @JsonProperty("prescriptionId")
     private String prescriptionId;
 
-    @NotBlank(message = "Prescription Id must not be blank")
+    @NotBlank(message = "Medicine Id must not be blank")
     @JsonProperty("medicineId")
     private String medicineId;
 
