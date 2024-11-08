@@ -28,7 +28,7 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
 //    private AccountEntity customer;
 
     //    @NotBlank(message = "Veterian Id is required!")
-    private String veterianId;
+    private String veterianEmail;
 
     @NotBlank(message = "Service Id is required!")
     private String serviceId;
@@ -63,13 +63,15 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
         BookingEntity booking = new BookingEntity();
 //        booking.setCustomer(customer);
 
-        if (veterianId != null && !veterianId.isEmpty()) {
+        if (veterianEmail != null && !veterianEmail.isEmpty()) {
             AccountEntity veterian = new AccountEntity();
-            veterian.setId(veterianId);
+            veterian.setEmail(veterianEmail);
             booking.setVeterian(veterian);
-        } else
+            booking.setStatusEnum(StatusEnum.CONFIRMED);
+        } else {
             booking.setVeterian(null);
-
+            booking.setStatusEnum(StatusEnum.PENDING);
+        }
         ServiceEntity service = new ServiceEntity();
         service.setId(serviceId);
         booking.setService(service);
@@ -80,7 +82,6 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
         booking.setDistanceMeters(distanceMeters);
         booking.setUserAddress(userAddress);
         booking.setMeetingMethodEnum(meetingMethod);
-        booking.setStatusEnum(StatusEnum.PENDING);
         booking.setIsDecline(false);
         booking.setStartedAt(startAt);
 

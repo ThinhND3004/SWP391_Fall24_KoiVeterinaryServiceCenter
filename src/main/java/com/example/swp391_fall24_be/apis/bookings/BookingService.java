@@ -41,17 +41,17 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         bookingEntity.setCustomer(AuthUtils.getCurrentAccount());
 
         if (bookingEntity.getVeterian() != null){
-            Optional<AccountEntity> findVeterianResult = accountsRepository.findById(bookingEntity.getVeterian().getId());
+            Optional<AccountEntity> findVeterianResult = accountsRepository.findByEmail(bookingEntity.getVeterian().getEmail());
             if (findVeterianResult.isEmpty()) {
                 errorReportList.add(new ErrorReport(
                         "BookingsService_beforeCreate",
                         ErrorEnum.EntityNotFound,
-                        "Veterinarian with ID " + bookingEntity.getVeterian().getId() + " does not exist."));
+                        "Veterinarian with Email " + bookingEntity.getVeterian().getEmail() + " does not exist."));
             } else if(findVeterianResult.get().getRole() != AccountRoleEnum.VETERIAN){
                 errorReportList.add(new ErrorReport(
                         "BookingsService_beforeCreate",
                         ErrorEnum.EntityNotFound,
-                        "Account with ID " + bookingEntity.getVeterian().getId() + " is not a veterian."));
+                        "Account with Email " + bookingEntity.getVeterian().getEmail() + " is not a veterian."));
             }
             bookingEntity.setVeterian(findVeterianResult.get());
         }
