@@ -6,6 +6,7 @@ import com.example.swp391_fall24_be.apis.images.dtos.ImageDto;
 import com.example.swp391_fall24_be.apis.images.dtos.PaginateImageDto;
 import com.example.swp391_fall24_be.apis.images.dtos.UpdateImageDto;
 import com.example.swp391_fall24_be.core.AbstractController;
+import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,20 +78,34 @@ public class ImagesController extends AbstractController
     })
     @Operation(summary = "Get picture", description = "Get picture by id")
     @GetMapping(value = "/picture/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
-    public byte[] getImage(@PathVariable String id) throws ProjectException {
-        return service.getImage(id);
+    public byte[] getImage(@PathVariable String id) {
+        try {
+            return service.getImage(id);
+        } catch (ProjectException e) {
+            return null;
+        }
     }
 
     @PostMapping(value = "/setAvt/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseDto<?> setAvtForAccById(@PathVariable String id, @RequestBody MultipartFile multipartFile) throws ProjectException {
-        AccountEntity isSuccess = service.setAccountImg(id, multipartFile);
-        return new ResponseDto(
-                HttpStatus.OK.value(),
-                isSuccess != null ?
-                "Set avatar successfully!" : "Set avatar failed!",
-                null,
-                null
-        );
+    public ResponseDto<?> setAvtForAccById(@PathVariable String id, @RequestBody MultipartFile multipartFile) {
+        try {
+            AccountEntity isSuccess = service.setAccountImg(id, multipartFile);
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    isSuccess != null ?
+                            "Set avatar successfully!" : "Set avatar failed!",
+                    null,
+                    null
+            );
+        } catch (ProjectException ex) {
+            List<String> error = ex.getErrorReportList().stream().map(ErrorReport::getMessage).toList();
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Cannot save image",
+                    null,
+                    error
+            );
+        }
     }
 
 }

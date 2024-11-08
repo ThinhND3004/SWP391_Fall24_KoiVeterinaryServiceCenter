@@ -1,7 +1,10 @@
 package com.example.swp391_fall24_be.core;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class ProjectException extends Exception {
     private final List<ErrorReport> errorReportList;
 
