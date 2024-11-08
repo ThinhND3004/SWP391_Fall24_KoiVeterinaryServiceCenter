@@ -101,7 +101,7 @@ public class AccountEntity implements IObject<AccountDto>{
         this.id = id;
     }
 
-    public AccountEntity(String mail, String s, String customer, String customer1, LocalDate of, String number, String s1, AccountRoleEnum accountRoleEnum) {
+    public AccountEntity(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
