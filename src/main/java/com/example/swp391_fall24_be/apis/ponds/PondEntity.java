@@ -26,10 +26,6 @@ public class PondEntity implements IObject<PondDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private AccountEntity customer;
-
     @Column(name = "name")
     private String name;
 
