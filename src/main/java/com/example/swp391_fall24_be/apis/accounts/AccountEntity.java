@@ -116,6 +116,7 @@ public class AccountEntity implements IObject<AccountDto>{
     @Override
     public AccountDto toResponseDto() {
         AccountDto dto = new AccountDto();
+        dto.setId(id);
         dto.setEmail(email);
         dto.setDob(dob);
         dto.setAddress(address);
