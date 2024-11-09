@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/mssql/server:2019-latest
+
+# Copy the entrypoint.sh file into the container
+COPY entrypoint.sh /usr/src/entrypoint.sh
+
+# Set entrypoint
+ENTRYPOINT ["/usr/src/entrypoint.sh"]

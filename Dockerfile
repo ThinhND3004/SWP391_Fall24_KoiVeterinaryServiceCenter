@@ -10,6 +10,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/KoiFishBE.jar
 
-EXPOSE 8080
+EXPOSE 8089
 
 CMD ["java", "-jar", "/app/KoiFishBE.jar"]

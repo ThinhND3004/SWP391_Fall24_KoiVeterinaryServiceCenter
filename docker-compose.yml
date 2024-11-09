@@ -1,4 +1,5 @@
-name: Koi-Veterinary-Service-Center
+name: fpt-swp
+
 volumes:
     ms-sql-data:
         name: ms-sql-data
@@ -6,7 +7,9 @@ volumes:
 
 services:
   ms-sql-server:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: Dockerfile.ms_sql_server
     container_name: ms-sql-server
     restart: always
     ports:
@@ -17,7 +20,6 @@ services:
       - .env
     volumes:
       - ms-sql-data:/var/opt/mssql
-      - ./entrypoint.sh:/usr/src/entrypoint.sh
     environment:
       - TZ=Asia/Ho_Chi_Minh
       - ACCEPT_EULA=Y
@@ -33,7 +35,7 @@ services:
     container_name: koi-fish-be
     restart: unless-stopped
     ports:
-      - "8080:8080/tcp"
+      - "8089:8089/tcp"
     environment:
       - TZ=Asia/Ho_Chi_Minh
       - DB_HOST=${DB_HOST}
@@ -49,4 +51,4 @@ services:
 networks:
   fpt-swp:
     name: fpt-swp
-    driver: bridge
+    external: true
