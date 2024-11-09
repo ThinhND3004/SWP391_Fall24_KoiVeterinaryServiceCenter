@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.apis.reports.dto;
+package com.example.swp391_fall24_be.apis.reports.dtos;
 
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
@@ -8,7 +8,6 @@ import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionStatusEnum;
 import com.example.swp391_fall24_be.apis.prescription_medicine.PrescriptionMedicine;
 import com.example.swp391_fall24_be.core.IDto;
-import com.example.swp391_fall24_be.apis.ponds.PondEntity;
 import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
