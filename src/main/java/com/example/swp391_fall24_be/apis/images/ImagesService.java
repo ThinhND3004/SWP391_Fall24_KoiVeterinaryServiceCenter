@@ -135,6 +135,13 @@ public class ImagesService extends AbstractService<
             Optional<AccountEntity> account = accountsRepository.findById(id);
 
             if (account.isPresent()) {
+                ImageEntity oldAvt = account.get().getAvatar();
+                if (oldAvt != null)
+                {
+                    account.get().setAvatar(null);
+                    delete(oldAvt.getId());
+                }
+
                 ImageDto imageEntity = upload(multipartFile);
 
                 if (imageEntity != null) {
@@ -153,6 +160,7 @@ public class ImagesService extends AbstractService<
                 }
 
             }
+            else System.out.println("ACC null");
         } catch (Exception e)
         {
             System.out.println("SET AVT ERR: " + e.toString());
