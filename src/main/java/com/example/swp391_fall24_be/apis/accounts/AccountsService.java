@@ -183,18 +183,23 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     while (!slotEndTime.isAfter(timetable.getEndTime())){
                             //Check if it is current day and timetable == booking day of week
                         boolean isChecked = false;
+
                         for (BookingEntity booking: veterianBookingList){
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
                             ) {
+
+
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
                                 // Check if there is a booking in the time slot
+                                System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
+                                System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
                                 if (
-                                        ((slotStartTime.isAfter(bookingStartTime) && slotStartTime.isBefore(bookingEndTime))
-                                        || (slotEndTime.isAfter(bookingStartTime) && slotEndTime.isBefore(bookingEndTime)))
+                                        ((!slotStartTime.isBefore(bookingStartTime) && slotStartTime.isBefore(bookingEndTime))
+                                        || (slotEndTime.isAfter(bookingStartTime) && !slotEndTime.isAfter(bookingEndTime)))
                                         || (slotStartTime.equals(bookingStartTime) && slotEndTime.equals(bookingEndTime))
                                 ) {
                                     System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
