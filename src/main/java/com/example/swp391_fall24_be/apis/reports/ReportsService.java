@@ -48,46 +48,52 @@ public class ReportsService extends AbstractService<ReportEntity, String, Create
     @Transactional
     public ReportEntity create(CreateReportDto dto) throws ProjectException {
         ReportEntity entity = dto.toEntity();
-        // Save Pond
-        if(entity.getPond() != null){
+
+        // Save Pond if present
+        if (entity.getPond() != null) {
             PondEntity pondEntity = pondsRepository.save(entity.getPond());
             entity.setPond(pondEntity);
         }
 
-
-        if(entity.getPrescription() != null){
+        // Save Prescription if present and calculate total price
+        if (entity.getPrescription() != null) {
             PrescriptionEntity prescription = entity.getPrescription();
             float totalPrice = 0;
-            for(PrescriptionMedicine pm : prescription.getPrescriptionMedicines()){
+
+            for (PrescriptionMedicine pm : prescription.getPrescriptionMedicines()) {
                 Optional<MedicineEntity> findMedicine = medicineRepository.findById(pm.getMedicine().getId());
-                if(findMedicine.isPresent()){
+                if (findMedicine.isPresent()) {
                     totalPrice += findMedicine.get().getPrice();
                 }
             }
             prescription.setTotalPrice(totalPrice);
 
-
+            // Save Prescription and its medicines
             PrescriptionEntity savedPrescription = prescriptionRepository.save(prescription);
             entity.setPrescription(savedPrescription);
-            // Save prescription medicines
-            for(PrescriptionMedicine pm : savedPrescription.getPrescriptionMedicines()){
+
+            for (PrescriptionMedicine pm : savedPrescription.getPrescriptionMedicines()) {
                 pm.setPrescription(savedPrescription);
                 pmRepository.save(pm);
             }
         }
 
+        // Save ReportEntity
         entity = reportsRepository.save(entity);
 
-        // Set status for booking
-        Optional<BookingEntity> findBooking = bookingRepository.findById(entity.getBooking().getId());
-        if(findBooking.isPresent()){
-            BookingEntity booking = findBooking.get();
-            booking.setStatusEnum(StatusEnum.COMPLETED);
-            bookingRepository.save(booking);
+        // Update Booking status if present
+        if (entity.getBooking() != null) {
+            Optional<BookingEntity> findBooking = bookingRepository.findById(entity.getBooking().getId());
+            if (findBooking.isPresent()) {
+                BookingEntity booking = findBooking.get();
+                booking.setStatusEnum(StatusEnum.COMPLETED);
+                bookingRepository.save(booking);
+            }
         }
 
         return entity;
     }
+
 
     @Override
     protected void beforeUpdate(ReportEntity oldEntity, ReportEntity newEntity) throws ProjectException {

@@ -30,16 +30,16 @@ public class ReportEntity implements IObject<ReportDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(joinColumns = @JoinColumn(name = "report_id"))
     private List<KoiSpeciesEntity> koiSpecies;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "pond_id")
     private PondEntity pond;
 
     @JoinColumn(name = "prescription_id")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private PrescriptionEntity prescription;
 
     @Column(name = "diagnosis", columnDefinition = "VARCHAR(100)")
@@ -52,7 +52,7 @@ public class ReportEntity implements IObject<ReportDto> {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private BookingEntity booking;
 
     @Override

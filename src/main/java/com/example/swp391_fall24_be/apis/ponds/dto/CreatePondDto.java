@@ -12,10 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreatePondDto implements IDto<PondEntity> {
-    @NotBlank(message = "Customer is required!")
-    @JsonProperty("customer_id")
-    private String customerID;
-
     @NotBlank(message = "Name is required!")
     @Size(max = 50, message = "Length of name must not exceed 50 letters!")
     @JsonProperty("name")
@@ -50,10 +46,6 @@ public class CreatePondDto implements IDto<PondEntity> {
     @Override
     public PondEntity toEntity() {
         PondEntity entity = new PondEntity();
-
-        AccountEntity customer = new AccountEntity();
-        customer.setId(customerID);
-        entity.setCustomer(customer);
 
         entity.setName(name);
         entity.setSizeSquareMeters(sizeSquareMeters);
