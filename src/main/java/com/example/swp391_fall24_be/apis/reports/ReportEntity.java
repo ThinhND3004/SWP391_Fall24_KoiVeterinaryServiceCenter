@@ -2,21 +2,21 @@ package com.example.swp391_fall24_be.apis.reports;
 
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.koispecies.KoiSpeciesEntity;
+import com.example.swp391_fall24_be.apis.koispecies.dto.KoiSpeciesDto;
 import com.example.swp391_fall24_be.apis.ponds.PondEntity;
 import com.example.swp391_fall24_be.apis.prescription.PrescriptionEntity;
-import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.ReportDto;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "reports")
@@ -58,12 +58,20 @@ public class ReportEntity implements IObject<ReportDto> {
     @Override
     public ReportDto toResponseDto() {
         ReportDto treatmentDto = new ReportDto();
-        treatmentDto.setKoiSpecies(koiSpecies);
-//        treatmentDto.setPrescription(prescription);
-        treatmentDto.setPond(pond);
+        if(pond != null) treatmentDto.setPondDto(pond.toResponseDto());
+        if(prescription != null) treatmentDto.setPrescriptionDto(prescription.toResponseDto());
+
+        if(koiSpecies != null ){
+            List<KoiSpeciesDto> koiSpeciesDtos = new ArrayList<>();
+            for(KoiSpeciesEntity kSpecies : koiSpecies){
+                koiSpeciesDtos.add(kSpecies.toResponseDto());
+            }
+            treatmentDto.setKoiSpeciesDtoList(koiSpeciesDtos);
+        }
 
         treatmentDto.setDiagnosis(diagnosis);
         treatmentDto.setNotes(notes);
+        treatmentDto.setCreatedAt(createdAt);
         return treatmentDto;
     }
 }

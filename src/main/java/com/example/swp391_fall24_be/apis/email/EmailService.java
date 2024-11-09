@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.email;
 
+import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -33,19 +34,19 @@ public class EmailService {
         sendEmail(to, subject, body);
     }
 
-    public void sendInvitationForVeterinarian(String to, String recipientName, String serviceName, String serviceMethod, String date, String time, String location, String referenceNumber, String companyName, String companyWebsite) {
+    public void sendInvitationForVeterinarian(SendInvitationDto dto) {
         String subject = "Invitation for Veterinarian";
-        String body = "Dear " + recipientName + ",\n\n"
-                + "You have been invited to provide " + serviceName + " " +  serviceMethod + "!\n\n"
+        String body = "Dear " + dto.recipientName + ",\n\n"
+                + "You have been invited to provide " + dto.serviceName + " " +  dto.serviceMethod + "!\n\n"
                 + "Here are the details of the appointment:\n"
-                + "Date: " + date + "\n"
-                + "Time: " + time + "\n"
-                + "Location: " + location + "\n"
-                + "Reference Number: " + referenceNumber + "\n"
-                + "For accept or decline the invitation, please go to " + companyWebsite + ".\n\n"
+                + "Date: " + dto.date + "\n"
+                + "Time: " + dto.time + "\n"
+                + "Location: " + dto.location + "\n"
+                + "Reference Number: " + dto.referenceNumber + "\n"
+                + "For accept or decline the invitation, please go to " + dto.companyWebsite + ".\n\n"
                 + "Sincerely,\n"
-                + companyName + " Team";
-        sendEmail(to, subject, body);
+                + dto.companyName + " Team";
+        sendEmail(dto.to, subject, body);
     }
 
     public void sendEmail(String to, String subject, String body) {

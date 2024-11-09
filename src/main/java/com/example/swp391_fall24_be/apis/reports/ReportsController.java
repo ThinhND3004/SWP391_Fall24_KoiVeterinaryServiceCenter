@@ -1,9 +1,9 @@
 package com.example.swp391_fall24_be.apis.reports;
 
-import com.example.swp391_fall24_be.apis.reports.dto.CreateReportDto;
-import com.example.swp391_fall24_be.apis.reports.dto.PaginateReportDto;
-import com.example.swp391_fall24_be.apis.reports.dto.ReportDto;
-import com.example.swp391_fall24_be.apis.reports.dto.UpdateReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.CreateReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.PaginateReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.ReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.UpdateReportDto;
 import com.example.swp391_fall24_be.core.AbstractController;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,16 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/reports")
 @Tag(name = "Reports", description = "Report APIs")
 public class ReportsController extends AbstractController<ReportEntity, String, CreateReportDto, UpdateReportDto, PaginateReportDto, ReportDto> {
-    private final ReportsService treatmentsService;
+    private final ReportsService reportsService;
 
-    public ReportsController(ReportsService treatmentsService) {
-        this.treatmentsService = treatmentsService;
+    public ReportsController(ReportsService reportsService) {
+        this.reportsService = reportsService;
     }
 
     @Override

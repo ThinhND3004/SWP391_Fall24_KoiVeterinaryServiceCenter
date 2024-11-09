@@ -1,7 +1,9 @@
 package com.example.swp391_fall24_be.apis.notifications;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.notifications.dtos.NotificationDto;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IObject;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +27,10 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private AccountEntity account;
 
+    @JoinColumn(name = "booking_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private BookingEntity booking;
+
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -45,7 +51,17 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @Override
     public NotificationDto toResponseDto() {
         NotificationDto dto = new NotificationDto();
-        dto.setAccountEmail(account.getEmail());
+        dto.setId(id);
+        if (account != null) {
+            dto.setAccountEmail(account.getEmail());
+            dto.setAccountFullName(account.getFirstName() + " " + account.getLastName());
+        }
+
+        System.out.println(id + " - " +booking);
+        if(booking != null) {
+
+            dto.setBookingId(booking.getId());
+        }
         dto.setTitle(title);
         dto.setDescription(description);
         dto.setType(type);

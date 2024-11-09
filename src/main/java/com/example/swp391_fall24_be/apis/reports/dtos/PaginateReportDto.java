@@ -1,4 +1,4 @@
-package com.example.swp391_fall24_be.apis.reports.dto;
+package com.example.swp391_fall24_be.apis.reports.dtos;
 
 import com.example.swp391_fall24_be.core.AbstractPagination;
 import com.example.swp391_fall24_be.apis.reports.ReportEntity;

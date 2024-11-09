@@ -7,6 +7,7 @@ import com.example.swp391_fall24_be.apis.bookings.DTOs.BookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.PaginateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
+import com.example.swp391_fall24_be.apis.notifications.NotificationsRepository;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.apis.services.ServicesRepository;
 import com.example.swp391_fall24_be.core.AbstractService;
@@ -14,9 +15,9 @@ import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.utils.AuthUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,14 +26,20 @@ import java.util.Optional;
 
 @Service
 public class BookingService extends AbstractService<BookingEntity, String, CreateBookingDTO, UpdateBookingDTO, PaginateBookingDTO> {
-    @Autowired
-    BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
 
-    @Autowired
-    AccountsRepository accountsRepository;
+    private final AccountsRepository accountsRepository;
 
-    @Autowired
-    ServicesRepository servicesRepository;
+    private final ServicesRepository servicesRepository;
+
+    private final NotificationsRepository notificationsRepository;
+
+    public BookingService(BookingRepository bookingRepository, AccountsRepository accountsRepository, ServicesRepository servicesRepository, NotificationsRepository notificationsRepository) {
+        this.bookingRepository = bookingRepository;
+        this.accountsRepository = accountsRepository;
+        this.servicesRepository = servicesRepository;
+        this.notificationsRepository = notificationsRepository;
+    }
 
     @Override
     protected void beforeCreate(BookingEntity bookingEntity) throws ProjectException {
@@ -94,6 +101,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         return null;
     }
 
+    @Transactional
     public BookingEntity assignVeterian(String bookingId, String veterianEmail){
         Optional<AccountEntity> findVeterian = accountsRepository.findByEmail(veterianEmail);
         if(findVeterian.isEmpty()) throw new Error("Cannot find veterian with this email " + veterianEmail);
@@ -109,6 +117,9 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
             booking.setVeterian(veterian);
             booking.setStatusEnum(StatusEnum.CONFIRMED);
             booking = bookingRepository.save(booking);
+
+            // Remove all invitations
+            notificationsRepository.deleteAllByBooking(booking);
             return booking;
         }
         throw new Error("Cannot find booking is not a veterian");
