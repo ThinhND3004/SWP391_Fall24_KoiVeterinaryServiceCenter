@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class BookingDTO {
     private String meetingMethod;
     private String type;
     private ReportEntity reportId;
-    private Feedback feedbackId;
+    private List<Feedback> feedbacks;
     private String additionalInformation;
     private float servicePrice;
     private float travelPrice;

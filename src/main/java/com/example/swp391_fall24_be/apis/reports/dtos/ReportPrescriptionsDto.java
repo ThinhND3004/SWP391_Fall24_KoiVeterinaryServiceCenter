@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class ReportPrescriptionsDto {
     private String medicineId;
+    private Float medicinePrice;
     private Integer amount;
 }

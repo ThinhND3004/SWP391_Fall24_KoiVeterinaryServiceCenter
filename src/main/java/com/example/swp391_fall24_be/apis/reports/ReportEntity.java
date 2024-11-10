@@ -39,7 +39,7 @@ public class ReportEntity implements IObject<ReportDto> {
     private PondEntity pond;
 
     @JoinColumn(name = "prescription_id")
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     private PrescriptionEntity prescription;
 
     @Column(name = "diagnosis", columnDefinition = "VARCHAR(100)")
@@ -52,7 +52,8 @@ public class ReportEntity implements IObject<ReportDto> {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id",unique = true)
     private BookingEntity booking;
 
     @Override
@@ -68,7 +69,7 @@ public class ReportEntity implements IObject<ReportDto> {
             }
             treatmentDto.setKoiSpeciesDtoList(koiSpeciesDtos);
         }
-
+        
         treatmentDto.setDiagnosis(diagnosis);
         treatmentDto.setNotes(notes);
         treatmentDto.setCreatedAt(createdAt);

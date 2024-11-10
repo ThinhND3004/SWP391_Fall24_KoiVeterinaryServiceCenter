@@ -77,7 +77,7 @@ public class AccountEntity implements IObject<AccountDto>{
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private ProfileEntity profile;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BookingEntity> bookings;
 
 

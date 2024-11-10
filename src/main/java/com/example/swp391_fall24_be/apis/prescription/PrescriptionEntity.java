@@ -47,7 +47,7 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @Enumerated(EnumType.STRING)
     private PrescriptionStatusEnum status;
 
-    @OneToMany(mappedBy = "prescription")
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PrescriptionMedicine> prescriptionMedicines;
 
     @Override
