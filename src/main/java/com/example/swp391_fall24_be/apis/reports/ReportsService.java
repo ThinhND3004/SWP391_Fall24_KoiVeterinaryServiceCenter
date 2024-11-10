@@ -13,12 +13,15 @@ import com.example.swp391_fall24_be.apis.prescription_medicine.PrescriptionMedic
 import com.example.swp391_fall24_be.apis.prescription_medicine.PrescriptionMedicineRepository;
 import com.example.swp391_fall24_be.apis.reports.dtos.CreateReportDto;
 import com.example.swp391_fall24_be.apis.reports.dtos.PaginateReportDto;
+import com.example.swp391_fall24_be.apis.reports.dtos.ReportDto;
 import com.example.swp391_fall24_be.apis.reports.dtos.UpdateReportDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -87,6 +90,7 @@ public class ReportsService extends AbstractService<ReportEntity, String, Create
             if (findBooking.isPresent()) {
                 BookingEntity booking = findBooking.get();
                 booking.setStatusEnum(StatusEnum.COMPLETED);
+                booking.setEndedAt(LocalDateTime.now());
                 bookingRepository.save(booking);
             }
         }
@@ -103,5 +107,13 @@ public class ReportsService extends AbstractService<ReportEntity, String, Create
     @Override
     public ReportEntity delete(String id) throws ProjectException {
         return null;
+    }
+
+    public ReportDto getByBookingId(String bookingId) throws Exception {
+        Optional<ReportEntity> findResult = reportsRepository.findByBookingId(bookingId);
+        if (findResult.isEmpty()) {
+            throw new Exception("Cannot find reports with this bookingId "+bookingId);
+        }
+        return findResult.get().toResponseDto();
     }
 }

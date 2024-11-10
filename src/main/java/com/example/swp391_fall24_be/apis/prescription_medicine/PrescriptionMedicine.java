@@ -32,6 +32,9 @@ public class PrescriptionMedicine implements IObject<PrescriptionMedicineDto> {
     @Override
     public PrescriptionMedicineDto toResponseDto() {
         PrescriptionMedicineDto dto = new PrescriptionMedicineDto();
+        if(medicine != null){
+            dto.setMedicineName(medicine.getName());
+        }
         dto.setAmount(amount);
         return dto;
     }
