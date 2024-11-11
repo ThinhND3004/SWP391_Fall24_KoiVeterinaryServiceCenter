@@ -7,5 +7,6 @@ import lombok.Data;
 
 @Data
 public class PrescriptionMedicineDto {
+    private String medicineName;
     private int amount;
 }

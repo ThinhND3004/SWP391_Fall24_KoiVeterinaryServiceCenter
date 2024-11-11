@@ -8,6 +8,7 @@ import com.example.swp391_fall24_be.apis.notifications.dtos.PaginateNotification
 import com.example.swp391_fall24_be.apis.notifications.dtos.UpdateNotificationDto;
 import com.example.swp391_fall24_be.core.AbstractService;
 import com.example.swp391_fall24_be.core.ProjectException;
+import com.example.swp391_fall24_be.utils.AuthUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,7 +56,12 @@ public class NotificationsService extends AbstractService<
         return entity;
     }
 
-    public List<NotificationDto> findByAccount(AccountEntity account){
+    public Boolean findByAccount(String accountEmail, String bookingId){
+        Optional<NotificationEntity> findResult = notificationsRepository.findByAccountEmailAndBookingId(accountEmail,bookingId);
+        return findResult.isPresent();
+    }
+
+    public List<NotificationDto> findAllByAccount(AccountEntity account){
         List<NotificationEntity> notificationEntityList = notificationsRepository.findAllByAccount(account);
         List<NotificationDto> dtoList = new ArrayList<>();
         for(NotificationEntity notification : notificationEntityList){

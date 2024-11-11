@@ -65,6 +65,7 @@ public class CreateReportDto implements IDto<ReportEntity> {
 
                 MedicineEntity medicine = new MedicineEntity();
                 medicine.setId(dto.getMedicineId());
+                medicine.setPrice(dto.getMedicinePrice());
                 pm.setMedicine(medicine);
                 pm.setAmount(dto.getAmount());
 
@@ -73,6 +74,7 @@ public class CreateReportDto implements IDto<ReportEntity> {
 
             prescription.setPrescriptionMedicines(prescriptionMedicines);
             prescription.setStatus(PrescriptionStatusEnum.PENDING);
+            prescription.setTotalPrice((float) 0);
             report.setPrescription(prescription);
         }
 

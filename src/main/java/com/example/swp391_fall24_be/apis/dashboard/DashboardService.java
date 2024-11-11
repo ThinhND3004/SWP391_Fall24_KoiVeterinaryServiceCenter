@@ -57,9 +57,11 @@ public class DashboardService {
                 startTimeWeekly.put(dayOfWeek, startTimeWeekly.getOrDefault(dayOfWeek, 0) + 1);
             }
 
-            Feedback feedback = booking.getFeedbackId();
-            if (feedback != null) {
-                double rating = feedback.getStarRating();
+            if (booking.getFeedbacks() != null) {
+                double rating = 0;
+                for(Feedback feedback : booking.getFeedbacks()){
+                    rating += feedback.getStarRating();
+                }
                 serviceRating.put(rating, serviceRating.getOrDefault(rating, 0) + 1);
             }
         });

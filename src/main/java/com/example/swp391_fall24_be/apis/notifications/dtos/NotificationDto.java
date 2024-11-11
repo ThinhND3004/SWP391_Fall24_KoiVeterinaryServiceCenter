@@ -10,6 +10,8 @@ public class NotificationDto {
     private Long id;
     private String accountEmail;
     private String accountFullName;
+    private String senderEmail;
+    private String senderFullName;
     private String bookingId;
     private String title;
     private String description;
