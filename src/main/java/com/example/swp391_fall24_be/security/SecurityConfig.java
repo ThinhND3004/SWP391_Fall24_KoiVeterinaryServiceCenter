@@ -28,16 +28,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-//        CÚ PHÁP JAVA 8
-//         httpSecurity.csrf(c -> c.disable())
-//                .authorizeHttpRequests(a -> {
-//                    a.requestMatchers("/**");
-//                    a.anyRequest().authenticated();
-//                }
-//                );
-//
-//         return httpSecurity.build();
-
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(customerFilter, AuthorizationFilter.class)
@@ -56,7 +46,7 @@ public class SecurityConfig {
                             .permitAll()
 
                         // HAS AN ACCOUNT
-                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
+                        .requestMatchers("/bookings/**", "/images/**","/notifications/**", "/api/emails/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
                         .authenticated()
