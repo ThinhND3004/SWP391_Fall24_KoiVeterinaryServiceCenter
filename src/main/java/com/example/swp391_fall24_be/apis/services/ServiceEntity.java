@@ -41,6 +41,18 @@ public class ServiceEntity implements IObject<ServiceDto> {
     @Column(name = "price", nullable = false)
     private Float price;
 
+    @Column(name = "price_per_koi")
+    private Float pricePerKoi;
+
+    @Column(name = "small_pond_price")
+    private Float smallPondPrice;
+
+    @Column(name = "medium_pond_price")
+    private Float mediumPondPrice;
+
+    @Column(name = "large_pond_price")
+    private Float largePondPrice;
+
     @Column(name = "travel_price_per_meter", nullable = false)
     private Float travelPricePerMeter;
 
@@ -86,6 +98,10 @@ public class ServiceEntity implements IObject<ServiceDto> {
         dto.setOverview(overview);
         dto.setDescription(description);
         dto.setPrice(price);
+        dto.setPricePerKoi(pricePerKoi);
+        dto.setSmallPondPrice(smallPondPrice);
+        dto.setMediumPondPrice(mediumPondPrice);
+        dto.setLargePondPrice(largePondPrice);
         dto.setMeetingMethod(meetingMethod);
         dto.setTravelPricePerMeter(travelPricePerMeter);
         dto.setEstimatedTime(estimatedTime);

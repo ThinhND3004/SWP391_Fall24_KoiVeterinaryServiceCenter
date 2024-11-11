@@ -3,10 +3,14 @@ package com.example.swp391_fall24_be.apis.bookings.DTOs;
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
+import com.example.swp391_fall24_be.apis.bookings.PondSizeEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.IDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -36,13 +40,21 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
     //    @NotNull(message = "Additional Information must not be null!")
     private String additionalInformation;
 
-    @NotNull(message = "Service Price is required!")
-    @Min(0)
-    private Float servicePrice;
+//    @NotNull(message = "Service Price is required!")
+//    @Min(0)
+//    private Float servicePrice;
+
+    private Integer koiQuantity;
+
+//    private Float koiPrice;
+
+    private PondSizeEnum pondSize;
+
+//    private Float pondPrice;
 
     //    @NotNull(message = "Travel Price is required!")
 //    @Min(0)
-    private Float travelPrice;
+//    private Float travelPrice;
 
     //    @NotNull(message = "Distance Meters is required!")
 //    @Min(0)
@@ -77,9 +89,13 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
         booking.setService(service);
 
         booking.setAdditionalInformation(additionalInformation);
-        booking.setServicePrice(servicePrice);
-        booking.setTravelPrice(travelPrice);
+//        booking.setServicePrice(servicePrice);
+        booking.setKoiQuantity(koiQuantity);
+//        booking.setKoiPrice(koiPrice);
+        booking.setPondSize(pondSize);
+//        booking.setPondPrice(pondPrice);
         booking.setDistanceMeters(distanceMeters);
+//        booking.setTravelPrice(travelPrice);
         booking.setUserAddress(userAddress);
         booking.setMeetingMethodEnum(meetingMethod);
         booking.setIsDecline(false);

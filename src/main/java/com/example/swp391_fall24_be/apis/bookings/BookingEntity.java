@@ -50,11 +50,25 @@ public class BookingEntity implements IObject<BookingDTO> {
     @Column(name = "addition_information", columnDefinition = "NVARCHAR(225)")
     private String additionalInformation;
 
-    @Column(name = "service_price", nullable = false)
-    private Float servicePrice;
+//    @Column(name = "service_price", nullable = false)
+//    private Float servicePrice;
 
-    @Column(name = "travel_price")
-    private Float travelPrice;
+    @Column(name = "koi_quantity")
+    private Integer koiQuantity;
+
+//    @Column(name = "koi_price")
+//    private Float koiPrice;
+
+    @Column(name = "pond_size")
+    @Enumerated(EnumType.STRING)
+    private PondSizeEnum pondSize;
+
+//    @Column(name = "pond_price")
+//    private Float pondPrice;
+
+//    @Column(name = "travel_price", nullable = true)
+//    private Float travelPrice;
+
 
     @Column(name = "distance_meters")
     private Float distanceMeters;
@@ -86,6 +100,10 @@ public class BookingEntity implements IObject<BookingDTO> {
     @Override
     public BookingDTO toResponseDto() {
         BookingDTO bookingDTO = new BookingDTO();
+        float totalKoiPrice = 0;
+        float totalPondPrice = 0;
+        float totalTravelPrice = 0;
+
         bookingDTO.setId(id);
 //        bookingDTO.setCustomerFullName(customer.getId());
         bookingDTO.setCustomerFullName(customer.getFirstName() + " " + customer.getLastName());
@@ -98,9 +116,30 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setServiceName(service.getName());
         bookingDTO.setMeetingMethod(meetingMethodEnum.toString());
         bookingDTO.setType(service.getType().name() );
-        bookingDTO.setServicePrice(servicePrice);
-        bookingDTO.setTravelPrice(travelPrice);
-        bookingDTO.setTotalPrice(servicePrice + travelPrice * distanceMeters);
+        bookingDTO.setServicePrice(service.getPrice());
+        bookingDTO.setKoiQuantity(koiQuantity);
+
+        totalKoiPrice = koiQuantity * service.getPricePerKoi();
+        bookingDTO.setKoiPrice(totalKoiPrice);
+//        bookingDTO.setPondSize(pondSize);
+
+        if (pondSize == PondSizeEnum.SMALL_POND){
+            bookingDTO.setPondSize(PondSizeEnum.SMALL_POND);
+            bookingDTO.setPondPrice(service.getSmallPondPrice());
+            totalPondPrice = service.getSmallPondPrice();
+        } else if (pondSize == PondSizeEnum.MEDIUM_POND){
+            bookingDTO.setPondSize(PondSizeEnum.MEDIUM_POND);
+            bookingDTO.setKoiPrice(service.getMediumPondPrice());
+            totalPondPrice = service.getMediumPondPrice();
+        } else {
+            bookingDTO.setPondSize(PondSizeEnum.LARGE_POND);
+            bookingDTO.setPondPrice(service.getLargePondPrice());
+            totalPondPrice = service.getLargePondPrice();
+        }
+
+        totalTravelPrice = service.getTravelPricePerMeter() * distanceMeters;
+        bookingDTO.setTravelPrice(totalTravelPrice);
+        bookingDTO.setTotalPrice(service.getPrice() + totalKoiPrice + totalTravelPrice + totalPondPrice);
         bookingDTO.setReportId(report);
         bookingDTO.setFeedbacks(feedbacks);
         bookingDTO.setAdditionalInformation(additionalInformation);

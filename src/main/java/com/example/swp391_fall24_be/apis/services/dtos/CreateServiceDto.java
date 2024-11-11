@@ -6,6 +6,7 @@ import com.example.swp391_fall24_be.apis.services.ServiceTypeEnum;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableTime;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -38,6 +39,12 @@ public class CreateServiceDto implements IDto<ServiceEntity> {
     @Min(value = 0, message = "Price must not be negative!")
     @JsonProperty("price")
     private Float price;
+
+    @Column(name = "price_per_koi")
+    private Float pricePerKoi;
+
+    @Column(name = "pond_price")
+    private Float pondPrice;
 
     @NotNull(message = "Travel price per meter is required!")
     @Min(value = 0, message = "Travel price per meter must not be negative!")

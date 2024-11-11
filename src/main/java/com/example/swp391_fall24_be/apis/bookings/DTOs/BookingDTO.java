@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.bookings.DTOs;
 
+import com.example.swp391_fall24_be.apis.bookings.PondSizeEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
 import com.example.swp391_fall24_be.apis.reports.ReportEntity;
@@ -26,9 +27,13 @@ public class BookingDTO {
     private ReportEntity reportId;
     private List<Feedback> feedbacks;
     private String additionalInformation;
-    private float servicePrice;
-    private float travelPrice;
-    private float distance_meters;
+    private Float servicePrice;
+    private Integer koiQuantity;
+    private Float koiPrice;
+    private PondSizeEnum pondSize;
+    private Float PondPrice;
+    private Float travelPrice;
+    private Float distance_meters;
     private float totalPrice;
     private String userAddress;
     private StatusEnum statusEnum;
