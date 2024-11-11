@@ -26,11 +26,11 @@ public class Feedback implements IObject<FeedbackDTO> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
     private BookingEntity booking;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private AccountEntity customer;
 
@@ -55,8 +55,6 @@ public class Feedback implements IObject<FeedbackDTO> {
     public FeedbackDTO toResponseDto() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setId(id);
-        feedbackDTO.setBooking(booking);
-        feedbackDTO.setCustomer(customer);
         feedbackDTO.setStarRating(starRating);
         feedbackDTO.setComment(comment);
         feedbackDTO.setCreatedAt(createdAt);

@@ -2,9 +2,13 @@ package com.example.swp391_fall24_be.apis.auth.dto;
 
 import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
 import com.example.swp391_fall24_be.core.IDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountLoginDto implements IDto<AccountEntity> {
     private String email;
     private String password;
