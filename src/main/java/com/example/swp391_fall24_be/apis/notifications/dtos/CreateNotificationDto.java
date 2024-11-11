@@ -6,13 +6,20 @@ import com.example.swp391_fall24_be.apis.notifications.NotificationEntity;
 import com.example.swp391_fall24_be.apis.notifications.NotificationTypeEnum;
 import com.example.swp391_fall24_be.core.IDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.Getter;
 
+@Data
 public class CreateNotificationDto implements IDto<NotificationEntity> {
     @JsonProperty("accountEmail")
     private String accountEmail;
+
+    @JsonProperty("token")
+    private String token;
 
     @JsonProperty("bookingId")
     private String bookingId;
@@ -31,6 +38,9 @@ public class CreateNotificationDto implements IDto<NotificationEntity> {
     @JsonProperty("type")
     private NotificationTypeEnum type;
 
+    @Hidden
+    private AccountEntity sender;
+
     @Override
     public NotificationEntity toEntity() {
         NotificationEntity notification = new NotificationEntity();
@@ -40,6 +50,7 @@ public class CreateNotificationDto implements IDto<NotificationEntity> {
             account.setEmail(accountEmail);
             notification.setAccount(account);
         }
+        notification.setSender(sender);
 
         if(bookingId != null){
             BookingEntity booking = new BookingEntity();

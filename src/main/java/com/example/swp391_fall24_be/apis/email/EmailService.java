@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.email;
 
+import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,18 @@ public class EmailService {
                 + "Location: " + dto.location + "\n"
                 + "Reference Number: " + dto.referenceNumber + "\n"
                 + "For accept or decline the invitation, please go to " + dto.companyWebsite + ".\n\n"
+                + "Sincerely,\n"
+                + dto.companyName + " Team";
+        sendEmail(dto.to, subject, body);
+    }
+
+        public void sendInvitationResultForStaff(InvitationResultDto dto) {
+        String invitationResult = dto.isAccepted ? "accepted" : "rejected";
+
+        String subject = "Invitation Result";
+        String body = "Dear " + dto.recipientName + ",\n\n"
+                + dto.veterianName + " has " +invitationResult + " your invitation of booking " + dto.bookingId +"\n"
+                + "at : " + dto.dateTime + "\n\n"
                 + "Sincerely,\n"
                 + dto.companyName + " Team";
         sendEmail(dto.to, subject, body);

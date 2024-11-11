@@ -14,6 +14,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "bookings")
 @EntityListeners(AuditingEntityListener.class)
@@ -27,27 +28,26 @@ public class BookingEntity implements IObject<BookingDTO> {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private AccountEntity customer;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
     private ServiceEntity service;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "veterian_id")
     private AccountEntity veterian;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_id")
     private ReportEntity report;
 
-    @ManyToOne
-    @JoinColumn(name = "feedback_id")
-    private Feedback feedbackId;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Feedback> feedbacks;
 
-    @Column(name = "addition_information", nullable = true, columnDefinition = "NVARCHAR(225)")
+    @Column(name = "addition_information", columnDefinition = "NVARCHAR(225)")
     private String additionalInformation;
 
 //    @Column(name = "service_price", nullable = false)
@@ -68,6 +68,7 @@ public class BookingEntity implements IObject<BookingDTO> {
 
 //    @Column(name = "travel_price", nullable = true)
 //    private Float travelPrice;
+
 
     @Column(name = "distance_meters")
     private Float distanceMeters;
@@ -140,7 +141,7 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setTravelPrice(totalTravelPrice);
         bookingDTO.setTotalPrice(service.getPrice() + totalKoiPrice + totalTravelPrice + totalPondPrice);
         bookingDTO.setReportId(report);
-        bookingDTO.setFeedbackId(feedbackId);
+        bookingDTO.setFeedbacks(feedbacks);
         bookingDTO.setAdditionalInformation(additionalInformation);
         bookingDTO.setDistance_meters(distanceMeters);
         bookingDTO.setUserAddress(userAddress);
