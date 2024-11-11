@@ -16,8 +16,6 @@ import java.util.List;
 @Setter
 public class FeedbackDTO {
     private String id;
-    private AccountEntity customer;
-    private BookingEntity booking;
     private Double starRating;
     private String comment;
     private LocalDateTime createdAt;
