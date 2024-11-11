@@ -1,4 +1,5 @@
 package com.example.swp391_fall24_be.apis.email;
+import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,11 @@ public class EmailController {
     public ResponseEntity<?> sendInvitationForVeterinarian(@RequestBody SendInvitationDto dto) {
         emailService.sendInvitationForVeterinarian(dto);
         return new ResponseEntity<>("Invitation for veterinarian email sent successfully!", HttpStatus.OK);
+    }
+
+    @PostMapping("/send-invitation-result-for-staff")
+    public ResponseEntity<?> sendInvitationResultForStaff(@RequestBody InvitationResultDto dto) {
+        emailService.sendInvitationResultForStaff(dto);
+        return new ResponseEntity<>("Invitation result for staff email sent successfully!", HttpStatus.OK);
     }
 }

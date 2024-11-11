@@ -27,6 +27,10 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private AccountEntity account;
 
+    @JoinColumn(name = "sender_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private AccountEntity sender;
+
     @JoinColumn(name = "booking_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private BookingEntity booking;
@@ -57,7 +61,11 @@ public class NotificationEntity implements IObject<NotificationDto> {
             dto.setAccountFullName(account.getFirstName() + " " + account.getLastName());
         }
 
-        System.out.println(id + " - " +booking);
+        if(sender != null){
+            dto.setSenderEmail(sender.getEmail());
+            dto.setSenderFullName(sender.getFirstName() + " " + sender.getLastName());
+        }
+
         if(booking != null) {
 
             dto.setBookingId(booking.getId());
