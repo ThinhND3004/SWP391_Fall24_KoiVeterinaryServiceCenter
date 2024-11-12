@@ -49,7 +49,7 @@ public class Feedback implements IObject<FeedbackDTO> {
     private LocalDateTime updatedAt; //due to Customer can be able to update Comment and Rating
 
     @Column(name = "anonymous", nullable = false, columnDefinition = "BIT")
-    private boolean anonymous;
+    private Boolean anonymous;
 
     @Override
     public FeedbackDTO toResponseDto() {
