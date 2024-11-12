@@ -139,15 +139,16 @@ public class DashboardService {
             LocalDateTime endedAt = booking.getEndedAt();
             if (startedAt != null && endedAt != null) {
                 String veterianId = booking.getVeterian().getId();
+                String veterianName = booking.getVeterian().getLastName() + " " + booking.getVeterian().getFirstName();
                 long duration = Duration.between(startedAt, endedAt).toHours();
 
                 totalWorkTimeInMonth.putIfAbsent(veterianId, new HashMap<>());
-                totalWorkTimeInMonth.get(veterianId).put("name", booking.getService().getName());
+                totalWorkTimeInMonth.get(veterianId).put("name", veterianName);
                 totalWorkTimeInMonth.get(veterianId).put("count", (long) totalWorkTimeInMonth.get(veterianId).getOrDefault("count", 0L) + duration);
 
                 double average = (double) ((Long) totalWorkTimeInMonth.get(veterianId).get("count")) / totalWorkTimeInMonth.size();
                 averageWorkTime.put(veterianId, new HashMap<>());
-                averageWorkTime.get(veterianId).put("name", booking.getService().getName());
+                averageWorkTime.get(veterianId).put("name", veterianName);
                 averageWorkTime.get(veterianId).put("average", average);
             }
         });

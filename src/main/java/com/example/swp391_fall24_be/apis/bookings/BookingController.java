@@ -10,8 +10,6 @@ import com.example.swp391_fall24_be.core.ResponseDto;
 import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.apache.http.protocol.HTTP;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/bookings")
 @Tag(name = "Bookings", description = "Booking APIs")
-@CrossOrigin(origins = "http://localhost:5173") // Set the allowed origin
 public class BookingController extends AbstractController<BookingEntity, String, CreateBookingDTO, UpdateBookingDTO, PaginateBookingDTO, BookingDTO> {
 
     private final BookingService bookingService;
