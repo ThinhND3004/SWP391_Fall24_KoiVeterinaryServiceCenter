@@ -10,6 +10,7 @@ import com.example.swp391_fall24_be.core.ResponseDto;
 import com.example.swp391_fall24_be.security.JwtProvider;
 import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -34,7 +35,7 @@ public class NotificationsController extends AbstractController<
         NotificationDto
         > {
 
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificationsService notificationsService;
 
@@ -94,12 +95,37 @@ public class NotificationsController extends AbstractController<
 
     @MessageMapping("/send-email")
     public ResponseDto<NotificationDto> doMessageOnEmail(CreateNotificationDto dto) {
+        try {
+            AccountEntity sender = jwtProvider.verifyToken(dto.getToken());
+            dto.setSender(sender);
+            NotificationDto notificationDto = notificationsService.create(dto).toResponseDto();
+            notificationDto.setMessage(dto.getMessage());
+            notificationDto.setNotiType(dto.getNotiType());
+            String accountEmail = notificationDto.getAccountEmail();
+
+            messagingTemplate.convertAndSend("/topic/notifications/" + accountEmail, new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Create notification success!",
+                    notificationDto,
+                    null
+            ));
+
+        }
+        catch (Exception e){
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Create notification failed!",
+                    null,
+                    errors
+            );
+        }
         // Call your service to create and retrieve the NotificationDto
         AccountEntity sender = jwtProvider.verifyToken(dto.getToken());
         dto.setSender(sender);
         ResponseDto<NotificationDto> response = super.doPost(dto);
-        String accountEmail = response.getData().getAccountEmail();
-        messagingTemplate.convertAndSend("/topic/notifications/" + accountEmail, response);
+
 
         return response;
     }
@@ -107,6 +133,30 @@ public class NotificationsController extends AbstractController<
     @MessageMapping("/send")
     @SendTo("/topic/notifications")
     public ResponseDto<NotificationDto> doMessage(CreateNotificationDto dto) {
-        return super.doPost(dto);
+
+        try {
+            AccountEntity sender = jwtProvider.verifyToken(dto.getToken());
+            dto.setSender(sender);
+            NotificationDto notificationDto = notificationsService.create(dto).toResponseDto();
+            notificationDto.setMessage(dto.getMessage());
+            notificationDto.setNotiType(dto.getNotiType());
+
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Create notification success!",
+                    notificationDto,
+                    null
+            );
+        }
+        catch (Exception e){
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Create notification failed!",
+                    null,
+                    errors
+            );
+        }
     }
 }
