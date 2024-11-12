@@ -52,6 +52,7 @@ public class NotificationEntity implements IObject<NotificationDto> {
     private LocalDateTime readAt;
 
 
+
     @Override
     public NotificationDto toResponseDto() {
         NotificationDto dto = new NotificationDto();
