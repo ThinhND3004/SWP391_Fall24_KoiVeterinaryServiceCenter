@@ -22,6 +22,6 @@ public class CleanUpService {
     public void cancelOutdatedBooking() {
         LocalDateTime expiryDate = LocalDateTime.now();
         bookingRepository.updateOutdatedBooking(expiryDate); // Update booking status PENDING t CANCELED when expired
-        notificationsRepository.deleteExpiredNotifications(expiryDate.plusHours(3)); // DELETE notifications AFTER created at 3 hours
+        notificationsRepository.deleteExpiredNotifications(expiryDate.plusHours(3)); // DELETE notifications AFTER created for 3 hours
     }
 }

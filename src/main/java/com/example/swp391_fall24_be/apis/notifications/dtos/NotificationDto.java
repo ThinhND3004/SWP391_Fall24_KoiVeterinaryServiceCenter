@@ -14,6 +14,8 @@ public class NotificationDto {
     private String senderFullName;
     private String bookingId;
     private String title;
+    private String message;
+    private String notiType;
     private String description;
     private NotificationTypeEnum type;
     private LocalDateTime readAt;
