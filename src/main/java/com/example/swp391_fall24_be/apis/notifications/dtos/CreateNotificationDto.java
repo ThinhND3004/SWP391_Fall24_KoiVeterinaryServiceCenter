@@ -34,6 +34,14 @@ public class CreateNotificationDto implements IDto<NotificationEntity> {
     @JsonProperty("description")
     private String description;
 
+    @NotBlank(message = "Message must not be blank!")
+    @Size(max = 200, message = "Message must not pass 200 letters!")
+    @JsonProperty("message")
+    private String message;
+
+    @JsonProperty("notiType")
+    private String notiType;
+
     @NotNull(message = "Type must not be null!")
     @JsonProperty("type")
     private NotificationTypeEnum type;

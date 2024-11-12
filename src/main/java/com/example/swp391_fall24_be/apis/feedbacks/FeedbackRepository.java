@@ -10,4 +10,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, String> {
     @Query("SELECT f FROM feedbacks f WHERE f.customer.id = :accountId AND f.booking.id = :bookingId")
     Optional<Feedback> findFeedbackByAccountIdAndBookingId(@Param("accountId") String accountId, @Param("bookingId") String bookingId);
 
+    Optional<Feedback> findByCustomer_IdAndBooking_Id(String accountId, String bookingId);
 }

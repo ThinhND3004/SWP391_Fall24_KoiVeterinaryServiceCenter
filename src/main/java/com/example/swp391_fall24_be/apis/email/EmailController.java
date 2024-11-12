@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.email;
 import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
+import com.example.swp391_fall24_be.apis.email.DTOs.ReportEmailDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,12 @@ public class EmailController {
     public ResponseEntity<?> sendInvitationResultForStaff(@RequestBody InvitationResultDto dto) {
         emailService.sendInvitationResultForStaff(dto);
         return new ResponseEntity<>("Invitation result for staff email sent successfully!", HttpStatus.OK);
+    }
+
+    @PostMapping("/send-report-mail-to-customer")
+    public ResponseEntity<?> sendReportMailToCustomer(@RequestBody ReportEmailDto dto) {
+        boolean result = emailService.sendReportEmailToCustomer(dto);
+        if(result) return new ResponseEntity<>("Report email is sent successfully!", HttpStatus.OK);
+        else return  new ResponseEntity<>("Report email is sent failed!", HttpStatus.BAD_REQUEST);
     }
 }
