@@ -15,10 +15,7 @@ import com.example.swp391_fall24_be.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +51,29 @@ public class FeedbackController extends AbstractController
     @Override
     public ResponseDto<FeedbackDTO> doDelete(String id) {
         return super.doDelete(id);
+    }
+
+    @GetMapping("/current-booking/{bookingId}")
+    public ResponseDto<FeedbackDTO> getCurrentBooking(@PathVariable String bookingId) {
+        try {
+            AccountEntity account = AuthUtils.getCurrentAccount();
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Get feedback from token and bookingId success!",
+                    feedbackService.getCurrentBooking(account.getId(), bookingId),
+                    null
+            );
+        }
+        catch (Exception e){
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Get feedback from token and bookingId failed!",
+                    null,
+                    errors
+            );
+        }
     }
 
     @GetMapping("/is-feedback/{bookingId}")
