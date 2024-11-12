@@ -1,12 +1,18 @@
 package com.example.swp391_fall24_be.apis.email;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
+import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
 import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
+import com.example.swp391_fall24_be.apis.email.DTOs.ReportEmailDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class EmailService {
@@ -14,8 +20,15 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String email;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+
+    private final JavaMailSender javaMailSender;
+
+    private final BookingRepository bookingRepository;
+
+    public EmailService(JavaMailSender javaMailSender, BookingRepository bookingRepository) {
+        this.javaMailSender = javaMailSender;
+        this.bookingRepository = bookingRepository;
+    }
 
     public void sendOrderConfirmationEmail(String to, String recipientName, String serviceName, String date, String time, String location, String referenceNumber, String amount, String paymentMethod, String companyName, String companyPhone, String companyWebsite) {
         String subject = "Order Confirmation";
@@ -48,6 +61,28 @@ public class EmailService {
                 + "Sincerely,\n"
                 + dto.companyName + " Team";
         sendEmail(dto.to, subject, body);
+    }
+
+    public boolean sendReportEmailToCustomer(ReportEmailDto dto) {
+        Optional<BookingEntity> findBookingResult = bookingRepository.findById(dto.bookingId);
+        if(findBookingResult.isPresent()){
+            BookingEntity booking = findBookingResult.get();
+            AccountEntity customer = booking.getCustomer();
+            AccountEntity veterian = booking.getVeterian();
+            ServiceEntity service = booking.getService();
+
+            String subject = "Invitation for Veterinarian";
+            String body = "Dear " + customer.getFirstName() + " " + customer.getLastName() + ",\n\n"
+                    + "Your report for service " + service.getName() + "\n"
+                    + " which was done at " +  booking.getStartedAt() + "!\n"
+                    + " by : " + veterian.getFirstName() + " " +veterian.getLastName() + "\n"
+                    + "For viewing the report, please go to " + dto.companyWebsite + ".\n\n"
+                    + "Sincerely,\n"
+                    + dto.companyName + " Team";
+            sendEmail(customer.getEmail(), subject, body);
+            return true;
+        }
+        return false;
     }
 
         public void sendInvitationResultForStaff(InvitationResultDto dto) {
