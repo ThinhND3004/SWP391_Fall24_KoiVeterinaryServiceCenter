@@ -75,9 +75,9 @@ public class BookingIntegrationTest {
 		createBookingDTO.setAdditionalInformation("Hẻm 90 An Nhơn, Ho Chi Minh City, Ho Chi Minh, Vietnam");
 		createBookingDTO.setDistanceMeters(0f);
 		createBookingDTO.setMeetingMethod(MeetingMethodEnum.ONLINE);
-		createBookingDTO.setServicePrice(500000f);
+		//createBookingDTO.setServicePrice(500000f);
 		createBookingDTO.setStartAt(LocalDateTime.parse("2024-11-10T02:00:00"));
-		createBookingDTO.setTravelPrice(0f);
+		//createBookingDTO.setTravelPrice(0f);
 		createBookingDTO.setUserAddress("");
 
 		String bookingJson = objectMapper.writeValueAsString(createBookingDTO);
@@ -102,8 +102,8 @@ public class BookingIntegrationTest {
 		createBookingDTO.setVeterianEmail("vet1@gmail.com");
 		createBookingDTO.setServiceId("74e0b2d4-7886-4502-bced-af3e1b21fafe");
 		createBookingDTO.setAdditionalInformation("Hello");
-		createBookingDTO.setServicePrice(500000f);
-		createBookingDTO.setTravelPrice(2000f);
+		//createBookingDTO.setServicePrice(500000f);
+		//createBookingDTO.setTravelPrice(2000f);
 		createBookingDTO.setDistanceMeters(10f);
 		createBookingDTO.setUserAddress("HCM");
 		createBookingDTO.setMeetingMethod(MeetingMethodEnum.ONLINE);
