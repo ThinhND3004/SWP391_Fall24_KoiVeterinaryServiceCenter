@@ -103,13 +103,15 @@ public class NotificationsController extends AbstractController<
             notificationDto.setNotiType(dto.getNotiType());
             String accountEmail = notificationDto.getAccountEmail();
 
-            messagingTemplate.convertAndSend("/topic/notifications/" + accountEmail, new ResponseDto<>(
+            ResponseDto<NotificationDto> response = new ResponseDto<>(
                     HttpStatus.OK.value(),
                     "Create notification success!",
                     notificationDto,
                     null
-            ));
+            );
 
+            messagingTemplate.convertAndSend("/topic/notifications/" + accountEmail,response);
+            return response;
         }
         catch (Exception e){
             List<String> errors = new ArrayList<>();
@@ -121,13 +123,8 @@ public class NotificationsController extends AbstractController<
                     errors
             );
         }
-        // Call your service to create and retrieve the NotificationDto
-        AccountEntity sender = jwtProvider.verifyToken(dto.getToken());
-        dto.setSender(sender);
-        ResponseDto<NotificationDto> response = super.doPost(dto);
 
 
-        return response;
     }
 
     @MessageMapping("/send")

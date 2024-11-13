@@ -18,7 +18,7 @@ public class CleanUpService {
         this.notificationsRepository = notificationsRepository;
     }
 
-    @Scheduled(cron = "0 * * * * ?") // Runs every hour
+    @Scheduled(cron = "0 0 * * * ?") // Runs every hour
     public void cancelOutdatedBooking() {
         LocalDateTime expiryDate = LocalDateTime.now();
         bookingRepository.updateOutdatedBooking(expiryDate); // Update booking status PENDING t CANCELED when expired

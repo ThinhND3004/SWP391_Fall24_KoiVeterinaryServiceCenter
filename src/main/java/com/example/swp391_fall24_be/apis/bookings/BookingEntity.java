@@ -117,9 +117,12 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setMeetingMethod(meetingMethodEnum.toString());
         bookingDTO.setType(service.getType().name() );
         bookingDTO.setServicePrice(service.getPrice());
-        bookingDTO.setKoiQuantity(koiQuantity);
 
-        totalKoiPrice = koiQuantity * service.getPricePerKoi();
+        if(koiQuantity != null){
+            bookingDTO.setKoiQuantity(koiQuantity);
+            totalKoiPrice = koiQuantity * service.getPricePerKoi();
+        }
+
         bookingDTO.setKoiPrice(totalKoiPrice);
 //        bookingDTO.setPondSize(pondSize);
 

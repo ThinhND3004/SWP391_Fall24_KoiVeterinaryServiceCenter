@@ -16,8 +16,8 @@ public interface NotificationsRepository extends JpaRepository<NotificationEntit
 
     void deleteAllByBooking(BookingEntity booking);
 
-    @Query("SELECT n FROM notifications as n WHERE n.account.email = ?1 AND n.booking.id = ?2")
-    Optional<NotificationEntity> findByAccountEmailAndBookingId(String accountEmail, String bookingId);
+    @Query("SELECT COUNT(n) > 0 FROM notifications AS n WHERE n.account.email = ?1 AND n.booking.id = ?2")
+    boolean existsByAccountEmailAndBookingId(String accountEmail, String bookingId);
 
     @Modifying
     @Transactional
