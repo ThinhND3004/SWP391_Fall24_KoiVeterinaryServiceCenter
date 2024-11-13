@@ -57,8 +57,7 @@ public class NotificationsService extends AbstractService<
     }
 
     public Boolean findByAccount(String accountEmail, String bookingId){
-        Optional<NotificationEntity> findResult = notificationsRepository.findByAccountEmailAndBookingId(accountEmail,bookingId);
-        return findResult.isPresent();
+        return notificationsRepository.existsByAccountEmailAndBookingId(accountEmail,bookingId);
     }
 
     public List<NotificationDto> findAllByAccount(AccountEntity account){

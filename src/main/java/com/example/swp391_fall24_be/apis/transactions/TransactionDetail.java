@@ -10,12 +10,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Entity(name = "transaction_details")
-@EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+//@Entity(name = "transaction_details")
+//@EntityListeners(AuditingEntityListener.class)
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Getter
+//@Setter
 public class TransactionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
