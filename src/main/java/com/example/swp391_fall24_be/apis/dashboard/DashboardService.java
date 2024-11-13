@@ -3,6 +3,7 @@ package com.example.swp391_fall24_be.apis.dashboard;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
 import com.example.swp391_fall24_be.apis.feedbacks.Feedback;
+import com.example.swp391_fall24_be.apis.feedbacks.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class DashboardService {
     @Autowired
     BookingRepository bookingRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
     public DashboardData getBookingDashboardData() {
         DashboardData dashboardData = new DashboardData();
 
@@ -27,6 +31,7 @@ public class DashboardService {
         LocalDateTime start = now.minusMonths(12);
         List<BookingEntity> bookingsIn12Months = bookingRepository.findAllByStartedAtBetween(start, now);
         List<BookingEntity> bookings = bookingRepository.findAll();
+        List<Feedback> feedbacks = feedbackRepository.findAll();
         Map<String, Double> revenuePerMonth = new HashMap<>();
         Map<String, Map<String, Object>> chosenServices = new HashMap<>();
         Map<Double, Integer> serviceRating = new HashMap<>();
@@ -56,14 +61,11 @@ public class DashboardService {
                 startTimeDaily.put(time, startTimeDaily.getOrDefault(time, 0) + 1);
                 startTimeWeekly.put(dayOfWeek, startTimeWeekly.getOrDefault(dayOfWeek, 0) + 1);
             }
+        });
 
-            if (booking.getFeedbacks() != null) {
-                double rating = 0;
-                for(Feedback feedback : booking.getFeedbacks()){
-                    rating += feedback.getStarRating();
-                }
-                serviceRating.put(rating, serviceRating.getOrDefault(rating, 0) + 1);
-            }
+        feedbacks.forEach(feedback -> {
+            double rating = feedback.getStarRating();
+            serviceRating.put(rating, serviceRating.getOrDefault(rating, 0) + 1);
         });
 
         dashboardData.getData().put("revenue", revenuePerMonth.entrySet().stream()
