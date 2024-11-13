@@ -14,12 +14,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-@Entity(name = "transactions")
-@EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+//@Entity(name = "transactions")
+//@EntityListeners(AuditingEntityListener.class)
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Getter
+//@Setter
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
