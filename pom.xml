@@ -84,6 +84,17 @@
             <version>4.4.0</version>
         </dependency>
 
+		<!-- google meet api -->
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.34.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-meet</artifactId>
+			<version>0.3.0</version>
+		</dependency>
 
 <!--		email-->
 		<dependency>
