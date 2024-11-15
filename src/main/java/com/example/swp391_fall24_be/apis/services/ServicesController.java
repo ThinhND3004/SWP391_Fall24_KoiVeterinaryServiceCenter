@@ -32,7 +32,7 @@ public class ServicesController extends AbstractController<
     @Autowired
     private ServicesService servicesService;
     @GetMapping("/getAllService")
-    public ResponseDto<?> getAllService()
+    public ResponseDto<List<ServiceEntity>> getAllService()
     {
         List<ServiceEntity> resultList = servicesService.getAllServiceEntity();
 
@@ -43,6 +43,4 @@ public class ServicesController extends AbstractController<
             null
     );
     }
-
-
 }
