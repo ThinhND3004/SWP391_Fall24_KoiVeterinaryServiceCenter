@@ -46,7 +46,7 @@ public class SecurityConfig {
                             .permitAll()
 
                         // HAS AN ACCOUNT
-                        .requestMatchers("/bookings/**", "/images/**","/notifications/**", "/api/emails/**")
+                        .requestMatchers("/bookings/**", "/images/**","/notifications/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.GET,"/accounts/**", "/timetables/**", "/bookings/**")
                         .authenticated()
