@@ -121,8 +121,8 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
                     if(
                             searchTime.getDayOfWeek() == timetable.getDayOfWeek() &&
-                            (!searchTime.toLocalTime().isBefore(timetable.getStartTime()) &&
-                            !searchEndTime.toLocalTime().isAfter(timetable.getEndTime()))
+                            (searchTime.toLocalTime().isBefore(timetable.getEndTime()) &&
+                            searchEndTime.toLocalTime().isAfter(timetable.getStartTime()))
                     )
                     {
                         isInTimetable = true;
@@ -140,10 +140,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     // Find if search time is in Booking that has been reserved
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
-                    if (
-                            (!searchTime.isBefore(booking.getStartedAt()) && !searchTime.isAfter(bookingEndTime))
-                            || (!searchEndTime.isBefore(booking.getStartedAt()) && !searchEndTime.isAfter(bookingEndTime))
-                    ) {
+                    if ((searchTime.isBefore(bookingEndTime) && !searchEndTime.isBefore(booking.getStartedAt()))) {
                         isInBooking = true;
                         break;
                     }
@@ -182,8 +179,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                     while (!slotEndTime.isAfter(timetable.getEndTime())){
                             //Check if it is current day and timetable == booking day of week
-                        boolean isChecked = false;
-
                         for (BookingEntity booking: veterianBookingList){
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
@@ -197,17 +192,12 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                 System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
                                 System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
-                                if (
-                                        ((!slotStartTime.isBefore(bookingStartTime) && slotStartTime.isBefore(bookingEndTime))
-                                        || (slotEndTime.isAfter(bookingStartTime) && !slotEndTime.isAfter(bookingEndTime)))
-                                        || (slotStartTime.equals(bookingStartTime) && slotEndTime.equals(bookingEndTime))
-                                ) {
+                                if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
                                     System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
                                     System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
                                     // Update slot start time
                                     slotStartTime = bookingEndTime;
                                     slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                                    isChecked = true;
                                 }
                             }
                         }
