@@ -15,11 +15,13 @@ import com.example.swp391_fall24_be.core.ErrorEnum;
 import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.utils.AuthUtils;
+import com.example.swp391_fall24_be.utils.TimeUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,27 +43,30 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         this.notificationsRepository = notificationsRepository;
     }
 
+    public boolean isBookingBookedAtTheTime(LocalDateTime startTime, LocalTime estimatedTime, AccountEntity veterian){
+        List<BookingEntity> veterianBookingList = bookingRepository.
+                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
+        LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
+                .plusMinutes(estimatedTime.getMinute());;
+
+        for (BookingEntity booking: veterianBookingList) {
+            LocalDateTime bookingStartTime = booking.getStartedAt();
+            LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
+            LocalDateTime bookingEndTime = bookingStartTime.plusHours(bookingServiceEstimatedTime.getHour())
+                    .plusMinutes(bookingServiceEstimatedTime.getMinute());
+            if ((startTime.isBefore(bookingEndTime) && endTime.isAfter(bookingStartTime))) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     @Override
     protected void beforeCreate(BookingEntity bookingEntity) throws ProjectException {
         List<ErrorReport> errorReportList = new ArrayList<>();
 
         bookingEntity.setCustomer(AuthUtils.getCurrentAccount());
-
-        if (bookingEntity.getVeterian() != null){
-            Optional<AccountEntity> findVeterianResult = accountsRepository.findByEmail(bookingEntity.getVeterian().getEmail());
-            if (findVeterianResult.isEmpty()) {
-                errorReportList.add(new ErrorReport(
-                        "BookingsService_beforeCreate",
-                        ErrorEnum.EntityNotFound,
-                        "Veterinarian with Email " + bookingEntity.getVeterian().getEmail() + " does not exist."));
-            } else if(findVeterianResult.get().getRole() != AccountRoleEnum.VETERIAN){
-                errorReportList.add(new ErrorReport(
-                        "BookingsService_beforeCreate",
-                        ErrorEnum.EntityNotFound,
-                        "Account with Email " + bookingEntity.getVeterian().getEmail() + " is not a veterian."));
-            }
-            bookingEntity.setVeterian(findVeterianResult.get());
-        }
 
 
         Optional<ServiceEntity> findServiceResult = servicesRepository.findById(bookingEntity.getService().getId());
@@ -71,7 +76,33 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
                     ErrorEnum.EntityNotFound,
                     "Service with ID " + bookingEntity.getService().getId() + " does not exist."));
         }
-        bookingEntity.setService(findServiceResult.get());
+        else bookingEntity.setService(findServiceResult.get());
+
+        if (bookingEntity.getVeterian() != null){
+            Optional<AccountEntity> findVeterianResult = accountsRepository.findByEmail(bookingEntity.getVeterian().getEmail());
+            if (findVeterianResult.isEmpty()) {
+                errorReportList.add(new ErrorReport(
+                        "BookingsService_beforeCreate",
+                        ErrorEnum.EntityNotFound,
+                        "Veterinarian with Email " + bookingEntity.getVeterian().getEmail() + " does not exist."));
+            }
+            else if(findVeterianResult.get().getRole() != AccountRoleEnum.VETERIAN){
+                errorReportList.add(new ErrorReport(
+                        "BookingsService_beforeCreate",
+                        ErrorEnum.EntityNotFound,
+                        "Account with Email " + bookingEntity.getVeterian().getEmail() + " is not a veterian."));
+            }
+            else if (isBookingBookedAtTheTime(bookingEntity.getStartedAt(),bookingEntity.getService().getEstimatedTime(),findVeterianResult.get())){
+                errorReportList.add(new ErrorReport(
+                        "BookingsService_beforeCreate",
+                        ErrorEnum.ValidationError,
+                        "Booking with startTime "+ bookingEntity.getStartedAt() + " of veterian " + findVeterianResult.get().getEmail() + " is already booked!"
+            ));
+            }
+            else bookingEntity.setVeterian(findVeterianResult.get());
+        }
+
+
 
         if (!errorReportList.isEmpty()) {
             throw new ProjectException(errorReportList);
@@ -102,7 +133,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
     }
 
     @Transactional
-    public BookingEntity assignVeterian(String bookingId, String veterianEmail){
+    public BookingEntity assignVeterian(String bookingId, String veterianEmail) throws Exception {
         Optional<AccountEntity> findVeterian = accountsRepository.findByEmail(veterianEmail);
         if(findVeterian.isEmpty()) throw new Error("Cannot find veterian with this email " + veterianEmail);
         AccountEntity veterian = findVeterian.get();
@@ -113,7 +144,11 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         Optional<BookingEntity> findBooking = bookingRepository.findById(bookingId);
         if(findBooking.isPresent()){
             BookingEntity booking = findBooking.get();
-            if (booking.getStatusEnum() != StatusEnum.PENDING) throw new Error("Booking is not in PENDING state");
+
+            if (isBookingBookedAtTheTime(booking.getStartedAt(),booking.getService().getEstimatedTime(),veterian)){
+                throw new Exception("Booking with startTime "+ booking.getStartedAt() + " of veterian " + veterian.getEmail() + " is already booked!");
+            }
+            if (booking.getStatusEnum() != StatusEnum.PENDING) throw new Exception("Booking is not in PENDING state");
             booking.setVeterian(veterian);
             booking.setStatusEnum(StatusEnum.CONFIRMED);
             booking = bookingRepository.save(booking);
@@ -122,7 +157,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
             notificationsRepository.deleteAllByBooking(booking);
             return booking;
         }
-        throw new Error("Cannot find booking is not a veterian");
+        throw new Exception("Cannot find booking is not a veterian");
     }
 
     public List<BookingDTO> getByVeterian(AccountEntity veterian, StatusEnum status){
