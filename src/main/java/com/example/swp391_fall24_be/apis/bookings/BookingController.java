@@ -52,6 +52,31 @@ public class BookingController extends AbstractController<BookingEntity, String,
         }
     }
 
+    @GetMapping("/by-customer")
+    public ResponseDto<List<BookingDTO>> getByCustomer(
+            @Valid PaginateBookingDTO paginateBookingDTO
+    ){
+        try {
+            AccountEntity customer = AuthUtils.getCurrentAccount();
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Get booking for customer successful!",
+                    bookingService.getByCustomer(customer, paginateBookingDTO.toEntity().getStatusEnum()),
+                    null
+            );
+        }
+        catch (Exception e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Get booking for customer fail!",
+                    null,
+                    errorList
+            );
+        }
+    }
+
     @PostMapping("/assign-veterian/{bookingId}/{veterianEmail}")
     public ResponseDto<BookingDTO> assignVeterian(
             @PathVariable("bookingId") String bookingId,

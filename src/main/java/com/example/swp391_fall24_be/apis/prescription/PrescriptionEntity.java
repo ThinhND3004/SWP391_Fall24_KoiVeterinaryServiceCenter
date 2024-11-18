@@ -3,12 +3,8 @@ package com.example.swp391_fall24_be.apis.prescription;
 import com.example.swp391_fall24_be.apis.prescription.dtos.PrescriptionDto;
 import com.example.swp391_fall24_be.apis.prescription_medicine.PrescriptionMedicine;
 import com.example.swp391_fall24_be.apis.prescription_medicine.dtos.PrescriptionMedicineDto;
-import com.example.swp391_fall24_be.apis.reports.ReportEntity;
 import com.example.swp391_fall24_be.core.IObject;
-import com.example.swp391_fall24_be.apis.medicine.MedicineEntity;
-import com.example.swp391_fall24_be.apis.shipping.ShippingEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +15,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "prescriptions")
 @NoArgsConstructor
@@ -32,9 +27,6 @@ public class PrescriptionEntity implements IObject<PrescriptionDto> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "shipping_id")
-    private ShippingEntity shippingID;
 
     @Column(name = "total_price",nullable = false, columnDefinition = "FLOAT")
     private Float totalPrice;

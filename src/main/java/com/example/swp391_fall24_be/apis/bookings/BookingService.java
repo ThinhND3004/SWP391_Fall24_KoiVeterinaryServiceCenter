@@ -144,4 +144,23 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         return bookingDTOList;
     }
 
+    public List<BookingDTO> getByCustomer(AccountEntity customer, StatusEnum status){
+        BookingEntity findBooking = new BookingEntity();
+        AccountEntity findCustomer = new AccountEntity();
+        findCustomer.setEmail(customer.getEmail());
+        findBooking.setCustomer(findCustomer);
+        findBooking.setStatusEnum(status);
+
+        List<BookingEntity> veterianBookingList = bookingRepository.findAll(Example.of(findBooking));
+        if(veterianBookingList.isEmpty()){
+            throw new Error("Cannot find booking with this token!");
+        }
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        for(BookingEntity booking : veterianBookingList ){
+            bookingDTOList.add(booking.toResponseDto());
+        }
+
+        return bookingDTOList;
+    }
+
 }

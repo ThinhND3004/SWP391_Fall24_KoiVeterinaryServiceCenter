@@ -7,11 +7,27 @@ import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.ReportEmailDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
+import com.example.swp391_fall24_be.core.ResponseDto;
+import freemarker.core.ParseException;
+import freemarker.template.*;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.jboss.logging.BasicLogger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,11 +38,14 @@ public class EmailService {
 
 
     private final JavaMailSender javaMailSender;
+    private final Configuration freemarkerConfig;
+
 
     private final BookingRepository bookingRepository;
 
-    public EmailService(JavaMailSender javaMailSender, BookingRepository bookingRepository) {
+    public EmailService(JavaMailSender javaMailSender, Configuration freemarkerConfig, BookingRepository bookingRepository) {
         this.javaMailSender = javaMailSender;
+        this.freemarkerConfig = freemarkerConfig;
         this.bookingRepository = bookingRepository;
     }
 
@@ -105,6 +124,45 @@ public class EmailService {
         message.setFrom(email);
 
         javaMailSender.send(message);
+    }
+
+    public ResponseDto<String> sendEmailWithTemplate(String to, String subject, String templateName, Map<String, Object> variables){
+        MimeMessage message = javaMailSender.createMimeMessage();
+        ResponseDto<String> response = new ResponseDto();
+        BasicLogger logger;
+        System.out.println("Sending email to: "+to+", using template: "+templateName+", with variables: "+ variables.toString());
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED, "UTF-8");
+
+            // Set email metadata
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setFrom(email);
+
+            // Populate the template
+            Template template = freemarkerConfig.getTemplate(templateName);
+            String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, variables);
+
+            // Set the email body
+            helper.setText(htmlContent, true);
+
+
+            // Send the email
+            javaMailSender.send(message);
+
+            response.setStatus(HttpStatus.OK.value());
+            response.setData("Send email with template successful!");
+            response.setMessage("Send email successful!");
+
+        } catch (MessagingException | TemplateException | IOException e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Send email failed!");
+            response.setErr(errorList);
+        }
+        return response;
     }
 }
 
