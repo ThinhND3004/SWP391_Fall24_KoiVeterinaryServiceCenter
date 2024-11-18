@@ -136,8 +136,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
-                            booking.getService().getEstimatedTime())
-                            .minusMinutes(1);
+                            booking.getService().getEstimatedTime());
                     // Find if search time is in Booking that has been reserved
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
@@ -180,8 +179,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                     while (!slotEndTime.isAfter(timetable.getEndTime())){
                             //Check if it is current day and timetable == booking day of week
-                        boolean isChecked = false;
-
                         for (BookingEntity booking: veterianBookingList){
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
@@ -189,7 +186,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
 
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
-                            LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime().minusMinutes(1);
+                            LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
                                 // Check if there is a booking in the time slot
                                 System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
@@ -201,7 +198,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                     // Update slot start time
                                     slotStartTime = bookingEndTime;
                                     slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                                    isChecked = true;
                                 }
                             }
                         }
