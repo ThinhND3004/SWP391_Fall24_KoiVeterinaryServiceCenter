@@ -1,9 +1,11 @@
-package com.example.swp391_fall24_be.apis.accounts;
+package com.example.swp391_fall24_be.deleteAPIs;
 
+import com.example.swp391_fall24_be.apis.accounts.AccountEntity;
+import com.example.swp391_fall24_be.apis.accounts.AccountRoleEnum;
+import com.example.swp391_fall24_be.apis.accounts.AccountsRepository;
 import com.example.swp391_fall24_be.apis.accounts.dtos.*;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
-import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.apis.services.ServicesRepository;
@@ -23,11 +25,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountsService extends AbstractService<AccountEntity, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto> {

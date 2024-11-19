@@ -81,4 +81,6 @@ public class VNPayService {
         String message = vnp_ResponseCode.equals("00") ? "GD thanh cong" : "GD khong thanh cong";
         return message;
     }
+
+//VN
 }

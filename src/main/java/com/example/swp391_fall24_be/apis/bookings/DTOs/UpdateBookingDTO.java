@@ -25,27 +25,30 @@ public class UpdateBookingDTO implements IDto<BookingEntity> {
 
 //    @NotBlank(message = "Additional Information is required!")
 //    @Size(max = 255, message = "Description length must be between 1 and 255 characters")
-//    private String additionalInformation;
+    private String additionalInformation;
 
 //    @NotBlank(message = "Destination is required!")
 //    @Size(max = 255, message = "User Address length must be less than 255 characters")
 //    private String userAddress;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "status", nullable = false)
     private StatusEnum statusEnum;
 
-    @NotNull(message = "Start Date is required!")
-    @FutureOrPresent(message = "Start Date must be in the future or present")
-    private LocalDateTime startedAt;
+//    private LocalDateTime updatedAt;
+
+//    @NotNull(message = "Start Date is required!")
+//    @FutureOrPresent(message = "Start Date must be in the future or present")
+//    private LocalDateTime startedAt;
 
     @Override
     public BookingEntity toEntity() {
         BookingEntity booking = new BookingEntity();
-//        booking.setAdditionalInformation(additionalInformation);
+        booking.setAdditionalInformation(additionalInformation);
 //        booking.setUserAddress(userAddress);
         booking.setStatusEnum(statusEnum);
-        booking.setStartedAt(startedAt);
+//        booking.setUpdatedAt(LocalDateTime.now());
+//        booking.setStartedAt(startedAt);
         return booking;
     }
 }

@@ -26,6 +26,9 @@ public class VNPayConfiguration {
     @Value("${payment.vnp_PayUrl}")
     private String vnp_PayUrl="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
+//    @Value("${payment.vnp_RefundUrl}")
+//    private final String vnp_RefundUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
     @Value("${payment.vnp_ReturnUrl}")
     private String vnp_ReturnUrl="http://localhost:5173/payment-result";
 

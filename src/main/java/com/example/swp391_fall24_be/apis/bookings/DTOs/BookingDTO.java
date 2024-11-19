@@ -38,6 +38,7 @@ public class BookingDTO {
     private String userAddress;
     private StatusEnum statusEnum;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 }

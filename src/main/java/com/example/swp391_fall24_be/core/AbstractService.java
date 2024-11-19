@@ -60,7 +60,7 @@ public abstract class AbstractService<
         EntityType oldEntity = findById(id);
         EntityType updatedEntity = dto.toEntity();
         beforeUpdate(oldEntity, updatedEntity);
-        oldEntity = repository.save(updatedEntity);
+        oldEntity = repository.save(oldEntity);
         return oldEntity;
     }
 }
