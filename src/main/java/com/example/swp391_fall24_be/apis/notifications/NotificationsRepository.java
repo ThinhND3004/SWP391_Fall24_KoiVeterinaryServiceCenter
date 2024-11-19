@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface NotificationsRepository extends JpaRepository<NotificationEntity,Long> {
     List<NotificationEntity> findAllByAccount(AccountEntity account);
