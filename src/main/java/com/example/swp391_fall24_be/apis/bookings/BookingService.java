@@ -16,6 +16,7 @@ import com.example.swp391_fall24_be.core.ErrorReport;
 import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.utils.AuthUtils;
 import com.example.swp391_fall24_be.utils.TimeUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,7 +130,13 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 
     @Override
     public BookingEntity delete(String id) throws ProjectException {
-        return null;
+        BookingEntity booking = bookingRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Booking not found with ID: " + id)
+        );
+        // Update the status
+        booking.setStatusEnum(StatusEnum.CANCELED);
+        // Save and return the updated entity
+        return bookingRepository.save(booking);
     }
 
     @Transactional

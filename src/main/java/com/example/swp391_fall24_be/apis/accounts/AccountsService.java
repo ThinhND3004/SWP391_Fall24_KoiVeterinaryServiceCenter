@@ -140,7 +140,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     // Find if search time is in Booking that has been reserved
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
-                    if ((searchTime.isBefore(bookingEndTime) && !searchEndTime.isBefore(booking.getStartedAt()))) {
+                    if ((searchTime.isBefore(bookingEndTime) && searchEndTime.isAfter(booking.getStartedAt()))) {
                         isInBooking = true;
                         break;
                     }
