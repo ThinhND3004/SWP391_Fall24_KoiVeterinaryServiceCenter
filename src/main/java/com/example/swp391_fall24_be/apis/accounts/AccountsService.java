@@ -183,8 +183,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
         List<BookingEntity> veterianBookingList = bookingRepository.
                 findByVeterianAndStatuses(account, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
-
-        System.out.println("FINISH GET VETERIAN BOOKIN: " + veterianBookingList.size());
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {
             LocalDate currentDate = today.plusDays(i);
@@ -196,7 +194,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
             for(TimetableEntity timetable : timetableList){
                 // Exclude time slot that appear in booking
-
                 List<TimeRange> timeSlotPerBooking = new ArrayList<>();
                 LocalTime slotStartTime = timetable.getStartTime();
                 LocalTime estimatedTime = bookedService.getEstimatedTime();
@@ -222,19 +219,20 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                 slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
                             }
                         }
-                        timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                    }
+                    timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
 
-                        slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                        slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                    slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
 
-                        if(timeSlot.getSlots().isEmpty() ||
-                                timeSlot.getSlots().size() > timeSlotPerBooking.size()
-                        ){
-                            timeSlot.setSlots(timeSlotPerBooking);
-                        }
+                    if(timeSlot.getSlots().isEmpty() ||
+                            timeSlot.getSlots().size() > timeSlotPerBooking.size()
+                    ){
+                        timeSlot.setSlots(timeSlotPerBooking);
                     }
                 }
             }
+
             if(!timeSlot.getSlots().isEmpty()){
                 timeSlotList.add(timeSlot);
             }
@@ -242,6 +240,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         }
         return timeSlotList;
     }
+
 
     public List<VeterianRespDto> findVeterianWithTimeSlot(String serviceId){
         List<AccountEntity> veterianList = accountsRepository.findAllByRoleAndIsDisable(AccountRoleEnum.VETERIAN, false);
