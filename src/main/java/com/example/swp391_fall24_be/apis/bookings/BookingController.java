@@ -129,4 +129,16 @@ public class BookingController extends AbstractController<BookingEntity, String,
         }
     }
 
+    @PutMapping("/change-status/{id}")
+    public ResponseDto<BookingDTO> changeStatus(
+            @PathVariable String id){
+        BookingEntity refundBooking = bookingService.changeStatus(id);
+        return new ResponseDto<>(
+                HttpStatus.OK.value(),
+                "Change status Successfully!",
+                refundBooking.toResponseDto(),
+                null
+        );
+    }
+
 }

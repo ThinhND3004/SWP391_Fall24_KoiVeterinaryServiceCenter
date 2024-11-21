@@ -38,7 +38,7 @@ public class BookingEntity implements IObject<BookingDTO> {
     private ServiceEntity service;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "veterian")
+    @JoinColumn(name = "veterian_id")
     private AccountEntity veterian;
 
     @OneToOne(fetch = FetchType.LAZY)

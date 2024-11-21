@@ -130,7 +130,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 //        booking.setUpdatedAt(LocalDateTime.now());
 //        // Save and return the updated entity
 //        return bookingRepository.save(booking);
-//    }
+//
 
     public BookingEntity changeStatus(String id){
         BookingEntity foundBooking = bookingRepository.findById(id).get();
