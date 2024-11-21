@@ -79,11 +79,12 @@ public class CreateBookingDTO implements IDto<BookingEntity> {
             AccountEntity veterian = new AccountEntity();
             veterian.setEmail(veterianEmail);
             booking.setVeterian(veterian);
-            booking.setStatusEnum(StatusEnum.CONFIRMED);
+//            booking.setStatusEnum(StatusEnum.CONFIRMED);
         } else {
             booking.setVeterian(null);
-            booking.setStatusEnum(StatusEnum.PENDING);
+//            booking.setStatusEnum(StatusEnum.PENDING);
         }
+        booking.setStatusEnum(StatusEnum.UNPAID);
         ServiceEntity service = new ServiceEntity();
         service.setId(serviceId);
         booking.setService(service);

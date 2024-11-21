@@ -155,7 +155,8 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatuses (veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
+                        findByVeterianAndStatuses(veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
+
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
@@ -163,7 +164,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
                     if ((searchTime.isBefore(bookingEndTime) && searchEndTime.isAfter(booking.getStartedAt()))) {
-                      isInBooking = true;
+                        isInBooking = true;
                         break;
                     }
                 }
@@ -175,6 +176,74 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         }
         return veterianDtos;
     }
+
+    //    private List<TimeSlot>  getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
+//        List<TimeSlot> timeSlotList = new ArrayList<>();
+//        LocalDate today = LocalDate.now();
+//
+//        List<BookingEntity> veterianBookingList = bookingRepository.
+//                findByVeterianAndStatuses(account, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
+//
+//        // Get time slot in around 7 days
+//        for (int i = 0; i <= 7; i++) {
+//            LocalDate currentDate = today.plusDays(i);
+//            List<TimetableEntity> timetableList = timetableRepository.
+//                    findByProfileAndDayOfWeekOrderByStartTimeAsc(account.getProfile(),currentDate.getDayOfWeek());
+//
+//            TimeSlot timeSlot = new TimeSlot();
+//            timeSlot.setDate(currentDate);
+//
+//            for(TimetableEntity timetable : timetableList){
+//                // Exclude time slot that appear in booking
+//
+//                List<TimeRange> timeSlotPerBooking = new ArrayList<>();
+//                LocalTime slotStartTime = timetable.getStartTime();
+//                LocalTime estimatedTime = bookedService.getEstimatedTime();
+//                LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+//                while (!slotEndTime.isAfter(timetable.getEndTime())){
+//                    //Check if it is current day and timetable == booking day of week
+//                    for (BookingEntity booking: veterianBookingList){
+//                        if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
+//                                currentDate.equals(booking.getStartedAt().toLocalDate())
+//                        ) {
+//
+//
+//                            LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
+//                            LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
+//                            LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
+//                            // Check if there is a booking in the time slot
+//                            System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
+//                            System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
+//
+//                            if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
+//                                System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
+//                                System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
+//                                // Update slot start time
+//                                slotStartTime = bookingEndTime;
+//                                slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+//                            }
+//                        }
+//                    }
+//                }
+//                timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+//
+//                slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+//                slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+//
+//                if(timeSlot.getSlots().isEmpty() ||
+//                        timeSlot.getSlots().size() > timeSlotPerBooking.size()
+//                ){
+//                    timeSlot.setSlots(timeSlotPerBooking);
+//                }
+//            }
+//
+//            if(!timeSlot.getSlots().isEmpty()){
+//                timeSlotList.add(timeSlot);
+//            }
+//
+//        }
+//        return timeSlotList;
+//    }
 
     private List<TimeSlot>  getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
         List<TimeSlot> timeSlotList = new ArrayList<>();
@@ -195,14 +264,15 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
             for(TimetableEntity timetable : timetableList){
                 // Exclude time slot that appear in booking
-                    List<TimeRange> timeSlotPerBooking = new ArrayList<>();
-                    LocalTime slotStartTime = timetable.getStartTime();
-                    LocalTime estimatedTime = bookedService.getEstimatedTime();
-                    LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
-                    while (!slotEndTime.isAfter(timetable.getEndTime())){
-                            //Check if it is current day and timetable == booking day of week
-                        for (BookingEntity booking: veterianBookingList){
-                            if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
+
+                List<TimeRange> timeSlotPerBooking = new ArrayList<>();
+                LocalTime slotStartTime = timetable.getStartTime();
+                LocalTime estimatedTime = bookedService.getEstimatedTime();
+                LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+                while (!slotEndTime.isAfter(timetable.getEndTime())){
+                    //Check if it is current day and timetable == booking day of week
+                    for (BookingEntity booking: veterianBookingList){
+                        if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
                         ) {
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
@@ -212,13 +282,12 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                             System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
                             System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
-                                if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
-                                    System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
-                                    System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
-                                    // Update slot start time
-                                    slotStartTime = bookingEndTime;
-                                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                                }
+                            if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
+                                System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
+                                System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
+                                // Update slot start time
+                                slotStartTime = bookingEndTime;
+                                slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
                             }
                         }
                         timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
@@ -233,7 +302,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         }
                     }
                 }
-
+            }
             if(!timeSlot.getSlots().isEmpty()){
                 timeSlotList.add(timeSlot);
             }
