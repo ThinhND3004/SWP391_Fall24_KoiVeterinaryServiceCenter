@@ -65,7 +65,7 @@ public class TimetableEntity implements IObject<TimetableDTO> {
         timetableDTO.setEndTime(endTime);
         timetableDTO.setCreatedAt(createdAt);
         timetableDTO.setUpdatedAt(updatedAt);
-        timetableDTO.setBookedSlots(bookedSlots);
+//        timetableDTO.setBookedSlots(bookedSlots);
         return timetableDTO;
     }
 }

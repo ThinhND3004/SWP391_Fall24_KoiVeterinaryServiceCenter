@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 
     public boolean isBookingBookedAtTheTime(LocalDateTime startTime, LocalTime estimatedTime, AccountEntity veterian){
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnumOrStatusEnum(veterian, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
+                findByVeterianAndStatuses(veterian,  Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
         LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());;
 

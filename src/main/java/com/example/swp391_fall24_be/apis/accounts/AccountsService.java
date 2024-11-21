@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -154,7 +155,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnumOrStatusEnum (veterian, StatusEnum.CONFIRMED, StatusEnum.UNPAID);
+                        findByVeterianAndStatuses (veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
@@ -180,8 +181,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         LocalDate today = LocalDate.now();
 
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnumOrStatusEnum(account, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
+                findByVeterianAndStatuses(account, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
 
+        System.out.println("FINISH GET VETERIAN BOOKIN: " + veterianBookingList.size());
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {
             LocalDate currentDate = today.plusDays(i);
@@ -203,8 +205,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
                         ) {
-
-
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
@@ -221,16 +221,16 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                 }
                             }
                         }
-                    }
-                    timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                        timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
 
-                    slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+                        slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                        slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
 
-                    if(timeSlot.getSlots().isEmpty() ||
-                            timeSlot.getSlots().size() > timeSlotPerBooking.size()
-                    ){
-                        timeSlot.setSlots(timeSlotPerBooking);
+                        if(timeSlot.getSlots().isEmpty() ||
+                                timeSlot.getSlots().size() > timeSlotPerBooking.size()
+                        ){
+                            timeSlot.setSlots(timeSlotPerBooking);
+                        }
                     }
                 }
 

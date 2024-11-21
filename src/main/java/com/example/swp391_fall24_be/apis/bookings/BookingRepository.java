@@ -13,8 +13,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, String> {
-    List<BookingEntity> findByVeterianAndStatusEnum(AccountEntity veterian, StatusEnum statusEnum2);
-    List<BookingEntity> findByVeterianAndStatusEnumOrStatusEnum(AccountEntity veterian, StatusEnum statusEnum, StatusEnum statusEnum2);
+    @Query("SELECT b FROM bookings b WHERE b.veterian = :veterian AND b.statusEnum IN :statuses")
+    List<BookingEntity> findByVeterianAndStatuses(@Param("veterian") AccountEntity veterian, @Param("statuses") List<StatusEnum> statuses);
+
+    List<BookingEntity> findAllByVeterianAndStatusEnum(AccountEntity veterian, StatusEnum statusEnum);
     List<BookingEntity> findAllByStartedAtBetween(LocalDateTime startedAt, LocalDateTime endedAt);
 
     @Modifying

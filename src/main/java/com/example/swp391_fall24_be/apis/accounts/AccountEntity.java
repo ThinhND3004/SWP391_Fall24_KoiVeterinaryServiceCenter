@@ -71,10 +71,10 @@ public class AccountEntity implements IObject<AccountDto>{
     private List<NotificationEntity> notifications;
 
     @JoinColumn(name = "avatar_id")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private ImageEntity avatar;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfileEntity profile;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
