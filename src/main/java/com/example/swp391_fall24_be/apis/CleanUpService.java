@@ -24,4 +24,10 @@ public class CleanUpService {
         bookingRepository.updateOutdatedBooking(expiryDate); // Update booking status PENDING t CANCELED when expired
         notificationsRepository.deleteExpiredNotifications(expiryDate.plusHours(3)); // DELETE notifications AFTER created for 3 hours
     }
+
+    @Scheduled(cron = "0 * * * * ?") // Runs every hour
+    public void deleteUnpaidBooking() {
+        LocalDateTime timeLimit = LocalDateTime.now().minusMinutes(30);
+        bookingRepository.deleteUnpaidBooking(timeLimit); // Update booking status PENDING t CANCELED when expired
+    }
 }
