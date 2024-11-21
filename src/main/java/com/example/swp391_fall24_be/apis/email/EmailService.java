@@ -6,29 +6,23 @@ import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
 import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.ReportEmailDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
+import com.example.swp391_fall24_be.apis.email.DTOs.SendOrderConfirmedDto;
+import com.example.swp391_fall24_be.apis.gg_meeting.GoogleMeetService;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.core.ResponseDto;
-import freemarker.core.ParseException;
 import freemarker.template.*;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.jboss.logging.BasicLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmailService {
@@ -41,45 +35,62 @@ public class EmailService {
     private final Configuration freemarkerConfig;
 
 
+    private final GoogleMeetService meetService;
+
     private final BookingRepository bookingRepository;
 
-    public EmailService(JavaMailSender javaMailSender, Configuration freemarkerConfig, BookingRepository bookingRepository) {
+    public EmailService(JavaMailSender javaMailSender, Configuration freemarkerConfig, GoogleMeetService meetService, BookingRepository bookingRepository) {
         this.javaMailSender = javaMailSender;
         this.freemarkerConfig = freemarkerConfig;
+        this.meetService = meetService;
         this.bookingRepository = bookingRepository;
     }
 
-    public void sendOrderConfirmationEmail(String to, String recipientName, String serviceName, String date, String time, String location, String referenceNumber, String amount, String paymentMethod, String companyName, String companyPhone, String companyWebsite) {
+    public void sendBothForCustomerAndVeterian(String bookingId){
+        Optional<BookingEntity> findBookingResult = bookingRepository.findById(bookingId);
+        if(findBookingResult.isPresent()){
+
+        }
+    }
+
+    public void sendOrderConfirmationEmail(SendOrderConfirmedDto dto) {
         String subject = "Order Confirmation";
-        String body = "Dear " + recipientName + ",\n\n"
-                + "Thank you for booking " + serviceName + "!\n\n"
-                + "Here are the details of your booking:\n"
-                + "Date: " + date + "\n"
-                + "Time: " + time + "\n"
-                + "Location: " + location + "\n"
-                + "Reference Number: " + referenceNumber + "\n"
-                + "Amount: " + amount + "\n"
-                + "Payment Method: " + paymentMethod + "\n\n"
-                + "If you have any questions or need to make changes to your booking, please contact us at " + companyPhone + " or visit our website at " + companyWebsite + ".\n\n"
-                + "Thank you for choosing " + companyName + "!\n\n"
-                + "Sincerely,\n"
-                + companyName + " Team";
-        sendEmail(to, subject, body);
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("name", dto.recipientName);
+        variables.put("serviceName", dto.serviceName);
+        variables.put("date", dto.date);
+        variables.put("time", dto.time);
+        variables.put("location", dto.location);
+        variables.put("amount", dto.amount);
+        variables.put("meetLink", dto.meetingLink);
+
+//        String body = "Dear " + recipientName + ",\n\n"
+//                + "Thank you for booking " + serviceName + "!\n\n"
+//                + "Here are the details of your booking:\n"
+//                + "Date: " + date + "\n"
+//                + "Time: " + time + "\n"
+//                + "Location: " + location + "\n"
+//                + "Amount: " + amount + "\n"
+//                + "If you have any questions or need to make changes to your booking, please contact us at " + companyPhone + " or visit our website at " + companyWebsite + ".\n\n"
+//                + "Thank you for choosing " + companyName + "!\n\n"
+//                + "Sincerely,\n"
+//                + companyName + " Team";
+        sendEmailWithTemplate(dto.to, subject, "order-confirmation.ftl",variables);
     }
 
     public void sendInvitationForVeterinarian(SendInvitationDto dto) {
         String subject = "Invitation for Veterinarian";
-        String body = "Dear " + dto.recipientName + ",\n\n"
-                + "You have been invited to provide " + dto.serviceName + " " +  dto.serviceMethod + "!\n\n"
-                + "Here are the details of the appointment:\n"
-                + "Date: " + dto.date + "\n"
-                + "Time: " + dto.time + "\n"
-                + "Location: " + dto.location + "\n"
-                + "Reference Number: " + dto.referenceNumber + "\n"
-                + "For accept or decline the invitation, please go to " + dto.companyWebsite + ".\n\n"
-                + "Sincerely,\n"
-                + dto.companyName + " Team";
-        sendEmail(dto.to, subject, body);
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("name", dto.recipientName);
+        variables.put("serviceName", dto.serviceName);
+        variables.put("serviceMethod", dto.serviceMethod);
+        variables.put("date", dto.date);
+        variables.put("time", dto.time);
+        variables.put("location", dto.location);
+        variables.put("meetingLink", dto.meetingLink.trim());
+
+        sendEmailWithTemplate(dto.to, subject, "send-invitation.ftl", variables);
     }
 
     public boolean sendReportEmailToCustomer(ReportEmailDto dto) {
@@ -90,21 +101,22 @@ public class EmailService {
             AccountEntity veterian = booking.getVeterian();
             ServiceEntity service = booking.getService();
 
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("name", customer.getFirstName() + " " + customer.getLastName());
+            variables.put("serviceName", service.getName());
+            variables.put("startedAt", booking.getStartedAt());
+            variables.put("veterianName", veterian.getFirstName() + " " +veterian.getLastName() );
+            variables.put("companyWebsite", dto.companyWebsite);
+
             String subject = "Invitation for Veterinarian";
-            String body = "Dear " + customer.getFirstName() + " " + customer.getLastName() + ",\n\n"
-                    + "Your report for service " + service.getName() + "\n"
-                    + " which was done at " +  booking.getStartedAt() + "!\n"
-                    + " by : " + veterian.getFirstName() + " " +veterian.getLastName() + "\n"
-                    + "For viewing the report, please go to " + dto.companyWebsite + ".\n\n"
-                    + "Sincerely,\n"
-                    + dto.companyName + " Team";
-            sendEmail(customer.getEmail(), subject, body);
+
+            sendEmailWithTemplate(customer.getEmail(), subject, "send-report.ftl",variables);
             return true;
         }
         return false;
     }
 
-        public void sendInvitationResultForStaff(InvitationResultDto dto) {
+    public void sendInvitationResultForStaff(InvitationResultDto dto) {
         String invitationResult = dto.isAccepted ? "accepted" : "rejected";
 
         String subject = "Invitation Result";
@@ -114,6 +126,9 @@ public class EmailService {
                 + "Sincerely,\n"
                 + dto.companyName + " Team";
         sendEmail(dto.to, subject, body);
+
+
+        // Send email assign for
     }
 
     public void sendEmail(String to, String subject, String body) {
@@ -129,7 +144,6 @@ public class EmailService {
     public ResponseDto<String> sendEmailWithTemplate(String to, String subject, String templateName, Map<String, Object> variables){
         MimeMessage message = javaMailSender.createMimeMessage();
         ResponseDto<String> response = new ResponseDto();
-        BasicLogger logger;
         System.out.println("Sending email to: "+to+", using template: "+templateName+", with variables: "+ variables.toString());
 
         try {
@@ -146,7 +160,6 @@ public class EmailService {
 
             // Set the email body
             helper.setText(htmlContent, true);
-
 
             // Send the email
             javaMailSender.send(message);

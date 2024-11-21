@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class CreateMeetDto {
@@ -12,4 +13,6 @@ public class CreateMeetDto {
 
     @NotBlank(message = "Started At is required!")
     private LocalDateTime endedAt;
+
+    List<String> attendeesEmails;
 }
