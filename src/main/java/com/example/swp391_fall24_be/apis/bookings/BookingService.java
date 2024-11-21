@@ -49,8 +49,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 //        List<BookingEntity> veterianBookingList = bookingRepository.
 //                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatuses(veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
-//                findByVeterianAndStatusEnumOrStatusEnum(veterian, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
+                findByVeterianAndStatuses(veterian,  Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
 
         LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());;

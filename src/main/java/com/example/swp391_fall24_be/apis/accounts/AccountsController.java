@@ -107,50 +107,6 @@ public class AccountsController extends AbstractController<AccountEntity, String
         );
     }
 
-    @Autowired
-    ServicesService servicesService;
-    @GetMapping("/by-date")
-    public ResponseEntity<?> getTimeSlotsByDate(
-            @RequestParam("veterianEmail") String veterianEmail,
-            @RequestParam("serviceId") String bookedService,
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        try {
-            // Lấy thông tin bác sĩ từ ID
-            AccountEntity account = accountsService.getAccountByEmail(veterianEmail);
-
-            ServiceEntity serviceEntity = servicesService.findById(bookedService);
-
-            // Gọi hàm để lấy TimeSlot
-            List<TimeSlot> timeSlots = accountsService.getTimeSlotByDate(account, serviceEntity, date);
-
-            // Trả về danh sách TimeSlot
-            return ResponseEntity.ok(timeSlots);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veterian not found!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
-
-    @Autowired
-    AccountsRepository accountsRepository;
-//    @PostMapping("/veterians/book-slot")
-//    public ResponseEntity<String> bookSlot(
-//            @RequestParam String veterianEmail,
-//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-//            @RequestParam MeetingMethodEnum meetingMethod,
-//            @RequestBody TimeRange bookedSlot) {
-//
-//        // Tìm bác sĩ
-//        AccountEntity veterian = accountsService.getAccountByEmail(veterianEmail);
-//
-//        // Xử lý cập nhật giờ làm việc
-//        accountsService.updateVeterianWorkingSlots(veterian, date, bookedSlot, meetingMethod);
-//
-//        return ResponseEntity.ok("Slot booked and working schedule updated");
-//    }
-
-
     @PutMapping("/update-by-email/{email}")
     public ResponseDto<AccountDto> updateByEmail(@PathVariable String email,
                                                  @RequestBody UpdateAccountDto updateAccountDto)
