@@ -4,11 +4,11 @@
       style="font-family:arial, &amp;amp;amp;apos;helvetica neue&amp;amp;amp;apos;, helvetica, sans-serif">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta name="x-apple-disable-message-reformatting" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta content="telephone=no" name="format-detection" />
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta name="x-apple-disable-message-reformatting"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta content="telephone=no" name="format-detection"/>
     <title>New Message</title>
     <!--[if (mso 16)]>
     <style type="text/css">
@@ -31,13 +31,9 @@
             <o:PixelsPerInch>96</o:PixelsPerInch>
         </o:OfficeDocumentSettings>
     </xml>
-    <![endif]-->
-    <!--[if !mso]><!-- -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-    <!--<![endif]-->
-    <!--[if !mso]><!-- -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i" rel="stylesheet" />
-    <!--<![endif]-->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i" rel="stylesheet"/>
     <style type="text/css">
         #outlook a {
             padding: 0;
@@ -520,7 +516,8 @@
               ">
                     <tr>
                         <td align="center" style="padding: 0; margin: 0">
-                            <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0" cellspacing="0"
+                            <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0"
+                                   cellspacing="0"
                                    role="none" style="
                       mso-table-lspace: 0pt;
                       mso-table-rspace: 0pt;
@@ -544,8 +541,10 @@
                             border-spacing: 0px;
                           ">
                                             <tr>
-                                                <td align="center" valign="top" style="padding: 0; margin: 0; width: 520px">
-                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="
+                                                <td align="center" valign="top"
+                                                    style="padding: 0; margin: 0; width: 520px">
+                                                    <table cellpadding="0" cellspacing="0" width="100%"
+                                                           role="presentation" style="
                                   mso-table-lspace: 0pt;
                                   mso-table-rspace: 0pt;
                                   border-collapse: collapse;
@@ -572,7 +571,7 @@
                                           outline: none;
                                           text-decoration: none;
                                           -ms-interpolation-mode: bicubic;
-                                        " width="520" class="adapt-img" height="191" /></a>
+                                        " width="520" class="adapt-img" height="191"/></a>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -591,7 +590,7 @@
                                         font-weight: bold;
                                         color: #e9e9e9;
                                       ">
-                                                                    SERVICE APPOINTMENT CONFIRMED
+                                                                    SERVICE INVITATION
                                                                 </h1>
                                                             </td>
                                                         </tr>
@@ -599,7 +598,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="top" style="padding: 0; margin: 0; width: 520px">
+                                                <td align="center" valign="top"
+                                                    style="padding: 0; margin: 0; width: 520px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="
                                   mso-table-lspace: 0pt;
                                   mso-table-rspace: 0pt;
@@ -616,7 +616,8 @@
                                                            background="https://ebfjyum.stripocdn.email/content/guids/CABINET_9aa36f49cdb5185ad35ee0f7a5c7d9380ade3ae69ada3493ecaa145d1284bee9/images/group_347_1.png"
                                                            role="presentation">
                                                         <tr>
-                                                            <td align="left" class="es-m-p20r es-m-p20l" style="padding: 40px; margin: 0">
+                                                            <td align="left" class="es-m-p20r es-m-p20l"
+                                                                style="padding: 40px; margin: 0">
                                                                 <p>
                                     <span style="
                                           font-family: roboto, 'helvetica neue',
@@ -629,9 +630,7 @@
                                           font-family: roboto, 'helvetica neue',
                                             helvetica, arial, sans-serif;
                                         "><span style="color: #ffffff">
-                                        Thank you for choosing our service. We’re pleased to confirm your
-                                        appointment and provide the details for your
-                                        Google Meet session:
+                                            You have been invited to provide ${serviceName} - ${serviceMethod}!
                                       </span></span>
                                                                 </p>
                                                                 <p style="
@@ -639,34 +638,41 @@
                                         font-family: roboto, 'helvetica neue',
                                           helvetica, arial, sans-serif;
                                       ">
-                                                                    Time: 18:00.
+                                                                    Time: ${time}.
                                                                 </p>
                                                                 <p style="
                                         color: #ffffff;
                                         font-family: roboto, 'helvetica neue',
                                           helvetica, arial, sans-serif;
                                       ">
-                                                                    Date: 14/09/2024
+                                                                    Date: ${date}
 
                                                                 </p>
-                                                                <span style="
-                                          font-family: roboto, 'helvetica neue',
-                                            helvetica, arial, sans-serif;
-                                        "><span style="color: #ffffff">Google Meet Link: </span><a
-                                                                            href="https://docs.google.com/forms/d/e/1FAIpQLSdhoZA7AecxObQfQSZkQ8izj4jfLyQpvljdzH7gIsVz_Rv0dg/viewform"
-                                                                            style="
-                                            color: #7680ee;
-                                            font-family: roboto,
-                                              'helvetica neue', helvetica, arial,
-                                              sans-serif;
-                                          "><u> Tại đây</u></a></span>
                                                                 </p>
                                                                 <p style="
                                         color: #ffffff;
                                         font-family: roboto, 'helvetica neue',
                                           helvetica, arial, sans-serif;
                                       ">
-                                                                    Please click the link at the scheduled time to join the meeting. If you have any
+                                                                    Location: ${location}
+
+                                                                </p>
+                                                                <#if meetingLink?has_content>
+                                                                    <span style="font-family: roboto, 'helvetica neue', helvetica, arial, sans-serif;">
+        <span style="color: #ffffff">Google Meet Link: </span>
+        <a href="${meetingLink}" style="color: #7680ee; font-family: roboto, 'helvetica neue', helvetica, arial, sans-serif;">
+            <u>Here</u>
+        </a>
+    </span>
+                                                                </#if>
+
+                                                                <p style="
+                                        color: #ffffff;
+                                        font-family: roboto, 'helvetica neue',
+                                          helvetica, arial, sans-serif;
+                                      ">
+                                                                    Please click the link at the scheduled time to join
+                                                                    the meeting. If you have any
                                                                     questions or need to reschedule, feel
                                                                     free to contact us.
                                                                 </p>
@@ -699,7 +705,8 @@
               ">
                     <tr>
                         <td align="center" style="padding: 0; margin: 0">
-                            <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0" cellspacing="0"
+                            <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0"
+                                   cellspacing="0"
                                    role="none" style="
                       mso-table-lspace: 0pt;
                       mso-table-rspace: 0pt;
@@ -728,8 +735,10 @@
                             border-spacing: 0px;
                           ">
                                             <tr>
-                                                <td align="center" valign="top" style="padding: 0; margin: 0; width: 520px">
-                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="
+                                                <td align="center" valign="top"
+                                                    style="padding: 0; margin: 0; width: 520px">
+                                                    <table cellpadding="0" cellspacing="0" width="100%"
+                                                           role="presentation" style="
                                   mso-table-lspace: 0pt;
                                   mso-table-rspace: 0pt;
                                   border-collapse: collapse;
@@ -780,8 +789,12 @@
                           padding-bottom: 40px;
                           padding-right: 40px;
                         ">
-                                        <!--[if mso]><table style="width:540px" cellpadding="0" cellspacing="0"><tr><td style="width:46px" valign="top"><![endif]-->
-                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left" role="none" style="
+                                        <!--[if mso]>
+                                        <table style="width:540px" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="width:46px" valign="top"><![endif]-->
+                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left" role="none"
+                                               style="
                             mso-table-lspace: 0pt;
                             mso-table-rspace: 0pt;
                             border-collapse: collapse;
@@ -789,22 +802,28 @@
                             float: left;
                           ">
                                             <tr class="es-mobile-hidden">
-                                                <td class="es-m-p20b" align="left" style="padding: 0; margin: 0; width: 46px">
-                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="
+                                                <td class="es-m-p20b" align="left"
+                                                    style="padding: 0; margin: 0; width: 46px">
+                                                    <table cellpadding="0" cellspacing="0" width="100%"
+                                                           role="presentation" style="
                                   mso-table-lspace: 0pt;
                                   mso-table-rspace: 0pt;
                                   border-collapse: collapse;
                                   border-spacing: 0px;
                                 ">
                                                         <tr>
-                                                            <td align="center" height="40" style="padding: 0; margin: 0"></td>
+                                                            <td align="center" height="40"
+                                                                style="padding: 0; margin: 0"></td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                             </tr>
                                         </table>
-                                        <!--[if mso]></td><td style="width:10px"></td><td style="width:484px" valign="top"><![endif]-->
-                                        <table cellpadding="0" cellspacing="0" class="es-right" align="right" role="none" style="
+                                        <!--[if mso]></td>
+                                        <td style="width:10px"></td>
+                                        <td style="width:484px" valign="top"><![endif]-->
+                                        <table cellpadding="0" cellspacing="0" class="es-right" align="right"
+                                               role="none" style="
                             mso-table-lspace: 0pt;
                             mso-table-rspace: 0pt;
                             border-collapse: collapse;
@@ -813,7 +832,8 @@
                           ">
                                             <tr>
                                                 <td align="left" style="padding: 0; margin: 0; width: 484px">
-                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="
+                                                    <table cellpadding="0" cellspacing="0" width="100%"
+                                                           role="presentation" style="
                                   mso-table-lspace: 0pt;
                                   mso-table-rspace: 0pt;
                                   border-collapse: collapse;
@@ -821,7 +841,8 @@
                                 ">
                                                         <tr>
                                                             <td style="padding: 0; margin: 0">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" class="es-menu"
+                                                                <table cellpadding="0" cellspacing="0" width="100%"
+                                                                       class="es-menu"
                                                                        role="presentation" style="
                                         mso-table-lspace: 0pt;
                                         mso-table-rspace: 0pt;
@@ -829,7 +850,8 @@
                                         border-spacing: 0px;
                                       ">
                                                                     <tr class="links-images-left">
-                                                                        <td align="left" valign="top" width="100%" style="
+                                                                        <td align="left" valign="top" width="100%"
+                                                                            style="
                                             padding: 0;
                                             margin: 0;
                                             padding-right: 5px;
@@ -837,7 +859,8 @@
                                             padding-bottom: 5px;
                                             border: 0;
                                           " id="esd-menu-id-0">
-                                                                            <a target="_blank" href="tel:+(000)123456789" style="
+                                                                            <a target="_blank"
+                                                                               href="tel:+(000)123456789" style="
                                               -webkit-text-size-adjust: none;
                                               -ms-text-size-adjust: none;
                                               mso-line-height-rule: exactly;
@@ -848,7 +871,10 @@
                                               font-size: 16px;
                                             "><img
                                                                                         src="https://ebfjyum.stripocdn.email/content/guids/CABINET_b5bfed0b11252243ebfb1c00df0e3977/images/envelope_1.png"
-                                                                                        alt="0939 914 108" title="0939 914 108" align="absmiddle" width="20" style="
+                                                                                        alt="0939 914 108"
+                                                                                        title="0939 914 108"
+                                                                                        align="absmiddle" width="20"
+                                                                                        style="
                                                 display: inline-block !important;
                                                 border: 0;
                                                 outline: none;
@@ -856,7 +882,7 @@
                                                 -ms-interpolation-mode: bicubic;
                                                 padding-right: 15px;
                                                 vertical-align: middle;
-                                              " height="20" />0939 914 108</a>
+                                              " height="20"/>0939 914 108</a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -864,7 +890,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td style="padding: 0; margin: 0">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" class="es-menu"
+                                                                <table cellpadding="0" cellspacing="0" width="100%"
+                                                                       class="es-menu"
                                                                        role="presentation" style="
                                         mso-table-lspace: 0pt;
                                         mso-table-rspace: 0pt;
@@ -872,7 +899,8 @@
                                         border-spacing: 0px;
                                       ">
                                                                     <tr class="links-images-left">
-                                                                        <td align="left" valign="top" width="100%" style="
+                                                                        <td align="left" valign="top" width="100%"
+                                                                            style="
                                             padding: 0;
                                             margin: 0;
                                             padding-right: 5px;
@@ -891,8 +919,10 @@
                                               font-size: 16px;
                                             "><img
                                                                                         src="https://ebfjyum.stripocdn.email/content/guids/CABINET_b5bfed0b11252243ebfb1c00df0e3977/images/envelope.png"
-                                                                                        alt="koiveterinaryservicecenter@gmail.com" title="koiveterinaryservicecenter@gmail.com"
-                                                                                        align="absmiddle" width="20" style="
+                                                                                        alt="koiveterinaryservicecenter@gmail.com"
+                                                                                        title="koiveterinaryservicecenter@gmail.com"
+                                                                                        align="absmiddle" width="20"
+                                                                                        style="
                                                 display: inline-block !important;
                                                 border: 0;
                                                 outline: none;
@@ -900,7 +930,7 @@
                                                 -ms-interpolation-mode: bicubic;
                                                 padding-right: 15px;
                                                 vertical-align: middle;
-                                              " height="20" />koiveterinaryservicecenter@gmail.com</a>
+                                              " height="20"/>koiveterinaryservicecenter@gmail.com</a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

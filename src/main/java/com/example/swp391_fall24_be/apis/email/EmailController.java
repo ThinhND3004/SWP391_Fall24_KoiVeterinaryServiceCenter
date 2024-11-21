@@ -2,6 +2,7 @@ package com.example.swp391_fall24_be.apis.email;
 import com.example.swp391_fall24_be.apis.email.DTOs.InvitationResultDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.ReportEmailDto;
 import com.example.swp391_fall24_be.apis.email.DTOs.SendInvitationDto;
+import com.example.swp391_fall24_be.apis.email.DTOs.SendOrderConfirmedDto;
 import com.example.swp391_fall24_be.apis.services.ServicesService;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +23,8 @@ public class EmailController {
     private ServicesService servicesService;
 
     @PostMapping("/send-order-confirmation")
-    public ResponseEntity<?> sendOrderConfirmation(@RequestParam String to,
-                                                @RequestParam String recipientName,
-                                                @RequestParam String serviceName,
-                                                @RequestParam String date,
-                                                @RequestParam String time,
-                                                @RequestParam String location,
-                                                @RequestParam String referenceNumber,
-                                                @RequestParam String amount,
-                                                @RequestParam String paymentMethod,
-                                                @RequestParam String companyName,
-                                                @RequestParam String companyPhone,
-                                                @RequestParam String companyWebsite) {
-        emailService.sendOrderConfirmationEmail(to, recipientName, serviceName, date, time, location, referenceNumber, amount, paymentMethod, companyName, companyPhone, companyWebsite);
+    public ResponseEntity<?> sendOrderConfirmation(@RequestBody SendOrderConfirmedDto dto) {
+        emailService.sendOrderConfirmationEmail(dto);
         return new ResponseEntity<>("Order confirmation email sent successfully!", HttpStatus.OK);
     }
 

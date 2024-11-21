@@ -34,15 +34,13 @@ public class GoogleMeetService {
     private static final String APPLICATION_NAME = "Meet Generator Client";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String REDIRECT_URI = "http://localhost:8089/meetings/oauth2callback";
+    @Value("${CLIENT_ID}")
+    private String CLIENT_ID;
+    @Value("${GOOGLE_CLIENT_SECRET}")
+    private String CLIENT_SECRET;
 
-//    @Value("${CLIENT_ID}")
-//    private String CLIENT_ID;
-//    @Value("${GOOGLE_CLIENT_SECRET}")
-//    private String CLIENT_SECRET;
-//
-//    @Value("${GOOGLE_REDIRECT_URI}")
-//    private String REDIRECT_URI;
+    @Value("${GOOGLE_REDIRECT_URI}")
+    private String REDIRECT_URI;
 
     private String token;
 
@@ -50,9 +48,9 @@ public class GoogleMeetService {
 
     private GoogleClientSecrets getCredentials() {
         Details details = new Details();
-        details.setClientId("");
-        details.setClientSecret("");
-        details.setRedirectUris(Collections.singletonList(""));
+        details.setClientId(CLIENT_ID);
+        details.setClientSecret(CLIENT_SECRET);
+        details.setRedirectUris(Collections.singletonList(REDIRECT_URI));
 
         GoogleClientSecrets clientSecrets = new GoogleClientSecrets();
         clientSecrets.setInstalled(details);
@@ -119,6 +117,12 @@ public class GoogleMeetService {
                 .setTimeZone("Asia/Ho_Chi_Minh");
         event.setEnd(end);
 
+        // Add attendees
+        List<EventAttendee> attendees = new ArrayList<>();
+        for (String email : dto.getAttendeesEmails()) {
+            attendees.add(new EventAttendee().setEmail(email));
+        }
+        event.setAttendees(attendees);
         // Cấu hình cho Google Meet
         ConferenceData conferenceData = new ConferenceData()
                 .setCreateRequest(new CreateConferenceRequest()
