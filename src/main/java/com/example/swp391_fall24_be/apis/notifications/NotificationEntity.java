@@ -38,7 +38,7 @@ public class NotificationEntity implements IObject<NotificationDto> {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false, updatable = false)
+    @Column(name = "description", columnDefinition = "NVARCHAR(255)", nullable = false, updatable = false)
     private String description;
 
     @Column(name = "type", nullable = false)
