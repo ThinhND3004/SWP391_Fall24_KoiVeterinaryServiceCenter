@@ -200,25 +200,28 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                 LocalTime slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
                 while (!slotEndTime.isAfter(timetable.getEndTime())){
                     //Check if it is current day and timetable == booking day of week
-                    for (BookingEntity booking: veterianBookingList){
-                        if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
-                                currentDate.equals(booking.getStartedAt().toLocalDate())
-                        ) {
+                    int index = 0;
+                    while (index < veterianBookingList.size()) {
+                        BookingEntity booking = veterianBookingList.get(index);
+
+                        if (timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
+                                currentDate.equals(booking.getStartedAt().toLocalDate())) {
+
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
-                            // Check if there is a booking in the time slot
-                            System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
-                            System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
                             if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
-                                System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
-                                System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
                                 // Update slot start time
                                 slotStartTime = bookingEndTime;
                                 slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+
+                                // Restart the loop
+                                index = 0;
+                                continue;
                             }
                         }
+                        index++;
                     }
                     timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
 
