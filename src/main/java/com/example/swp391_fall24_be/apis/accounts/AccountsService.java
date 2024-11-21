@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -133,7 +134,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
+                        findByVeterianAndStatuses(veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
@@ -159,7 +160,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         LocalDate today = LocalDate.now();
 
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnum(account, StatusEnum.CONFIRMED);
+                findByVeterianAndStatuses(account, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
 
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {

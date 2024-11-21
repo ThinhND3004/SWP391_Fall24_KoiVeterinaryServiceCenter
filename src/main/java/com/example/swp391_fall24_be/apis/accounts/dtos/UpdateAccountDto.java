@@ -30,6 +30,9 @@ public class UpdateAccountDto implements IDto<AccountEntity> {
     @JsonProperty("address")
     private String address;
 
+//    @JsonProperty("disable")
+//    private boolean isDisable;
+
     @Override
     public AccountEntity toEntity() {
         AccountEntity account = new AccountEntity();
@@ -38,6 +41,7 @@ public class UpdateAccountDto implements IDto<AccountEntity> {
         account.setDob(dob);
         account.setPhone(phone);
         account.setAddress(address);
+//        account.setIsDisable(isDisable);
         return account;
     }
 }

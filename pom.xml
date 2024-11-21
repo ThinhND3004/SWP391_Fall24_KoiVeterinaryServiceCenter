@@ -116,6 +116,7 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+		<!--	GOOGLE CALENDAR	-->
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>

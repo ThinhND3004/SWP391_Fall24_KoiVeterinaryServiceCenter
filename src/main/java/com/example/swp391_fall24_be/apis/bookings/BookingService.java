@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +46,10 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
     }
 
     public boolean isBookingBookedAtTheTime(LocalDateTime startTime, LocalTime estimatedTime, AccountEntity veterian){
+//        List<BookingEntity> veterianBookingList = bookingRepository.
+//                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
+                findByVeterianAndStatuses(veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
         LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());;
 
@@ -68,7 +71,6 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         List<ErrorReport> errorReportList = new ArrayList<>();
 
         bookingEntity.setCustomer(AuthUtils.getCurrentAccount());
-
 
         Optional<ServiceEntity> findServiceResult = servicesRepository.findById(bookingEntity.getService().getId());
         if (findServiceResult.isEmpty()) {
@@ -112,35 +114,32 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 
     @Override
     protected void beforeUpdate(BookingEntity oldEntity, BookingEntity newEntity) throws ProjectException {
-        List<ErrorReport> errorReportList = new ArrayList<>();
-
-//        if (newEntity.getStartedAt() != null &&
-//                (newEntity.getStartedAt().isBefore(LocalDateTime.now()) ||
-//                        newEntity.getStartedAt().isBefore(oldEntity.getStartedAt()))) {
-//            errorReportList.add(new ErrorReport(
-//                    "BookingService_beforeUpdate",
-//                    ErrorEnum.ValidationError,
-//                    "The start time must be after the current time and after the previous start time!"));
-//        }
-
         oldEntity.setStatusEnum(newEntity.getStatusEnum());
         oldEntity.setAdditionalInformation(newEntity.getAdditionalInformation());
         oldEntity.setUpdatedAt(newEntity.getUpdatedAt());
-
-        if (!errorReportList.isEmpty()) {
-            throw new ProjectException(errorReportList);
-        }
     }
 
-    @Override
-    public BookingEntity delete(String id) throws ProjectException {
-        BookingEntity booking = bookingRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Booking not found with ID: " + id)
-        );
-        // Update the status
-        booking.setStatusEnum(StatusEnum.CANCELED);
-        // Save and return the updated entity
-        return bookingRepository.save(booking);
+//    @Override
+//    public BookingEntity cancelBooking(String id, String reason) throws ProjectException {
+//        BookingEntity booking = bookingRepository.findById(id).orElseThrow(() ->
+//                new EntityNotFoundException("Booking not found with ID: " + id)
+//        );
+//        // Update the status
+//        booking.setStatusEnum(StatusEnum.CANCELLED);
+//        booking.setAdditionalInformation(reason);
+//        booking.setUpdatedAt(LocalDateTime.now());
+//        // Save and return the updated entity
+//        return bookingRepository.save(booking);
+//    }
+
+    public BookingEntity changeStatus(String id){
+        BookingEntity foundBooking = bookingRepository.findById(id).get();
+        if (foundBooking.getVeterian() == null){
+            foundBooking.setStatusEnum(StatusEnum.PENDING);
+        } else {
+            foundBooking.setStatusEnum(StatusEnum.CONFIRMED);
+        }
+        return bookingRepository.save(foundBooking);
     }
 
     @Transactional
@@ -209,4 +208,8 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         return bookingDTOList;
     }
 
+    @Override
+    public BookingEntity delete(String id) throws ProjectException {
+        return null;
+    }
 }

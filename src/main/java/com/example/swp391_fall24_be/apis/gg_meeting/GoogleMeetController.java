@@ -1,5 +1,6 @@
 package com.example.swp391_fall24_be.apis.gg_meeting;
 
+import com.example.swp391_fall24_be.apis.gg_meeting.DTOs.CreateMeetDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,17 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/meetings")
 @RequiredArgsConstructor
 public class GoogleMeetController {
 
-    private final GoogleMeetServiceImpl googleMeetService;
+    private final GoogleMeetService googleMeetService;
 
     @PostMapping
-    public ResponseEntity<String> createMeeting(@RequestBody String code) throws GeneralSecurityException, IOException {
-        String link = googleMeetService.createGoogleMeet(code);
+    public ResponseEntity<String> createMeeting(@RequestBody() CreateMeetDto dto) throws Exception {
+        String link = googleMeetService.createGoogleMeet(dto);
         return ResponseEntity.ok(link);
     }
 
