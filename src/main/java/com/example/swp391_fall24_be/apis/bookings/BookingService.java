@@ -46,7 +46,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 
     public boolean isBookingBookedAtTheTime(LocalDateTime startTime, LocalTime estimatedTime, AccountEntity veterian){
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
+                findByVeterianAndStatusEnumOrStatusEnum(veterian, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
         LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());;
 

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, String> {
     List<BookingEntity> findByVeterianAndStatusEnum(AccountEntity veterian, StatusEnum statusEnum2);
-
+    List<BookingEntity> findByVeterianAndStatusEnumOrStatusEnum(AccountEntity veterian, StatusEnum statusEnum, StatusEnum statusEnum2);
     List<BookingEntity> findAllByStartedAtBetween(LocalDateTime startedAt, LocalDateTime endedAt);
 
     @Modifying

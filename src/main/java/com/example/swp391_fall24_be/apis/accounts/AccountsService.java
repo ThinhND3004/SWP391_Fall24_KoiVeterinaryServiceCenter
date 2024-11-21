@@ -154,7 +154,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             if(isInTimetable){
                 // Check if searchTime is not in Booking time
                 List<BookingEntity> veterianBookingList = bookingRepository.
-                        findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
+                        findByVeterianAndStatusEnumOrStatusEnum (veterian, StatusEnum.CONFIRMED, StatusEnum.UNPAID);
                 for (BookingEntity booking: veterianBookingList) {
                     LocalDateTime bookingEndTime = TimeUtils.setLocalDateEndTime(booking.getStartedAt(),
                             booking.getService().getEstimatedTime());
@@ -180,7 +180,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         LocalDate today = LocalDate.now();
 
         List<BookingEntity> veterianBookingList = bookingRepository.
-                findByVeterianAndStatusEnum(account, StatusEnum.CONFIRMED);
+                findByVeterianAndStatusEnumOrStatusEnum(account, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
 
         // Get time slot in around 7 days
         for (int i = 0; i <= 7; i++) {
