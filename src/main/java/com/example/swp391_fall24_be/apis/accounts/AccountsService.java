@@ -71,7 +71,28 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
     @Override
     protected void beforeUpdate(AccountEntity oldEntity, AccountEntity newEntity) throws ProjectException {
+        List<ErrorReport> errors = new ArrayList<>();
 
+        if (!oldEntity.getPhone().equals(newEntity.getPhone()))
+        {
+            Optional<AccountEntity> findPhoneResult = accountsRepository.findByPhone(newEntity.getPhone());
+            if(findPhoneResult.isPresent()){
+                errors.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This phone has been registered!"));
+            }
+        }
+
+
+        if(!errors.isEmpty()){
+            throw new ProjectException(errors);
+        }
+
+        oldEntity.setFirstName(newEntity.getFirstName());
+        oldEntity.setLastName(newEntity.getLastName());
+        oldEntity.setUpdateAt(LocalDateTime.now());
+        oldEntity.setPhone(newEntity.getPhone());
+        oldEntity.setAddress(newEntity.getAddress());
+        oldEntity.setDob(newEntity.getDob());
+        oldEntity.setIsDisable(Boolean.FALSE);
     }
 
     @Override
