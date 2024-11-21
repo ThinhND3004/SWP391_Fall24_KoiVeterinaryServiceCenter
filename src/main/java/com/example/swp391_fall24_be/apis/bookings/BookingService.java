@@ -142,6 +142,7 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
             foundBooking.setStatusEnum(StatusEnum.CONFIRMED);
         }
         return bookingRepository.save(foundBooking);
+    }
 
       
     @Override
@@ -219,10 +220,5 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
         }
 
         return bookingDTOList;
-    }
-
-    @Override
-    public BookingEntity delete(String id) throws ProjectException {
-        return null;
     }
 }
