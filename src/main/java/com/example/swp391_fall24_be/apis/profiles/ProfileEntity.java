@@ -43,7 +43,7 @@ public class ProfileEntity implements IObject<ProfileDto> {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 

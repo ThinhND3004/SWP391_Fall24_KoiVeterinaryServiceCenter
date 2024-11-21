@@ -30,7 +30,7 @@ public class TimetableEntity implements IObject<TimetableDTO> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", nullable = false)
     private ProfileEntity profile;
 
@@ -52,9 +52,9 @@ public class TimetableEntity implements IObject<TimetableDTO> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Column(name = "booked_slots", columnDefinition = "TEXT")
-    @Convert(converter = TimeRangeListConverter.class)
-    private List<TimeRange> bookedSlots = new ArrayList<>();
+//    @Column(name = "booked_slots", columnDefinition = "TEXT")
+//    @Convert(converter = TimeRangeListConverter.class)
+//    private List<TimeRange> bookedSlots = new ArrayList<>();
 
     @Override
     public TimetableDTO toResponseDto() {
