@@ -72,7 +72,28 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
     @Override
     protected void beforeUpdate(AccountEntity oldEntity, AccountEntity newEntity) throws ProjectException {
+        List<ErrorReport> errors = new ArrayList<>();
 
+        if (!oldEntity.getPhone().equals(newEntity.getPhone()))
+        {
+            Optional<AccountEntity> findPhoneResult = accountsRepository.findByPhone(newEntity.getPhone());
+            if(findPhoneResult.isPresent()){
+                errors.add(new ErrorReport("AccountsService_beforeCreate", ErrorEnum.FieldDuplicated,"This phone has been registered!"));
+            }
+        }
+
+
+        if(!errors.isEmpty()){
+            throw new ProjectException(errors);
+        }
+
+        oldEntity.setFirstName(newEntity.getFirstName());
+        oldEntity.setLastName(newEntity.getLastName());
+        oldEntity.setUpdateAt(LocalDateTime.now());
+        oldEntity.setPhone(newEntity.getPhone());
+        oldEntity.setAddress(newEntity.getAddress());
+        oldEntity.setDob(newEntity.getDob());
+        oldEntity.setIsDisable(Boolean.FALSE);
     }
 
     @Override
@@ -117,7 +138,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             // Check if the searchTime is in timetable
             boolean isInTimetable = false;
             boolean isInBooking = false;
-            if(veterian.getProfile() == null) continue;;
+            if(veterian.getProfile() == null) continue;
 
             for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
                     if(
@@ -193,12 +214,13 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                             System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
                             System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
-                            if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
-                                System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
-                                System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
-                                // Update slot start time
-                                slotStartTime = bookingEndTime;
-                                slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                                if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
+                                    System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
+                                    System.out.println("Booking "+ booking.getId() + ": " + booking.getStartedAt());
+                                    // Update slot start time
+                                    slotStartTime = bookingEndTime;
+                                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                                }
                             }
                         }
                     }
@@ -213,7 +235,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         timeSlot.setSlots(timeSlotPerBooking);
                     }
                 }
-            }
+
             if(!timeSlot.getSlots().isEmpty()){
                 timeSlotList.add(timeSlot);
             }

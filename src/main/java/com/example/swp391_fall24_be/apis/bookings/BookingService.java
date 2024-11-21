@@ -50,6 +50,8 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
 //                findByVeterianAndStatusEnum(veterian, StatusEnum.CONFIRMED);
         List<BookingEntity> veterianBookingList = bookingRepository.
                 findByVeterianAndStatuses(veterian, Arrays.asList(StatusEnum.UNPAID, StatusEnum.CONFIRMED));
+//                findByVeterianAndStatusEnumOrStatusEnum(veterian, StatusEnum.UNPAID, StatusEnum.CONFIRMED);
+
         LocalDateTime endTime = startTime.plusHours(estimatedTime.getHour())
                 .plusMinutes(estimatedTime.getMinute());;
 
@@ -140,6 +142,17 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
             foundBooking.setStatusEnum(StatusEnum.CONFIRMED);
         }
         return bookingRepository.save(foundBooking);
+
+      
+    @Override
+    public BookingEntity delete(String id) throws ProjectException {
+        BookingEntity booking = bookingRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Booking not found with ID: " + id)
+        );
+        // Update the status
+        booking.setStatusEnum(StatusEnum.CANCELED);
+        // Save and return the updated entity
+        return bookingRepository.save(booking);
     }
 
     @Transactional
