@@ -46,12 +46,6 @@ public class EmailService {
         this.bookingRepository = bookingRepository;
     }
 
-    public void sendBothForCustomerAndVeterian(String bookingId){
-        Optional<BookingEntity> findBookingResult = bookingRepository.findById(bookingId);
-        if(findBookingResult.isPresent()){
-
-        }
-    }
 
     public void sendOrderConfirmationEmail(SendOrderConfirmedDto dto) {
         String subject = "Order Confirmation";
@@ -88,7 +82,10 @@ public class EmailService {
         variables.put("date", dto.date);
         variables.put("time", dto.time);
         variables.put("location", dto.location);
-        variables.put("meetingLink", dto.meetingLink.trim());
+
+        String meetingLink = "";
+        if(dto.serviceMethod.name().equals("ONLINE")) meetingLink = "meet.google.com/zjt-qykr-oea";
+        variables.put("meetingLink", meetingLink);
 
         sendEmailWithTemplate(dto.to, subject, "send-invitation.ftl", variables);
     }
@@ -108,7 +105,7 @@ public class EmailService {
             variables.put("veterianName", veterian.getFirstName() + " " +veterian.getLastName() );
             variables.put("companyWebsite", dto.companyWebsite);
 
-            String subject = "Invitation for Veterinarian";
+            String subject = "Report for " + service.getName();
 
             sendEmailWithTemplate(customer.getEmail(), subject, "send-report.ftl",variables);
             return true;
