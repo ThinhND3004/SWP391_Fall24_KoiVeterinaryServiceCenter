@@ -25,7 +25,7 @@ public class CleanUpService {
         notificationsRepository.deleteExpiredNotifications(expiryDate.minusHours(3)); // DELETE notifications AFTER created for 3 hours
     }
 
-    @Scheduled(cron = "0 * * * * ?") // Runs every hour
+    @Scheduled(cron = "0 * * * * ?")
     public void deleteUnpaidBooking() {
         LocalDateTime timeLimit = LocalDateTime.now().minusMinutes(30);
         bookingRepository.deleteUnpaidBooking(timeLimit); // Update booking status PENDING t CANCELED when expired
