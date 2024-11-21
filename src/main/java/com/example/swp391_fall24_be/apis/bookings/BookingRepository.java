@@ -24,7 +24,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, String> 
 
     @Modifying
     @Transactional
-    @Query("UPDATE bookings b SET b.statusEnum = 'CANCELLED' WHERE b.startedAt < :expiryDate AND b.statusEnum = 'PENDING'")
+    @Query("UPDATE bookings b SET b.statusEnum = 'CANCELED' WHERE b.startedAt < :expiryDate AND b.statusEnum = 'PENDING'")
     void updateOutdatedBooking(@Param("expiryDate") LocalDateTime expiryDate);
 
     @Modifying
