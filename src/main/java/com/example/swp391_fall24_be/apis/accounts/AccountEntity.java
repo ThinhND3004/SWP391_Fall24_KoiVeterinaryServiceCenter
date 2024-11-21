@@ -82,6 +82,7 @@ public class AccountEntity implements IObject<AccountDto>{
 
 
     public AccountEntity() {
+        this.isDisable = false;
     }
 
     public AccountEntity(String email, String password, String firstName, String lastName, LocalDate dob, String phone, String address, AccountRoleEnum role, ImageEntity imageEntity) {
