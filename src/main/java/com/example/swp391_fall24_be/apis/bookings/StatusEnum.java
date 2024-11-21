@@ -8,5 +8,5 @@ public enum StatusEnum {
         PENDING_REFUND,
         COMPLETED_REFUND,
         FAILED_REFUND,
-        CANCELLED
+        CANCELED
     }

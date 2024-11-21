@@ -116,7 +116,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             // Check if the searchTime is in timetable
             boolean isInTimetable = false;
             boolean isInBooking = false;
-            if(veterian.getProfile() == null) continue;;
+            if(veterian.getProfile() == null) continue;
 
             for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
                     if(
@@ -212,7 +212,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         timeSlot.setSlots(timeSlotPerBooking);
                     }
                 }
-            }
+
             if(!timeSlot.getSlots().isEmpty()){
                 timeSlotList.add(timeSlot);
             }
