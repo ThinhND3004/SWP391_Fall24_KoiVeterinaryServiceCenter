@@ -29,20 +29,20 @@ public class ServicesController extends AbstractController<
         ServiceDto
         > {
 
-    @Autowired
-    private ServicesService servicesService;
-    @GetMapping("/getAllService")
-    public ResponseDto<?> getAllService()
-    {
-        List<ServiceEntity> resultList = servicesService.getAllServiceEntity();
-
-        return new ResponseDto<>(
-            HttpStatus.OK.value(),
-            "Get current service success!",
-                resultList,
-            null
-    );
-    }
+//    @Autowired
+//    private ServicesService servicesService;
+//    @GetMapping("/getAllService")
+//    public ResponseDto<?> getAllService()
+//    {
+//        List<ServiceEntity> resultList = servicesService.getAllServiceEntity();
+//
+//        return new ResponseDto<>(
+//            HttpStatus.OK.value(),
+//            "Get current service success!",
+//                resultList,
+//            null
+//    );
+//    }
 
 
 }

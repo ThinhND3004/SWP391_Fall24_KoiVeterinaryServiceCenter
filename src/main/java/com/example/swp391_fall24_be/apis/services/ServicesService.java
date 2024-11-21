@@ -36,9 +36,9 @@ public class ServicesService extends AbstractService<
         return null;
     }
 
-    public List<ServiceEntity> getAllServiceEntity()
-    {
-        return servicesRepository.findAll();
-    }
+//    public List<ServiceEntity> getAllServiceEntity()
+//    {
+//        return servicesRepository.findAll();
+//    }
 
 }
