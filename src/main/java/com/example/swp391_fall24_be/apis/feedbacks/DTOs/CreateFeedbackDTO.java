@@ -40,13 +40,6 @@ public class CreateFeedbackDTO implements IDto<Feedback> {
 //    @JsonProperty("comment")
     private String comment;
 
-    // Nếu muốn lưu ngày tạo và cập nhật thì đưa lại các trường này
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt; // Khách hàng có thể cập nhật bình luận và đánh giá
-
     @NotNull(message = "Anonymous Status is required!")
 //    @JsonProperty("anonymous")
     private Boolean anonymous;
@@ -62,8 +55,6 @@ public class CreateFeedbackDTO implements IDto<Feedback> {
         feedback.setStarRating(starRating);
         feedback.setComment(comment);
         feedback.setAnonymous(anonymous);
-        feedback.setCreatedAt(createdAt);
-        feedback.setUpdatedAt(updatedAt);
         return feedback;
     }
 }

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -91,6 +92,10 @@ public class BookingEntity implements IObject<BookingDTO> {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", columnDefinition = "DATETIME")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     @Column(name = "started_at",nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime startedAt;
 
@@ -150,6 +155,13 @@ public class BookingEntity implements IObject<BookingDTO> {
         bookingDTO.setUserAddress(userAddress);
         bookingDTO.setStatusEnum(statusEnum);
         bookingDTO.setCreatedAt(createdAt);
+
+//        if (bookingDTO.getUpdatedAt() == null){
+//            bookingDTO.setUpdatedAt(null);
+//        } else {
+            bookingDTO.setUpdatedAt(LocalDateTime.now());
+//        }
+
         bookingDTO.setStartedAt(startedAt);
         bookingDTO.setEndedAt(endedAt);
         return bookingDTO;

@@ -3,6 +3,7 @@ package com.example.swp391_fall24_be.apis.accounts;
 import com.example.swp391_fall24_be.apis.accounts.dtos.*;
 import com.example.swp391_fall24_be.apis.bookings.BookingEntity;
 import com.example.swp391_fall24_be.apis.bookings.BookingRepository;
+import com.example.swp391_fall24_be.apis.bookings.MeetingMethodEnum;
 import com.example.swp391_fall24_be.apis.bookings.StatusEnum;
 import com.example.swp391_fall24_be.apis.services.ServiceEntity;
 import com.example.swp391_fall24_be.apis.services.ServicesRepository;
@@ -22,12 +23,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountsService extends AbstractService<AccountEntity, String, CreateAccountDto, UpdateAccountDto, PaginateAccountDto> {
@@ -116,7 +116,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             // Check if the searchTime is in timetable
             boolean isInTimetable = false;
             boolean isInBooking = false;
-            if(veterian.getProfile() == null) continue;;
+            if(veterian.getProfile() == null) continue;
 
             for(TimetableEntity timetable : veterian.getProfile().getTimetables()){
                     if(
@@ -141,7 +141,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                     //    1. Check if start time is in Booking
                     //    2. Check if end time is in Booking
                     if ((searchTime.isBefore(bookingEndTime) && searchEndTime.isAfter(booking.getStartedAt()))) {
-                        isInBooking = true;
+                      isInBooking = true;
                         break;
                     }
                 }
@@ -172,7 +172,6 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
 
             for(TimetableEntity timetable : timetableList){
                 // Exclude time slot that appear in booking
-
                     List<TimeRange> timeSlotPerBooking = new ArrayList<>();
                     LocalTime slotStartTime = timetable.getStartTime();
                     LocalTime estimatedTime = bookedService.getEstimatedTime();
@@ -182,15 +181,15 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         for (BookingEntity booking: veterianBookingList){
                             if(timetable.getDayOfWeek() == booking.getStartedAt().getDayOfWeek() &&
                                 currentDate.equals(booking.getStartedAt().toLocalDate())
-                            ) {
+                        ) {
 
 
                             LocalTime bookingStartTime = booking.getStartedAt().toLocalTime();
                             LocalTime bookingServiceEstimatedTime = booking.getService().getEstimatedTime();
                             LocalTime bookingEndTime = TimeUtils.setLocalEndTime(bookingStartTime, bookingServiceEstimatedTime);
-                                // Check if there is a booking in the time slot
-                                System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
-                                System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
+                            // Check if there is a booking in the time slot
+                            System.out.println("Timetable slot: "+slotStartTime + " - " + slotEndTime);
+                            System.out.println("    Booking slot: "+ bookingStartTime + " - " + bookingEndTime);
 
                                 if ((slotStartTime.isBefore(bookingEndTime) && slotEndTime.isAfter(bookingStartTime))) {
                                     System.out.println("DAY "+currentDate + ": "+slotStartTime + " - "+slotEndTime);
@@ -201,23 +200,24 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                                 }
                             }
                         }
-                        timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                    }
+                    timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
 
-                        slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
-                        slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
+                    slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
+                    slotEndTime = TimeUtils.setLocalEndTime(slotStartTime,estimatedTime);
 
-                        if(timeSlot.getSlots().isEmpty() ||
+                    if(timeSlot.getSlots().isEmpty() ||
                             timeSlot.getSlots().size() > timeSlotPerBooking.size()
-                        ){
-                            timeSlot.setSlots(timeSlotPerBooking);
-                        }
+                    ){
+                        timeSlot.setSlots(timeSlotPerBooking);
                     }
                 }
-                if(!timeSlot.getSlots().isEmpty()){
-                    timeSlotList.add(timeSlot);
-                }
 
+            if(!timeSlot.getSlots().isEmpty()){
+                timeSlotList.add(timeSlot);
             }
+
+        }
         return timeSlotList;
     }
 
@@ -234,6 +234,70 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
             );
         }
         return veterianRespDtos;
+    }
+
+    public List<TimeSlot> getTimeSlotByDate(AccountEntity account, ServiceEntity service, LocalDate date) {
+        List<TimeSlot> timeSlotList = new ArrayList<>();
+
+        // Lấy danh sách timetable của bác sĩ theo ngày
+        List<TimetableEntity> timetableList = timetableRepository
+                .findByProfileAndDayOfWeekOrderByStartTimeAsc(account.getProfile(), date.getDayOfWeek());
+
+        for (TimetableEntity timetable : timetableList) {
+            TimeSlot timeSlot = new TimeSlot();
+            timeSlot.setDate(date);
+
+            List<TimeRange> timeRanges = new ArrayList<>();
+            LocalTime slotStartTime = timetable.getStartTime();
+
+            // Tính estimatedMinutes dựa trên dịch vụ
+            int estimatedMinutes = service.getEstimatedTime().getHour() * 60 + service.getEstimatedTime().getMinute();
+
+            // Thời gian trống tùy thuộc vào loại dịch vụ
+            int bufferTimeMinutes = 0;
+            switch (service.getMeetingMethod()) {
+                case ONLINE:
+                case OFFLINE_CENTER:
+                    bufferTimeMinutes = 15; // Thêm 15 phút nghỉ
+                    break;
+                case OFFLINE_HOME:
+                    bufferTimeMinutes = 60; // Thêm 1 tiếng di chuyển
+                    break;
+                default:
+                    break;
+            }
+
+            LocalTime slotEndTime = slotStartTime.plusMinutes(estimatedMinutes);
+
+            // Tạo các slots dựa trên timetable của bác sĩ
+            while (!slotEndTime.isAfter(timetable.getEndTime())) {
+                LocalTime currentSlotStartTime = slotStartTime;
+                LocalTime currentSlotEndTime = slotEndTime;
+
+                // Kiểm tra nếu slot đã được đặt
+                boolean isBooked = timetable.getBookedSlots().stream()
+                        .anyMatch(range ->
+                                currentSlotStartTime.isBefore(range.getEndTime()) && currentSlotEndTime.isAfter(range.getStartTime())
+                        );
+
+                // Nếu slot chưa được đặt, thêm vào danh sách
+                if (!isBooked) {
+                    timeRanges.add(new TimeRange(currentSlotStartTime, currentSlotEndTime));
+                }
+
+                // Cập nhật thời gian slot với buffer time
+                slotStartTime = slotEndTime.plusMinutes(bufferTimeMinutes);
+                slotEndTime = slotStartTime.plusMinutes(estimatedMinutes);
+            }
+
+            // Nếu có thời gian trống, thêm vào danh sách
+            if (!timeRanges.isEmpty()) {
+                timeSlot.setSlots(timeRanges);
+                timeSlotList.add(timeSlot);
+            }
+        }
+
+        return timeSlotList;
     }
 
     public AccountEntity getAccountByEmail(String email) {

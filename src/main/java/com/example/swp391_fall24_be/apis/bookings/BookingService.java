@@ -114,14 +114,18 @@ public class BookingService extends AbstractService<BookingEntity, String, Creat
     protected void beforeUpdate(BookingEntity oldEntity, BookingEntity newEntity) throws ProjectException {
         List<ErrorReport> errorReportList = new ArrayList<>();
 
-        if (newEntity.getStartedAt() != null &&
-                (newEntity.getStartedAt().isBefore(LocalDateTime.now()) ||
-                        newEntity.getStartedAt().isBefore(oldEntity.getStartedAt()))) {
-            errorReportList.add(new ErrorReport(
-                    "BookingService_beforeUpdate",
-                    ErrorEnum.ValidationError,
-                    "The start time must be after the current time and after the previous start time!"));
-        }
+//        if (newEntity.getStartedAt() != null &&
+//                (newEntity.getStartedAt().isBefore(LocalDateTime.now()) ||
+//                        newEntity.getStartedAt().isBefore(oldEntity.getStartedAt()))) {
+//            errorReportList.add(new ErrorReport(
+//                    "BookingService_beforeUpdate",
+//                    ErrorEnum.ValidationError,
+//                    "The start time must be after the current time and after the previous start time!"));
+//        }
+
+        oldEntity.setStatusEnum(newEntity.getStatusEnum());
+        oldEntity.setAdditionalInformation(newEntity.getAdditionalInformation());
+        oldEntity.setUpdatedAt(newEntity.getUpdatedAt());
 
         if (!errorReportList.isEmpty()) {
             throw new ProjectException(errorReportList);

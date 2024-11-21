@@ -6,8 +6,10 @@ import com.example.swp391_fall24_be.apis.bookings.DTOs.CreateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.PaginateBookingDTO;
 import com.example.swp391_fall24_be.apis.bookings.DTOs.UpdateBookingDTO;
 import com.example.swp391_fall24_be.core.AbstractController;
+import com.example.swp391_fall24_be.core.ProjectException;
 import com.example.swp391_fall24_be.core.ResponseDto;
 import com.example.swp391_fall24_be.utils.AuthUtils;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -102,4 +104,29 @@ public class BookingController extends AbstractController<BookingEntity, String,
             );
         }
     }
+
+    @PutMapping("/refund/{id}")
+    public ResponseDto<BookingDTO> requestRefund(
+            @PathVariable String id,
+            @Valid @RequestBody UpdateBookingDTO dto){
+        try {
+            BookingEntity refundBooking = bookingService.update(id, dto);
+            return new ResponseDto<>(
+                    HttpStatus.OK.value(),
+                    "Sending Refund Request Successfully!",
+                    refundBooking.toResponseDto(),
+                    null
+            );
+        } catch (ProjectException e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getMessage());
+            return new ResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Send Refund Request Unsuccessfully",
+                    null,
+                    errorList
+            );
+        }
+    }
+
 }

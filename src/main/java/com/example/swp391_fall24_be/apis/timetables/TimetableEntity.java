@@ -3,6 +3,7 @@ package com.example.swp391_fall24_be.apis.timetables;
 import com.example.swp391_fall24_be.apis.profiles.ProfileEntity;
 import com.example.swp391_fall24_be.apis.timetables.DTOs.TimetableDTO;
 import com.example.swp391_fall24_be.core.IObject;
+import com.example.swp391_fall24_be.sub_class.TimeRange;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "timetables")
 @EntityListeners(AuditingEntityListener.class)
@@ -49,6 +52,10 @@ public class TimetableEntity implements IObject<TimetableDTO> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Column(name = "booked_slots", columnDefinition = "TEXT")
+    @Convert(converter = TimeRangeListConverter.class)
+    private List<TimeRange> bookedSlots = new ArrayList<>();
+
     @Override
     public TimetableDTO toResponseDto() {
         TimetableDTO timetableDTO = new TimetableDTO();
@@ -58,6 +65,7 @@ public class TimetableEntity implements IObject<TimetableDTO> {
         timetableDTO.setEndTime(endTime);
         timetableDTO.setCreatedAt(createdAt);
         timetableDTO.setUpdatedAt(updatedAt);
+        timetableDTO.setBookedSlots(bookedSlots);
         return timetableDTO;
     }
 }
