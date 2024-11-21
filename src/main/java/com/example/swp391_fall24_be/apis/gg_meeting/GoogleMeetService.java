@@ -20,9 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,15 +32,14 @@ public class GoogleMeetService {
     private static final String APPLICATION_NAME = "Meet Generator Client";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String REDIRECT_URI = "http://localhost:8089/meetings/oauth2callback";
 
-//    @Value("${CLIENT_ID}")
-//    private String CLIENT_ID;
-//    @Value("${GOOGLE_CLIENT_SECRET}")
-//    private String CLIENT_SECRET;
-//
-//    @Value("${GOOGLE_REDIRECT_URI}")
-//    private String REDIRECT_URI;
+    @Value("google.clientId")
+    private String CLIENT_ID;
+    @Value("google.clientSecret")
+    private String CLIENT_SECRET;
+
+    @Value("google.redirectUri")
+    private String REDIRECT_URI;
 
     private String token;
 
