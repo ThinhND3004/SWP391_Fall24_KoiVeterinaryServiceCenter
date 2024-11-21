@@ -177,7 +177,7 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
         return veterianDtos;
     }
 
-    private List<TimeSlot>  getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
+    private List<TimeSlot> getValidTimeSlot(AccountEntity account, ServiceEntity bookedService){
         List<TimeSlot> timeSlotList = new ArrayList<>();
         LocalDate today = LocalDate.now();
 
@@ -223,7 +223,9 @@ public class AccountsService extends AbstractService<AccountEntity, String, Crea
                         }
                         index++;
                     }
-                    timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                    if(!slotEndTime.isAfter(timetable.getEndTime())) {
+                        timeSlotPerBooking.add(new TimeRange(slotStartTime,slotEndTime));
+                    }
 
                     slotStartTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
                     slotEndTime = TimeUtils.setLocalEndTime(slotStartTime, estimatedTime);
