@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -43,13 +42,11 @@ public class GoogleMeetService {
 
     private String token;
 
-    private final MeetingRepository meetingRepository;
-
     private GoogleClientSecrets getCredentials() {
         Details details = new Details();
-        details.setClientId("52771333508-oomj5tiljdraea4nal2rfds0co59ocu6.apps.googleusercontent.com\n");
-        details.setClientSecret("");
-        details.setRedirectUris(Collections.singletonList(""));
+        details.setClientId(CLIENT_ID);
+        details.setClientSecret(CLIENT_SECRET);
+        details.setRedirectUris(Collections.singletonList(REDIRECT_URI));
 
         GoogleClientSecrets clientSecrets = new GoogleClientSecrets();
         clientSecrets.setInstalled(details);
